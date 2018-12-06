@@ -1,0 +1,112 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>预付/支付货款</div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('suppliers/index')}">供应商货款管理</a></li>
+                    <li class="active"><a>预付/支付货款</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form method="post" id="addEditBrandForm">
+                    <dl>
+                        <dt><i class="required">*</i>金额：</dt>
+                        <dd>
+                            <input class="w130 text" type="number" value="{$info.log_money}" name="log_money" maxlength="30"/>
+                            <span id="err_log_money" style="color:#F00; display:none;">金额不能为空</span>
+                            <p class="hint">请填写金额</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>说明：</dt>
+                        <dd>
+                            <input class="w130 text" type="text" value="{$info.log_info}" name="log_info"/>
+                            <p class="hint">请填写说明</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>付款凭证：</dt>
+                        <dd>
+                            <div class="ncsc-goods-default-pic">
+                                <div class="goodspic-uplaod">
+                                    <div class="upload-thumb">
+                                        <img id="original_img2" src="{$info.log_img|default='/public/images/default_goods_image_240.gif'}">
+                                    </div>
+                                    <input name="log_img" id="original_img" value="{$info.log_img}" type="hidden">
+                                    <p class="hint">上传付款凭证。</p>
+                                    <div class="handle">
+                                        <div class="ncsc-upload-btn">
+                                            <a onclick="GetUploadify3(1,'','bill','upload_call_back');">
+                                                <p><i class="icon-upload-alt"></i>图片上传</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="demo"></div>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input type="hidden" name="suppliers_id" value="{$suppliers.suppliers_id}">
+                        <input type="button" class="submit" onclick="submitForm()" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script type="text/javascript">
+    var ajax_return_status =1;
+    function submitForm(){
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        var log_money = $("input[name='log_money']").val();
+        var log_info = $("input[name='log_info']").val();
+        if (log_money <= 0){
+            layer.msg('金额必须大于0！！',{icon:2});
+            return false;
+        }
+        if (log_info == ''){
+            layer.msg('说明不能为空！！',{icon:2});
+            return false;
+        }
+        var original_img = $("#original_img").val();
+        if (original_img == '' && {$store.is_voucher} == 1){
+            layer.msg('请上传凭证',{icon:2});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type:'post',
+            url:"{:U('/seller/suppliers/edit_account')}",
+            data:$('#addEditBrandForm').serialize(),
+            dataType:'json',
+            success:function (data) {
+                if (data.status == 1){
+                    layer.msg(data.msg,{icon:1},function () {
+                        window.location.href = "{:U('/seller/suppliers/index')}";
+                    });
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                    ajax_return_status =1;
+                }
+            },
+            error:function(){
+                layer.msg('网络繁忙，请稍后再试！！',{icon:2});
+                ajax_return_status =1;
+            }
+        })
+    }
+    //图片上传回调方法
+    function upload_call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+        $("#original_img2").attr('src', fileurl_tmp);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>搜索结果</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<script src="__PUBLIC__/mobile/js/flexible.js"></script>
+	<script src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/commonlist.css"/>
+	<link rel="stylesheet" href="__PUBLIC__/cji/mescroll.css">
+  	<link rel="stylesheet" href="__PUBLIC__/cji/mescroll-option.css">
+</head>
+<body>
+	<!--清单头部-->
+	<div class="twostatus-header">
+		<div class="container">
+			<a class="back" href="javascript:history.go(-1);">
+				<img src="__PUBLIC__/mobile/img/register/register1.png">
+			</a>
+			<span class="char">搜索结果</span>
+		</div>
+	</div>
+	<!--清单内容部分-->
+	<input type="hidden" id="keywords" name="keywords" value="{$keywords}"/>
+	<div class="commonlist-content">
+		<div class="foryou-container">
+			<div id="mescroll" class="foryou-container left-margin china-food" style="overflow: scroll;height: auto;position: fixed;top: 1.5rem;width:98%; margin: 0.1rem 0.1rem 0.1rem 0.1rem; bottom: 0rem;">
+		     <div class="sweetwine-detail clear-float" id="newsList">
+		     </div>
+    		</div>
+		</div>
+	</div>
+	<!--页面底部菜单-->	
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery.fly.min.js"></script>
+	<script src="__PUBLIC__/cji/mescroll.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery.fly.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function(e){
+			document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+		}, false);
+	</script>
+
+	<script>
+	//多商品点击出现详细商品信息按钮
+	$(window).load(function(){
+		$(document).on("click", ".switch-btn", function(){
+			if($(this).attr("data-select")){
+				$(this).attr("src", "__PUBLIC__/mobile/img/commonlist/switchdown.png");
+				$(this).attr("data-select", "");
+				$(this).parent().parent().parent().parent().find(".sub-product").slideUp(300);
+			}
+			else{
+				$(this).attr("src", "__PUBLIC__/mobile/img/commonlist/switchup.png");
+				$(this).attr("data-select", "ok");
+				$(this).parent().parent().parent().parent().find(".sub-product").slideDown(300);
+			}
+		});
+	});
+	//1.多品购买处第一次购买
+	$(document).on("click", ".count-first", function(){
+		var goods_id;
+		var key;
+		var countProduct;
+		var nowCount = parseFloat($(this).prev().find(".count").val());
+		$(this).hide().prev().addClass("active").find(".count").val(nowCount + 1);
+		countProduct = $(this).prev().find(".count").val();
+		goods_id = $(this).prev().find("[name=goods_id]").val();
+		key = $(this).prev().find("[name=key]").val();
+		var data = [];
+		data['num'] = countProduct;
+		data['key'] = key;
+		data['goods_id'] = goods_id;
+		ajax_cart(data);
+	});
+	//点击加按钮
+	$(document).on("click", ".add", function(){
+		var goods_id;
+		var key;
+		var countProduct;
+		var nowCount = parseFloat($(this).parent().find(".count").val());
+		$(this).parent().find(".count").val(nowCount + 1);
+		countProduct = $(this).parent().find(".count").val();
+		goods_id = $(this).parent().find("[name=goods_id]").val();
+		key = $(this).parent().find("[name=key]").val();
+		var data = [];
+		data['num'] = countProduct;
+		data['key'] = key;
+		data['goods_id'] = goods_id;
+		ajax_cart(data);
+	});
+	//点击减按钮
+	$(document).on("click", ".reduce", function(){
+		var goods_id;
+		var key;
+		var countProduct;
+		var nowCount = parseFloat($(this).parent().find(".count").val());
+		var finalCount = nowCount - 1;
+		if(Number.isInteger(finalCount) === false){
+			finalCount = finalCount.toFixed(1);
+		}
+		$(this).parent().find(".count").val(finalCount);
+		countProduct = $(this).parent().find(".count").val();
+		goods_id = $(this).parent().find("[name=goods_id]").val();
+		key = $(this).parent().find("[name=key]").val();
+		if(finalCount <= 0){
+			$(this).parent().removeClass("active").next().show();
+			$(this).parent().find(".count").val(0); //
+          	countProduct = 0; //
+		}
+		var data = [];
+		data['num'] = countProduct;
+		data['key'] = key;
+		data['goods_id'] = goods_id;
+		ajax_cart(data);
+	});
+	//点击询价按钮
+	$(document).on("click", ".switce-span", function(){
+		$(this).addClass("active").html("询价中");
+		var goods_id = $(this).parent().find("[name=goods_id]").val();
+		var key = $(this).parent().find("[name=key]").val();
+		var data = [];
+		data["goods_id"] = goods_id;
+		data["key"] = key;
+		//以下为ajax请求
+
+	});
+	//打开数字键盘窗口
+	inputNum(".count", inputNum_callback);
+	function inputNum_callback(elem, num){
+        var data = [];
+        data["num"] = num;
+        data["key"] = $(elem).parent().find("[name=key]").val();
+        data["goods_id"] = $(elem).parent().find("[name=goods_id]").val();
+        ajax_cart(data);
+      }
+	function ajax_cart(data){
+		$.ajax({
+			type:"GET",
+			url:"/index.php?m=Mobile&c=Cart&a=ajax_add_cart",
+			dataType:"JSON",
+			data:{"num":data['num'],"key":data['key'],"goods_id":data['goods_id']},
+			success: function(object){
+
+			},
+			error:function(){
+
+			},
+		})
+	}
+	</script>
+	<script type="text/javascript">
+    $(function(){
+      //创建MeScroll对象
+      var mescroll = new MeScroll("mescroll", {
+        up: {
+          auto:false,//初始化完毕,是否自动触发上拉加载的回调
+          //isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+          callback: getListData, //上拉加载的回调
+          empty: {
+            icon: "__PUBLIC__/cji/res/img/mescroll-empty.png", //图标,默认null
+            tip: "暂无相关数据~", //提示
+            btntext: "去逛逛 >", //按钮,默认""
+            btnClick: function(){
+              alert("点击了按钮,具体逻辑自行实现");
+            } 
+          },
+          clearEmptyId: "newsList" //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+        }
+      });
+
+
+      /*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+      function getListData(page){
+          //联网加载数据
+        getListDataFromNet(page.num, page.size, function(data){
+          //联网成功的回调,隐藏上拉加载的状态
+          mescroll.endSuccess(data.length);//传参:数据的总数; mescroll会自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+          //设置列表数据
+          setListData(data, true);
+        }, function(){
+          //联网失败的回调,隐藏上拉加载的状态
+          mescroll.endErr();
+        });
+      }
+      
+      /*设置列表数据*/
+    function setListData(data, isAppend) {
+        var html = '';
+        var url = "{:U('Goods/goods_info')}";
+        $.each(data,function(idx,item){
+        	if(item.child.length > 1){
+        		html +=	`<div class="multitype clear-float common-flyer">
+					<div class="father-container clear-float">
+						<div class="left left-float">
+						<a href="${url}?goods_id=${item.goods_id}"><img src="${item.original_img}">
+						</div>
+						<div class="right right-float">
+						<div class="product-title">${item.goods_name}</div></a><div class="switch">`;
+						if(item.offer_price != ''){
+							html +=`<span>￥${item.offer_price}`;
+							if(item.max_offer_price != '' && item.offer_price < item.max_offer_price){
+	                            html += `-${item.max_offer_price}`;
+	                        }
+								html += `/斤</span>`;
+						}else{
+							html += `<div class="ify-inquiry">
+							<input type="hidden" name="goods_id" value="${item.goods_id}"/>
+							<input type="hidden" name="key" value="${item.key}"/>
+                            <span class="switce-span">询价</span>
+                            </div>`;
+						}
+						html +=`<img data-select="" class="switch-btn right-float" src="__PUBLIC__/mobile/img/commonlist/switchdown.png">
+						</div></div></div>`;
+						html +=`<div class="sub-product left-float">`;
+				$.each(item.child,function(i,val){
+					html +=`<a href="${url}?goods_id=${item.goods_id}"> <div class="sub clear-float">
+						<div class="sub-right right-float">
+						<div class="sub-title">${val.spec_key_name}</div>
+						</a>
+						<div class="sub-buy clear-float">`;
+						if(val.offer_price != ''){
+							html += `<span class="sub-price"><span>${val.offer_price}</span></span>
+								<div class="count-option right-float">
+								<img class="btn reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+								<input type="hidden" name="goods_id" value="${val.goods_id}"/>
+								<input type="hidden" name="key" value="${val.key}"/>
+								<input class="count" type="number" name="countproduct" value="${val.cart_goods_num}">
+								<img class="btn add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png"></div>
+								<div class="count-first right-float">
+								<img class="btn first-add" src="__PUBLIC__/mobile/img/commonlist/add.png" alt=""></div>`;
+						}else if(item.type != '3'){
+							html += `<div class="ify-inquiry">
+							<input type="hidden" name="goods_id" value="${val.goods_id}"/>
+							<input type="hidden" name="key" value="${val.key}"/>
+				            <span class="switce-span">询价</span></div>`;
+						}else if(val.inquiry_status == '1'){
+			                html += `<div class="ify-inquiry">
+			                <input type="radio" value="" style="visibility: hidden;position: absolute;">
+			                <span class="switce-span active">询价中</span></div>`;
+			            }
+						html += `</div></div></div>`;
+				})
+				html +=`</div></div></div>`;
+			}else{
+				html +=`<div class="multitype clear-float common-flyer">
+					<div class="father-container clear-float">
+					<div class="left left-float">
+					<a href="${url}?goods_id=${item.goods_id}"><img src="${item.original_img}"></div>
+					<div class="right right-float">
+					<div class="product-title">${item.goods_name}</div></a>
+					<div class="switch">`;
+				if(item.offer_price != ''){
+					html += `<span>${item.offer_price}</span>
+						<div class="count-option right-float">
+						<img class="btn reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+						<input type="hidden" name="goods_id" value="${item.goods_id}"/>
+						<input type="hidden" name="key" value="${item.key}"/>
+						<input class="count" type="number" name="countproduct" value="${item.cart_goods_num}">
+						<img class="btn add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png"></div>
+						<div class="count-first right-float">
+						<img class="btn first-add" src="__PUBLIC__/mobile/img/commonlist/add.png" alt=""></div>`;
+				}else if(item.inquiry_status == '1'){
+					html += `<div class="ify-inquiry">
+	                    <input type="hidden" name="goods_id" value="${item.goods_id}"/>
+						<input type="hidden" name="key" value="${item.key}"/>
+						<span class="switce-span active">询价中</span></div>`;
+				}else{
+						html += `<div class="ify-inquiry">
+				        <input type="radio" value="" style="visibility: hidden;position: absolute;">
+				        <span class="switce-span">询价</span></div>`;
+				}
+				html +=`</div></div></div></div>`;
+			}
+		})
+        if (isAppend) {
+          $('.sweetwine-detail').append(html);
+        } else{
+          $('.sweetwine-detail').html(html);
+        }
+        //判断是否有购买数
+        var $allProducts = $(".multitype .count-option [name=countproduct]");
+		$allProducts.each(function(index, domEle){
+				if(parseFloat($(this).val()) > 0){
+				$(this).parent().addClass("active").next().hide();
+			}
+		});
+	} 
+      /*联网加载列表数据*/
+      var downIndex=0;
+      function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
+        var keywords = $('#keywords').val();
+        var data = [];
+        data["keywords"] = keywords;
+        data["page"] = pageNum;
+        data["limit"] = pageSize;
+        $.ajax({
+            type:"GET",
+            url:"/index.php?m=Mobile&c=Goods&a=searchlist",
+            dataType:"JSON",
+            data:{"limit":data["limit"],"page":data["page"],"keywords":data["keywords"]},
+            success: function(object){
+              	successCallback(object);
+            }
+        })
+      }
+      
+      //禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
+      // document.ondragstart=function() {return false;}
+    });
+	</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__PUBLIC__/static/js/perfect-scrollbar.min.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>图片添加</h3>
+                <h5>图片添加与管理</h5>
+            </div>
+        </div>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="addEditBrandForm" onsubmit="return checkName();" enctype="multipart/form-data">
+        <div class="ncap-form-default">
+            <span id="dl_box">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>图片</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" placeholder="商品名称" class="input-txt" name="goods_name[]" value=""><input type="file" name="img[]">
+                        <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green add_btn">添加</a>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>图片</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" placeholder="商品名称" class="input-txt" name="goods_name[]" value=""><input type="file" name="img[]">
+                        <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-red del_btn">删除</a>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>图片</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" placeholder="商品名称" class="input-txt" name="goods_name[]" value=""><input type="file" name="img[]">
+                        <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-red del_btn">删除</a>
+                    </dd>
+                </dl>
+            </span>
+            <div class="bot"><a href="JavaScript:void(0);" onClick="$('#addEditBrandForm').submit();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script>
+    // 判断输入框是否为空
+    function checkName(){
+        /*var name = $("#addEditBrandForm").find("input[name='goods_name']").val();
+        if($.trim(name) == '')
+        {
+            $("#err_name").show();
+            return false;
+        }*/
+        var status = true;
+        $("input[name='img[]']").each(function(idx,item){
+            if($(this).val() == ''){
+                status = false;
+            }
+        })
+        $("input[name='goods_name[]']").each(function(idx,item){
+            if($(this).val() == ''){
+                status = false;
+            }
+        })
+        if(!status){
+            layer.msg('商品名称和图片必须输入完整',{icon:2});
+        }
+        return status;
+    }
+    $(document).on('click','.del_btn',function(){
+        $(this).parents('dl').remove();
+        var num = $('dl').length;
+        if(num < 4){
+            $('.add_btn').show();
+        }
+    })
+    $('.add_btn').click(function(){
+        var num = $('dl').length;
+        if(num>4){
+            layer.msg('一次最多上传5张',{icon:2});
+        }
+        if(num == 3){
+            $(this).hide();
+        }
+        var html_str = `<dl class="row">
+                <dt class="tit">
+                <label>图片</label>
+                </dt>
+                <dd class="opt">
+                <input type="text" placeholder="商品名称" class="input-txt" name="goods_name[]" value=""><input type="file" name="img[]">
+                <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-red del_btn">删除</a>
+                </dd>
+                </dl>`;
+        $("#dl_box").append(html_str);
+    })
+</script>
+</body>
+</html>

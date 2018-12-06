@@ -1,0 +1,62 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i class="icon-angle-right"></i>入库单
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('stock/index')}">入库单列表</a></li>
+                    <li class="active"><a>入库明细</a></li>
+                </ul>
+            </div>
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w40">入库ID</th>
+                    <th class="w50">入库单编号</th>
+                    <th class="w50">供应商</th>
+                    <th class="w50">商品名称</th>
+                    <th class="w50">商品规格</th>
+                    <th class="w50">入库数量</th>
+                    <th class="w50">进货单价</th>
+                    <th class="w50">入库时间</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.stock_id}</td>
+                            <td>{$val.bill_sn}</td>
+                            <td>{$val.suppliers_name}</td>
+                            <td>{$val.goods_name}</td>
+                            <td>{$val.spec_key_name}</td>
+                            <td>{$val.stock_in_num}</td>
+                            <td>{$val.stock_price}</td>
+                            <td>{$val.stock_add_time|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

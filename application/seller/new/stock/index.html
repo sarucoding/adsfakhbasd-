@@ -1,0 +1,138 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+	<include file="public/left"/>
+	<div id="layoutRight" class="ncsc-layout-right">
+		<div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i class="icon-angle-right"></i>入库单
+		</div>
+		<div class="main-content" id="mainContent">
+			<div class="tabmenu">
+				<ul class="tab pngFix">
+					<li class="active"><a href="{:U('stock/index')}">入库单列表</a></li>
+				</ul>
+			</div>
+			<div class="alert alert-block mt10">
+				<ul class="mt5">
+					<li>1、点击进货入库按钮可以添加入库单</li>
+                    <li>2、入库单提交完成后需点击审核通过才计入商品库存，否则无效.</li>
+				</ul>
+			</div>
+			<form action="" id="search-form2" method="post">
+				<table class="search-form">
+					<tr>
+						<td><a href="{:U('stock/add')}" class="ncbtn ncbtn-mint" title="新增入库单"><i class="icon-plus-sign"></i>进货入库</a></td>
+						<td class="w160"><input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入入库单编号或供应商名称" /></td>
+						<td class="tc w70"><label class="submit-border">
+							<input type="submit" class="submit" value="搜索"/>
+						</label></td>
+					</tr>
+				</table>
+			</form>
+			<table class="ncsc-default-table">
+				<thead>
+				<tr>
+					<th class="w40">入库单ID</th>
+					<th class="w50">入库单编号</th>
+					<th class="w50">原始凭证</th>
+					<th class="w50">供应商</th>
+					<th class="w50">入库商品数</th>
+					<th class="w50">商品总金额</th>
+					<th class="w50">操作员姓名</th>
+					<th class="w50">状态</th>
+					<th class="w50">入库时间</th>
+					<th class="w50">备注</th>
+					<th class="w50">操作</th>
+				</tr>
+				</thead>
+				<empty name="list">
+			  		<tbody>
+			  		<tr>
+			      		<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+			    	</tr>
+			      </tbody>
+			  <else/> 
+				<tbody>
+				<volist name="list" id="val">
+					<tr class="bd-line">
+						<td>{$val.bill_id}</td>
+						<td>{$val.bill_sn}</td>
+						<td>
+							<foreach name="$val.bill_img" item="v">
+							<if condition="$v neq ''">
+								<a href="{$v}" class="pic-thumb-tip" onmouseover="layer.tips('<img src=\'{$v}\' style=\'height:500px;\'>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();">
+									<i class="icon-picture"></i>
+								</a>
+							</if>
+							</foreach>
+						</td>
+						<td>{$val.suppliers_name}</td>
+						<td>{$val.goods_count}</td>
+						<td>{$val.goods_amount}</td>
+						<td>{$val.bill_person}</td>
+						<td>
+							<if condition="$val.bill_status eq 0">
+								<button onclick="check(this)" data-id="{$val.bill_id}" class="layui-btn layui-btn-xs">未审核</button>
+								<elseif condition="$val.bill_status eq 1"/>
+								<span style="color:green;">审核通过</span>
+								<elseif condition="$val.bill_status eq 2"/>
+								<span style="color:red;">审核未通过<a href="javascript:;" onmouseover="layer.tips('{$val.bill_note}',this,{tips: [1, '#000'],time:10000});" onmouseout="layer.closeAll();" style="text-decoration: underline">(原因)</a></span>
+							</if>
+						</td>
+						<td>{$val.bill_add_time|date="Y-m-d H:i:s",###}</td>
+						<td>{$val.bill_remark}</td>
+						<td class="nscs-table-handle">
+							<span><a href="{:U('stock/in_lists',array('bill_id'=>$val['bill_id']))}" class="btn-bluejeans"><i class="icon-search"></i><p>入库明细</p></a></span>
+						</td>
+					</tr>
+				</volist>
+				</tbody>
+				</empty>
+				<tfoot>
+				<tr>
+					<td colspan="20">
+						{$page->show()}
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<include file="public/foot"/>
+<script>
+	function check(obj) {
+		layer.confirm('审核入库单', {
+			title:'审核入库单',
+					btn: ['审核通过', '审核不通过'] //按钮
+				}, function () {
+					ajax_check(obj,1);
+				}, function () {
+					layer.prompt({title: '请输入审核不通过原因', formType: 3}, function(text, index){
+						ajax_check(obj,2,text);
+					});
+				}
+		);
+	}
+	function ajax_check(obj,bill_status,note=''){
+		layer.load(2,{shade:0.1});
+		var bill_id = $(obj).attr('data-id');
+		$.ajax({
+			type: 'post',
+			url: "{:url('check_bill')}",
+			data: {bill_id: bill_id,bill_status:bill_status,bill_note:note},
+			dataType: 'json',
+			success: function (data) {
+				layer.closeAll();
+				if (data.status == 1) {
+					layer.msg(data.msg, {icon: 1});
+					location.reload();
+					/*var html_str = bill_status == 1 ? '<span style="color:green;">审核通过</span>' : '<span style="color:red;">审核未通过</span>';
+					$(obj).parent().html(html_str);*/
+				} else {
+					layer.msg(data.msg, {icon: 2, time: 2000});
+				}
+			}
+		})
+	}
+</script>
+</body>
+</html>

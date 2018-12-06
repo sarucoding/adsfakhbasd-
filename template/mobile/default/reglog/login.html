@@ -1,0 +1,71 @@
+<include file="public/header" title="登陆"/>
+	<style>
+		body{
+			background:#fff;
+		}
+	</style>
+	<div class="welcome">Welcome</div>
+	<div class="login">
+		<form class="login-form" onsubmit="return false;"  method="post">
+			<div class="border">
+				<img src="__PUBLIC__/mobile/img/register/portrait.png"/>
+				<input type="text" id="username" name="username" value="" placeholder="账号、手机号">
+			</div>
+			<div class="border">
+				<img src="__PUBLIC__/mobile/img/register/upwd.png">
+				<input type="password" id="password" name="password" value="" placeholder="密码">
+			</div>
+			<div class="login-btn">
+				<input type="button"  onclick="submitverify()" name="submit" value="登录">
+				<input type="hidden" name="referurl" id="referurl" value="{$referurl}">
+				<div>
+					<span>
+						<a href="{:U('/index.php?m=Mobile&c=Reglog&a=reg')}" style="text-decoration: none;">立即注册</a>
+					</span>
+					<span>
+						<a href="{:U('/index.php?m=Mobile&c=Reglog&a=retrieve')}" style="text-decoration: none;">忘记密码?</a>
+					</span>
+				</div>
+			</div>
+		</form>
+	</div>
+<script type="text/javascript">
+
+	 function submitverify()
+    {	layui.use('layer',function(){
+	    layer = layui.layer;
+        var username = $.trim($('#username').val());
+        var password = $.trim($('#password').val());
+        var referurl = $('#referurl').val();
+        if(username == ''){
+            layer.msg('用户名不能为空!');
+            return false;
+        }
+        if(password == ''){
+            layer.msg('密码不能为空!');
+            return false;
+        }
+     
+        var data = {username:username,password:password};
+        $.ajax({
+            type : 'post',
+            url : '/index.php?m=Mobile&c=Reglog&a=do_login&t='+Math.random(),
+            data : data,
+            dataType : 'json',
+            success : function(res){
+                if(res.status == 1){
+                    var url = "{:U('user/index')}"
+                    window.location.href = url;
+                }else{
+                    layer.msg(res.msg);
+                }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg('网络失败，请刷新页面后重试');
+            }
+        })
+    });
+    }
+</script>
+</body>
+</html>

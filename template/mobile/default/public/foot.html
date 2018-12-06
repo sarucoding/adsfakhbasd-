@@ -1,0 +1,24 @@
+<div id="footer" class="footer">
+  <div class="menu clear-float">
+    <a class="index left-float<if condition='$footer_show eq 0'> active</if>" href="{:U('index/index')}">
+      <i></i>
+      <div>首页</div>
+    </a>
+    <a class="types left-float<if condition='$footer_show eq 1'> active</if>" href="{:U('Goods/index')}">
+      <i></i>
+      <div>分类</div>
+    </a>
+    <a class="list left-float<if condition='$footer_show eq 2'> active</if>" href="{:U('Commonlist/index')}">
+      <i></i>
+      <div>常用清单</div>
+    </a>
+    <a class="cart left-float ify-cart<if condition='$footer_show eq 3'> active</if>" href="{:U('Cart/index')}">
+      <i></i>
+      <div>购物车</div>
+    </a>
+    <a class="user left-float<if condition='$footer_show eq 4'> active</if>" href="{:U('User/index')}">
+      <i></i>
+      <div>我的</div>
+    </a>
+  </div>
+</div>

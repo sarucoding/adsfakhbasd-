@@ -1,0 +1,248 @@
+<include file="public/header" title="地址"/>
+    <!--头部-->
+	<div class="twostatus-header addnew-header">
+        <div class="container">
+            <a class="back" href="javascript:history.go(-1);">
+                <img src="__PUBLIC__/mobile/img/register/register1.png">
+            </a>
+            <span class="char">新建收货人</span>
+        </div>
+    </div>
+
+    <!--主体内容-->
+    <div class="addnew-detail">
+        <div class="addnew-content">
+            <form>
+                <input type="hidden" name="act" value="{$act}">
+                <div class="common addnew-name">
+                    <div>酒店店名:</div>
+                    <div>
+                        <input type="text" name="hotelname" value="{$address['shop_name']}" placeholder="请输入酒店名">
+                        <input type="hidden" name="address_id" value="{$address['address_id']}">
+                    </div>
+                </div>
+                <div class="common addnew-person">
+                    <div>收货人:</div>
+                    <div>
+                        <input type="text" name="name" value="{$address['consignee']}" placeholder="请输入收货人姓名">
+                    </div>
+                </div>
+                <div class="common addnew-telphone">
+                    <div>联系方式:</div>
+                    <div>
+                        <input type="text" maxlength="11" name="tel" value="{$address['mobile']}" placeholder="请输入联系号码">
+                    </div>
+                </div>
+                <if condition="empty($address['address_id'])">
+                <div class="common addnew-zone">
+                    <div>所在地区:</div>
+                    <div>
+                        <input type="text" name="zone" readonly value="" id="J_Address" placeholder="请选择所在地区">
+                        <input type="hidden" id="zonenum" name="zonenum" readonly value="" >
+                    </div>
+                    <div><img class="selectnewzone" src="__PUBLIC__/mobile/img/address/suboption-btn.png" alt=""></div>
+                </div>
+                <else/if>
+                <div class="common addnew-zone">
+                    <div>所在地区:</div>
+                    <div>
+                        <input type="text" name="zone" readonly value="{$address['pr']} {$address['ci']} {$address['di']}" id="J_Address2" placeholder="请选择所在地区">
+                        <input type="hidden" id="zonenum" name="zonenum" readonly value="{$address['province']} {$address['city']} {$address['district']}" >
+                    </div>
+                    <div><img class="selectnewzone" src="__PUBLIC__/mobile/img/address/suboption-btn.png" alt=""></div>
+                </div>
+                </if>
+                <div class="common addnew-address">
+                    <div>详细地址:</div>
+                    <div>
+                        <input type="text" name="address" value="{$address['address']}" placeholder="街道、楼牌号等">
+                    </div>
+                </div>
+                <div class="opt-last">
+                  <input value="{$address['is_default']}" type="checkbox" name="is_default" class="" <if $address['is_default'] =="1"/>checked</if>>
+                  <span>是否设置为默认收货地址</span>
+                  <img class="checkit" data-setdef="<if $address['is_default'] =="1"/>ok<else /> </if>" style="float: right;"<if $address['is_default'] =="1"/>src="__PUBLIC__/mobile/img/cart/yescheck.png"<else />src="__PUBLIC__/mobile/img/cart/nocheck.png"</if> >
+                </div>
+                <!--底部新增收货地址-->
+                <div class="address-save">
+                    <input class="save-btn" onclick="submitverify()" type="button" value="保存">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--未保存退出时弹出的确认模态框-->
+    <div class="modalbox-back">
+        <div class="modaldialog-back">
+            <div class="content">
+                <div>修改信息还未保存，确认现在返回么？</div>
+                <div>
+                    <span>取消</span>
+                    <span class="active">确认</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(e){
+            document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+        }, false);    
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/area.js"></script>
+    <script src="__PUBLIC__/address/js/ydui.citys.js"></script>
+    <script src="__PUBLIC__/address/js/ydui.js"></script>
+    <script type="text/javascript">
+
+        !function () {
+            var $target = $('#J_Address');
+
+            $target.citySelect();
+
+            $target.on('click', function (event) {
+                event.stopPropagation();
+                $target.citySelect('open');
+            });
+            $('.selectnewzone').click(function(){
+                $target.citySelect('open');
+            })
+            $target.on('done.ydui.cityselect', function (ret) {
+                $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                $("#zonenum").val(ret.provance_id + ' ' + ret.city_id + ' ' + ret.area_id);
+            });
+        }();
+
+        !function () {
+            var $target = $('#J_Address2');
+            $('.selectnewzone').click(function(){
+                $target.citySelect('open');
+            })
+                var pr = $.trim($('[name=pr]').val());
+                var ci = $.trim($('[name=ci]').val());
+                var di = $.trim($('[name=di]').val());
+                $target.citySelect({
+
+                    provance:"{$address['pr']}",
+                    city: "{$address['ci']}",
+                    area: "{$address['di']}",
+                    provance_id:"{$address['province']}",
+                    city_id: "{$address['city']}",
+                    area_id: "{$address['district']}",
+                });
+
+            $target.on('click', function (event) {
+                event.stopPropagation();
+                $target.citySelect('open');
+            });
+
+            $target.on('done.ydui.cityselect', function (ret) {
+                $(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+                $("#zonenum").val(ret.provance_id + ' ' + ret.city_id + ' ' + ret.area_id);
+            });
+        }();
+
+        //是否勾选设置默认
+        $(".opt-last .checkit").click(function(){
+            if($(this).attr("data-setdef")){
+                $(this).attr("src", "__PUBLIC__/mobile/img/cart/nocheck.png")
+                    .attr("data-setdef", "").parent().find("input").prop("checked", false).val(0);
+            }
+            else{
+                $(this).attr("src", "__PUBLIC__/mobile/img/cart/yescheck.png")
+                    .attr("data-setdef", "ok").parent().find("input").prop("checked", true).val(1);
+            }
+        });
+        //验证相关代码
+        $(function(){
+            $("[name=telphone]").keyup(function(){
+                this.value=this.value.replace(/\D/g, "");
+            });
+        });
+
+        //1.点击选择地区按钮
+        $(".selectnewzone").click(function(){
+            $(".modalbox-selectzone").addClass("active");
+            $(".modaldialog-selectzone").addClass("move");
+            
+        });
+        //点击取消
+        $(".modalbox-selectzone .close").click(function(){
+            $(".modalbox-selectzone").removeClass("active");
+            $(".modaldialog-selectzone").removeClass("move");
+            initProvince();
+        });
+        $(".modaldialog-selectzone").click(function(e){e.stopPropagation();});
+        $(".modalbox-selectzone").click(function(){
+            $(".modalbox-selectzone").removeClass("active");
+            $(".modaldialog-selectzone").removeClass("move");
+            initProvince();
+        });
+        //手机上判断底部按钮位置（弹出键盘时会把底部fixe部分顶上去）
+        var nowHeight = $(window).height();
+        $(window).resize(function(){
+            if($(document).height() < nowHeight){
+                $(".address-save").css("position","static");
+            }
+            else{
+                $(".address-save").css("position","fixed");
+            }
+        });
+
+        function submitverify()
+        {   layui.use('layer',function(){
+            layer = layui.layer;
+            var hotelname = $.trim($('[name=hotelname]').val());
+            var name = $.trim($('[name=name]').val());
+            var tel = $.trim($('[name=tel]').val());
+            var zone = $.trim($('[name=zone]').val());
+            var address = $.trim($('[name=address]').val());
+            var zonenum = $.trim($('[name=zonenum]').val());
+            var address_id = $.trim($('[name=address_id]').val());
+            var is_default = $.trim($('[name = is_default]').val());
+            var act = $.trim($('[name = act]').val());
+            if(name == ''){
+                layer.msg('收货人不能为空!');
+                return false;
+            }
+            if(tel == ''){
+                layer.msg('联系方式不能为空!');
+                return false;
+            }
+            if(zone == ''){
+                layer.msg('地址不能为空!');
+                return false;
+            }
+            if(tel == ''){
+                layer.msg('详细地址不能为空!');
+                return false;
+            }
+         
+            var data = {hotelname:hotelname,name:name,tel:tel,zone:zone,address:address,zonenum:zonenum,is_default:is_default,address_id:address_id};
+            $.ajax({
+                type : 'post',
+                url : '/index.php?m=Mobile&c=User&a=add_address&t='+Math.random(),
+                data : data,
+                dataType : 'json',
+                success : function(res){
+                    if(res.status == 1){
+                        layer.msg(res.msg);
+                        if(act == 'order'){
+                            var  url = "{:U('cart/confirm_order',array('address_id'=>res.id))}";
+                        }else{
+
+                            var url = '/index.php/Mobile/User/address_list'
+                        }
+                        window.location.href = url;
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown) {
+                    layer.msg('网络失败，请刷新页面后重试');
+                }
+            })
+        });
+        }
+    </script>
+</body>
+</html>

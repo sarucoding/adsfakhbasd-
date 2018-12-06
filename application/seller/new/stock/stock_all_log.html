@@ -1,0 +1,108 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i class="icon-angle-right"></i>库存日志
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('stock/goods_stock_lists')}">库存列表</a></li>
+                    <li class="active"><a>库存日志</a></li>
+                </ul>
+            </div>
+            <form action="" id="search-form2" method="post">
+                <table class="search-form">
+                    <tr>
+                        <td></td>
+                        <td class="">
+                            商品名称：<input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入商品名称" />&nbsp;
+                            变更方式：<select name="change_type" class="w150 w160">
+                                <option value="">变更方式</option>
+                                <option value="0" <if condition="$Request.param.change_type heq '0'">selected='selected'</if>>进货入库</option>
+                                <option value="1" <if condition="$Request.param.change_type eq 1">selected='selected'</if>>销售出库</option>
+                                <option value="2" <if condition="$Request.param.change_type eq 2">selected='selected'</if>>报损出库</option>
+                                <option value="3" <if condition="$Request.param.change_type eq 3">selected='selected'</if>>报溢入库</option>
+                                <option value="4" <if condition="$Request.param.change_type eq 4">selected='selected'</if>>退货入库</option>
+                                <option value="5" <if condition="$Request.param.change_type eq 5">selected='selected'</if>>退货出库</option>
+                            </select>&nbsp;
+                            变更时间：<input type="text" class="text w150" name="start_time" id="start_time" placeholder="开始时间" value="{$Request.param.start_time}"/>
+                            <input type="text" class="text w150" name="end_time" id="end_time" placeholder="结束时间" value="{$Request.param.end_time}"/>
+                        </td>
+                        <td class="tc w70"><label class="submit-border">
+                            <input type="submit" class="submit" value="搜索"/>
+                        </label></td>
+                    </tr>
+                </table>
+            </form>
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w50">商品名称</th>
+                    <th class="w50">商品规格</th>
+                    <th class="w50">库存变更</th>
+                    <th class="w50">详情描述</th>
+                    <th class="w50">记录时间</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.goods_name}</td>
+                            <td><if condition="$val.spec_key neq 'null'">{$val.goods_spec}<else/></if></td>
+                            <td><if condition="$val.stock gt 0">+</if>{$val.stock}</td>
+                            <td>{$val.desc}</td>
+                            <td>{$val.ctime|date="Y-m-d H:i:s",###}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script>
+    $(document).ready(function(){
+
+
+        // 起始位置日历控件
+        laydate.skin('molv');//选择肤色
+        laydate({
+            elem: '#start_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                //compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+
+        // 结束位置日历控件
+        laydate({
+            elem: '#end_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                //compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+    });
+</script>
+</body>
+</html>

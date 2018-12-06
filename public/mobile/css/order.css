@@ -1,0 +1,541 @@
+body{
+	background: #f4f4f4;
+}
+.none{
+	display: none;
+}
+/*-------------------------通用order为你推荐样式-----------------------*/
+.order-recommend .rec{
+	text-align: center;
+	margin:0.5rem 0;
+}
+.order-recommend .rec img{
+	width: 6.466667rem;
+	height:0.44rem;
+}
+.order-recommend ul li {
+	float:left;
+	padding: 0.2rem;
+	background: #fff;
+	margin: 0 0.2rem 0.2rem 0.2rem;
+	width: 42%;
+	border-radius: 4px;
+}
+.order-recommend ul li a img{
+	width:4.133333rem;
+	height:4.133333rem;
+}
+.order-recommend ul li div img{
+	width:0.48rem;
+	height:0.48rem;
+	vertical-align: middle;
+}
+.order-recommend ul li p{
+	font-size: 12.5px;
+	margin:0.2rem 0;
+}
+.order-recommend ul li div{
+	display: flex;
+	justify-content: space-between;
+}
+.order-recommend ul li div span{
+	font-size: 12px;
+	vertical-align:middle;
+	color:#fe1616;
+}
+/*		↓   order-submit页面   */
+/*-------------------------order-sub主体样式-----------------------*/
+.order-sub-content{
+	background:#fff;
+	color:#2d2d2f;
+	font-size: 12.5px;
+	padding: 1rem 0;
+}
+.order-sub-content>div:nth-child(1) {
+	margin-bottom: 0.8rem;
+	text-align: center;
+}
+.order-sub-content>div:nth-child(1)  p{
+	font-size: 15px;
+	margin-bottom: 0.5rem;
+}
+.order-sub-content>div:nth-child(1)  span{
+	color:#828282;
+}
+.order-sub-content>div:nth-child(1) img{
+	width: 1.65rem ;
+	height: 1.65rem ;
+	margin-bottom: 0.5rem ;
+}
+.order-sub-content .go-to{
+	text-align: center;
+	margin-top: 0.8rem;
+}
+.order-sub-content .go-to .go-where{
+	width: 8.5rem;
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+}	
+.order-sub-content .go-to .go-where a{
+	display: inline-block;
+	font-size: 14px;
+	border-radius: 4px;
+	padding: 0.2rem 1rem;
+	color: #fff;
+	font-size: 14px;
+}
+.order-sub-content .go-to .go-where a:first-child{
+	background: #FB8A0A;
+}
+.order-sub-content .go-to .go-where a:last-child{
+	background: #00b050;
+}
+.order-sub-content div:nth-child(2) p{
+	margin-left:25%;
+}
+/*		↓   order-following页面   */
+/*-------------------------order-follow样式-----------------------*/
+/*	订单编号	*/
+.order-follow-serial{
+	background: #fff;
+	padding: 0.25rem 0.4rem;
+	padding-bottom: 0;
+	position: relative;
+	margin-bottom: 0.4rem;
+	min-height: 1.8rem;
+}
+.order-follow-serial .serial-avatar{
+	min-width: 1.8rem;
+  min-height: 1.8rem;
+}
+.order-follow-serial div{
+	float: left;
+}
+.order-follow-serial div:first-child img{
+	width: 1.8rem;
+	height:1.8rem;
+}
+.order-follow-serial div:last-child {
+	font-size: 14px;
+	margin-left: .5rem;
+}
+.order-follow-serial div:last-child p{
+	margin-bottom:0.2rem;
+}
+.order-follow-serial div:last-child p span{
+	color:#989898;
+}
+/*	订单状态	*/
+.order-follow-cancel{
+	background: #fff;
+	padding: 1rem 0.1rem;
+}
+.order-follow-cancel ul	li{
+	font-size: 13.5px;
+}
+.order-follow-cancel ul	li~li{
+	color:#989898;
+}
+.order-follow-cancel ul	li~li b{
+	color:#4d26de;
+	font-weight: 600;
+}
+.order-follow-cancel ul	li img{
+	width:0.4rem;
+	height:0.4rem;
+	position: relative;
+	left: -0.1rem;
+	top: -0.15rem;
+}
+.order-follow-cancel ul	li div h2{
+	line-height: 0.6rem;
+	margin-top: 0.15rem;
+}
+.order-follow-cancel ul	li div span{
+    margin-top: 0.1rem;
+    margin-bottom: 0.2rem;
+    display: inline-block;
+}
+/*-------------------------order-details样式-----------------------*/
+/*编号、状态*/
+.order-detail-state{
+	margin-top: 1.75rem;
+	margin-bottom: 0.3rem;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 0.34rem;
+	font-size: 13px;
+	color:#b1b1b1;
+}
+/*商品表*/
+.order-detail-content div{
+	background: #fff;
+}
+.detail-information ul li{
+	padding:0.2rem 0.3rem 0.2rem 0.25rem;
+	position: relative;
+}
+.order-detail-content .order-detail-list li{
+	border-bottom: 0.03rem solid #f4f4f4;
+	position: relative;
+	padding: 0.2rem 0.3rem 0.05rem 0.25rem;
+	min-height: 2.33rem;
+}
+.order-detail-content ul li div{
+	display: inline-block;
+	font-size: 14px;
+}
+.order-detail-content ul li div.libox-img{
+	min-height: 2.3rem;
+}
+.order-detail-content ul li div img{
+	width: 2.2rem;
+	height:2.2rem;
+	border-radius: 0.12rem;
+}
+.order-detail-content ul li div.name-price{
+	position: absolute;
+	left: 2.7rem;
+	width: 55%;
+}
+.order-detail-content ul li div.name-price p:first-child{
+	position: relative;
+	top: .1rem;
+
+}
+.order-detail-content ul .pro-price{
+	position: relative;
+	bottom: -0.3rem;
+	top: 1.1rem;
+	font-size: 13px;
+}
+.order-detail-content .order-detail-list .list-color{
+	color:#989898;
+	font-size: 13px;
+}
+.order-detail-content ul li div.p-number{
+    position: relative;
+    top: 1.6rem;
+    float: right;
+}
+.order-details-fixed{
+	position: fixed;
+	z-index: 10;
+	width: 100%;
+	top: 0;
+	border-bottom: 1px solid #f4f4f4;
+}
+.order-detailds-standard{
+	position: absolute;
+	top: .8rem;
+	font-size: 12px;
+	background: #F0F2F5;
+	color: #9c9c9c;
+	max-width: 94%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	padding: 0 0.133333rem;
+	min-height: 0.4rem;
+	border-radius: 0.07rem;
+	display: inline-block;
+}
+/* 商品总额/运费/需付款 */
+.order-detail-account{
+	font-size: 14px;
+
+}
+.order-detail-content .detail-div{
+	display: flex;
+	justify-content: space-between;
+}
+.order-detail-content .detail-div-padding{
+	padding: 0.2rem 0.25rem;
+}
+.order-detail-content .detail-span{
+	color:#fd3b21;
+}
+.order-detail-content .detail-border{
+	border-top: 1px solid #f4f4f4;
+}
+/* 收货人信息 */
+.order-detail-content .detai-consignee{
+	margin-top: 0.19rem;
+	margin-bottom: 0.2rem;
+	padding:0.35rem 0.25rem;
+}
+.order-detail-content .detai-consignee div{
+	float: left;
+}
+.order-detail-content .detai-consignee div:last-child{
+	width: 92%;
+}
+.order-detail-content .detai-consignee img{
+	width:0.45rem;
+	height:0.45rem;
+	margin-right:0.25rem;
+}
+.order-detail-content .detai-consignee p:first-child{
+	font-size: 14px;
+}
+.order-detail-content .detai-consignee p:last-child{
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.order-detail-content .detai-consignee p:nth-child(2){
+	font-size: 13px;
+	margin:0.15rem 0;
+}
+/* 订单信息 */
+.order-detail-content .detail-information{
+	padding: 0.1rem 0;
+	margin-bottom:0.2rem;
+}
+.order-detail-content .detail-information b{
+	color:#989898;
+	font-size:14px ;
+	font-weight: 500;
+}
+.order-detail-content .detail-information span{
+	font-size:14px ;
+}
+/* 底部、联系客服、支付尾款 */
+.order-detail-footer{
+	border-top: 1px solid #f4f4f4;
+	z-index: 10;
+	bottom: 0;
+	width: 96%;
+	position: fixed;
+	background: #fff;
+	padding: 0.4rem 0.2rem;
+}
+.order-detail-footer span{
+	border:1px solid #000;
+	border-radius:0.5rem;
+	padding: 0.1rem 0.3rem;
+	font-size: 14px;
+	margin-right:0.15rem;
+}
+.order-detail-footer span.pay-border-green{
+	background: #00b050;
+	color:#fff;
+	border:1px solid transparent;
+}
+/*-------------------------order样式-----------------------*/
+.twostatus-header .ordinary{
+	display: inline-block;
+	color:#66d096;
+}
+.twostatus-header .ordinary .head-img{
+	width:0.23rem;
+	height:0.17rem;
+	vertical-align: middle;
+}
+.twostatus-header .order-status {
+	width: 100%;
+	border-top: 0.03rem solid #e5e5e5;
+	box-shadow: 0rem 1px 0.3rem #f4f4f4;
+}
+.twostatus-header .order-status ul{
+	white-space: nowrap;
+    overflow-x: auto;	/*默认显示到整个UL的中间位置*/
+    width:85%;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 0.1rem;
+}
+.twostatus-header .order-status ul::-webkit-scrollbar {
+    display: none;
+}
+.twostatus-header .order-status li{
+	display: inline-block;
+	text-align: center;
+	font-size: 0.38rem;
+	padding: 0.3rem 0;
+	width: 22%;
+}
+.twostatus-header .head-active{
+	border-bottom: 0.035rem solid #66d096;
+	color:#66d096;
+}
+.status-dropdown{
+	display: inline-block;
+	width:9%;
+	vertical-align: middle;
+	padding: 0.34rem 0.2rem;
+	text-align: center;
+	position: relative;
+}
+.status-dropdown .shadow-img{
+  width:0.32rem;
+  height:1.2rem;
+  position: absolute;
+  top: 0;
+  right: 1.25rem;
+}
+.status-dropdown img{
+	width:0.47rem;
+	height:0.4rem;
+}
+/*----pay样式----*/
+.order-pay{
+	/* background: #fff; */
+	overflow: scroll;
+	height: 13rem;
+	padding-top: 0.25rem;
+}
+.order-pay .pay-ul{
+	font-size: 0.33rem;
+	background: #f4f4f4;
+}
+.order-pay .pay-ul li{
+	background: #fff;
+	padding: 0.1rem 0.4rem 0rem 0.4rem;
+	min-height: 4.5rem;
+	font-size: 13px;
+}
+.order-pay .pay-ul li~li{
+	margin-top: 0.2rem;
+}
+.order-pay .pay-ul .pay-time{
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0.2rem;
+  margin-bottom: 0.3rem;
+}
+/*颜色类*/
+.order-pay .pay-ul .pay-red{
+	color:#fd1313;
+}
+.order-pay .pay-ul .pay-gray{
+	color:#989898;
+}
+
+
+.order-pay .pay-ul .pay-img{
+		margin: 0.3rem 0 0.4rem 0;	
+		min-height: 1.85rem;
+}
+.order-pay .pay-ul .pay-img div:first-child{
+	width:88%;
+    float:left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.order-pay .pay-ul .pay-img div:first-child img{
+	width: 1.85rem;
+    height: 1.85rem;
+    vertical-align: middle;
+    margin-right:0.1rem;
+    border-radius: 0.12rem;
+}
+.order-pay .pay-ul .pay-img div:last-child{
+	width:10%;
+	float:right;
+	text-align: center;
+	transform: translateY(0.7rem);
+}
+.order-pay .pay-ul .pay-img div:last-child img{
+	width:0.28rem;
+	height:0.53rem;
+	vertical-align: middle;
+}
+.order-pay .pay-ul .pay-action{
+	padding: 0.2rem 0;
+}
+/*订单结果，不同的颜色按钮*/
+.order-pay .pay-ul .pay-action span{
+	padding: 0.08rem 0.15rem;
+	border: 1px solid #000;
+	border-radius: 0.13rem;
+	margin-left: 0.1rem;
+	display: inline-block;
+}
+.order-pay .pay-action .pay-border-red{
+	color:#fd1313;
+	border: 1px solid #fd1313 !important;
+}
+.order-pay .pay-action .pay-border-green{
+	color:#11b55c;
+	border: 1px solid #11b55c !important;
+}
+
+/*历史订单*/
+.order-pay .pay-history{
+	text-align: center;
+	background: #f4f4f4;
+	padding: 0.2rem 0.5rem 0 0.5rem;
+}
+.order-pay .pay-history p{
+	border-bottom: 0.03rem solid #999;
+	position: relative;
+    top: 0.24rem;
+}
+.order-pay .pay-history b{
+	position: relative;
+	background: #f4f4f4;
+	font-size: 0.35rem;
+    font-weight: 500;
+    color:#999;
+}
+/* 默认显示，用透明度隐藏，能穿透，过渡显示黑色背景 */
+.order-cover{
+	position: fixed;
+	top: 1.22rem;
+	bottom:0;
+	left: 0;
+	right:0;
+	z-index: 10;
+	/*鼠标穿透事件,是否能点击遮挡层后面的元素 auto不穿透，none穿透*/
+	pointer-events: none;
+	opacity: 0;
+	transition:all 0.2s linear;
+}
+/* 点击各个事件后，遮盖层透明度显示，不能穿透，显示出黑色背景 */
+.cover-color{
+	background-color: rgba(0,0,0,.5);
+	opacity: 1 !important;
+	pointer-events: auto !important;
+}
+.order-cover .bill{
+	text-align:center;
+	color:#656565;
+	font-size: 0.48rem;
+	border-top: 0.03rem solid #e5e5e5;
+	padding: 0.26rem 0;
+}
+.order-cover .status-up{
+    vertical-align: middle;
+    padding: 0.15rem 0.05rem;
+    text-align: center;
+}
+.order-cover .status-up img{
+	width: 0.47rem;
+    height: 0.4rem;
+}
+.order-cover .cover-menu{
+	padding: 0 0.7rem;
+	font-size: 0.3rem;
+}
+.order-cover .cover-menu li{
+    display: inline-block;
+    width: 32%;
+    text-align: center;
+    margin-bottom: 0.3rem;
+}
+.order-cover .cover-menu li span{
+    background: #dbdbdb;
+    border-radius: 7px;
+    color: #000;
+    display: inline-block;
+    width: 2.2rem;
+		padding: 0.15rem 0;
+		font-size: 12.5px;
+}
+.order-cover .cover-menu .active{
+	background: #00b050;
+	color: #fff;
+}

@@ -1,0 +1,129 @@
+.register{
+	background-color: #fff;
+}
+.register-head{
+	border-bottom: 2px solid #ddd;
+}
+.register-head .container{
+	margin: 0 0.666667rem;
+	text-align: center;
+	padding: 0.333333rem 0;
+}
+.register-head .container h2{
+	font-size: 0.48rem;
+	/*font-weight: 800;*/
+}
+.register-head .container a{
+	text-decoration: none;
+	background-image: url(../img/register/register1.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	background-size: 0.28rem 0.453333rem;
+	width: 0.28rem;
+	height: 0.453333rem;
+	padding: 0.066667rem 0;
+}
+/*中间表单*/
+.register-form{
+	margin-top: 1.333333rem;
+}
+.register-form .r-form{
+	margin: 0 0.4rem;
+}
+.r-form .r-common:not(:last-child){
+	margin-top: 0.88rem;
+}
+.r-form .r-common:last-child{
+	margin-top: 1.733333rem;
+}
+.r-form .r-common div{
+	font-size: 0.45rem;
+	display: inline-block;
+	font-weight: 400;
+}
+.r-form .r-common div:first-child{
+	width: 25%;
+	text-align-last: justify;
+	box-sizing: border-box;
+	padding: 0 0.133333rem;
+}
+.r-form .r-common:not(:last-child){
+	border-bottom: 1px solid #323232;
+	padding-bottom: 0.04rem;
+}
+.phoneNum .i-phone{
+	width: 70%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.r-common input::-ms-input-placeholder{ color:#B3B2B2; }
+.r-common input::-webkit-input-placeholder{ color:#B3B2B2; }
+.r-common input::-moz-placeholder{ color:#B3B2B2; }
+.phoneNum .i-phone input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+	font-size: 0.45rem;
+}
+.idenCode .i-idencode{
+	width: 40%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.idenCode .i-idencode input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.idenCode .getcode{
+	color: #33C073;
+	margin-left: 0.4rem;
+}
+.upwd .i-upwd{
+	width: 62%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.upwd .i-upwd input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.upwd .isshow img{
+	width: 0.706667rem;
+	height: 0.506667rem;
+}
+.inviCode .i-invicode{
+	width: 70%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.inviCode .i-invicode input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.ok-btn{
+	width: 100%;
+	text-align: center;
+}
+.ok-btn input{
+	width: 90%;
+	background-color: #2BBD6E;
+	height: 1.013333rem;
+	border: 0;
+	outline: 0;
+	border-radius: 0.066667rem;
+	color: #fff;
+	font-size: 0.466667rem;
+}
+.register .policy{
+	text-align: center;
+	margin-top: 0.373333rem;
+}
+.register .policy p{
+	font-size: 0.32rem;
+}
+.register .policy p a{
+	color: #F08519;
+}

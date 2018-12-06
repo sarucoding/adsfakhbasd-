@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>商品详情</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/swiper.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/productdetail.css"/>
+</head>
+<body>
+    <!--页面头部-->
+    <div class="detail-header">
+        <div class="d-common goback">
+            <a href="javascript:history.go(-1);"><img src="__PUBLIC__/mobile/img/productdetail/shadowback.png"></a>
+        </div>
+        <ul class="d-common center">
+            <li class="active"><img class="show" src="__PUBLIC__/mobile/img/productdetail/loc.png"><span>商品</span></li>
+            <li><img src="__PUBLIC__/mobile/img/productdetail/loc.png"><span>详情</span></li>
+            <li><img src="__PUBLIC__/mobile/img/productdetail/loc.png"><span>推荐</span></li>
+        </ul>
+        <div class="d-common more">
+            <a href=""><img src="__PUBLIC__/mobile/img/productdetail/shadowmenu.png"></a>
+        </div>
+        <div class="shortcut-menu" style="top: 1.56rem;right: 0.333333rem;">
+            <a class="common-item" href="{:U('Index/index')}">
+              <i>首页</i>
+            </a>
+            <a class="common-item" href="{:U('commonlist/index')}">
+              <i>常用清单</i>
+            </a>
+            <a class="common-item" href="{:U('cart/index')}">
+              <i>购物车</i>
+            </a>
+            <a class="common-item" href="{:U('user/index')}">
+              <i>个人中心</i>
+            </a>
+            <!--三角箭头-->
+            <div class="triangle_border_up">
+                <span class="triangle_border_inner"></span>
+            </div>
+        </div>
+    </div>
+    <!--商品详情-->
+    <div class="detail-info floor">
+        <div class="swiperone">
+            <div class="top-shadow"></div>
+            <div class="swiper-container1">
+                <div class="swiper-wrapper">
+                <volist name="goods['images']" id="v" key="key">
+                    <div class="swiper-slide"><a href="javascript:void(0)">
+                    <img src="{$v.image_url}"></a>
+                    </div>
+                </volist>    
+                </div>
+            </div>
+            <div class="bottom-shadow"></div>
+        </div>
+        <div class="container">
+            <div class="price-status">
+                <div id="good-data" class="askprice">
+
+                </div>
+            </div>
+            <div onclick="collect_action()" class="favorite">
+            <if $goods['status'] == 1>
+                <img src="__PUBLIC__/mobile/img/productdetail/favorite.png">
+                <span data-added="{$goods['status']}">已加入</span>
+             <else>
+                <img src="__PUBLIC__/mobile/img/productdetail/favorite.png">
+                <span data-added="{$goods['status']}">加入</span>
+             </if>   
+            </div>
+        </div>
+        <div class="title">{$goods['goods_name']}</div>
+        <p class="desc">{$goods['goods_remark']}</p>
+    </div>
+    <div class="detail-parameter">
+    </div>
+    <!--介绍、规格参数、售后保障-->
+    <div class="detail-switch floor">
+            <div class="title-head">
+            <div class="title-container clear-float">
+                <hr class="left-float">
+                <div class="left-float">商品信息</div>
+                <hr class="right-float">
+            </div>
+        </div>
+        <div class="detail-image" style="padding: 0 5px">
+        {$goods['goods_content']|htmlspecialchars_decode}
+           <!--  <img src="__PUBLIC__/mobile/img/productdetail/detail.png" alt=""> -->
+        </div>
+    </div>
+    <!--加入询价单相关-->
+    <div id="cart-data" class="detail-buynav">
+       
+    </div>
+
+    </div>
+    <!--占位空白-->
+    <div class="nothing"></div>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(e){
+			document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+        }, false);
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/swiper.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery.fly.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+    <script type="text/javascript">
+
+    $(function() {
+        var goods_id = "{$goods['goods_id']}";
+        var key = "{$goods['key']}";
+        var data = {goods_id:goods_id,key:key};
+        ajax_spec(data);
+     });
+
+
+    function collect_action(){
+        var $elem = $(".detail-info .favorite");
+        var status = $elem.find("[data-added]").attr("data-added");
+        var goods_id = "{$goods['goods_id']}";
+        $.ajax({
+                type : "POST",
+                url:"{:U('Mobile/Commonlist/collect_action')}",
+                dataType:'json',
+                data: {goods_id:goods_id,status:status},
+                async:false, 
+                success: function(data){
+                    var html ="";
+                    if(data.a == 1){
+                        html = `<img src="__PUBLIC__/mobile/img/productdetail/favorite.png">
+                            <span data-added="1">已加入</span>`;
+                    }else{
+                        html = `<img src="__PUBLIC__/mobile/img/productdetail/favorite.png">
+                            <span data-added="2">加入</span>`;
+                    }
+                    $elem.html(html);
+
+                },
+                error:function(){
+
+                }
+        })
+    }    
+
+
+    function ajax_spec(data){
+        $.ajax({
+                type : "POST",
+                url:"{:U('Mobile/Goods/ajax_spec')}",
+                dataType:'json',
+                data: data,
+                async:false, 
+                success: function(data){
+                    var html = "";
+                    var goods_data = "";
+                    var cart_data = "";
+                    var cart_url = "{:U('cart/index')}";
+                    var inquiry_url = "{:U('user/inquiry')}";
+                    var inquiry_num = data.inquiry_num;
+                    var tel = data.tel;
+                    if(data.status != 0){
+                        if(data.spec_list.length == 0){
+                            $(".detail-parameter").remove();
+                        }else{
+                            $.each(data.spec_list,function(idx, item){
+                                html += `<div class="common color"><div class="name">${idx}:</div><div class="infor">`;
+                                $.each(item, function(index, val){
+                                    html +=`
+                                    <input type="radio" name="color" value="${val.item_id}" style="position:absolute;left:0;top:0;visibility:hidden;" checked>`
+                                    if(val.is_selected == 1){
+                                        html += `<span class="active">${val.item}</span>`;
+                                    }
+                                    else{
+                                        html += `<span class="">${val.item}</span>`;
+                                    }
+                                });
+                                html+=`</div></div>`;
+                            });
+                            $(".detail-parameter").html(html);
+                        }
+                        
+
+                        if(data.goods.offer_price == ""){
+                            if(data.goods.inquiry_status == 1){
+                                goods_data +=  `<div class="asking">
+                                    <p>询价中</p>
+                                </div>`;
+                            }else{
+                                goods_data += `<div class="before-ask">
+                                    <div>请加入询价进行报价</div>
+                                    </div>`;
+                            }
+                        }else{
+                            goods_data += `<div class="vip-price">
+                                <span>￥${data.goods.offer_price}</span>             
+                            </div>`;
+                        }
+                        $("#good-data").html(goods_data);
+
+                        if(data.goods.offer_price == ""){
+                            if(data.goods.inquiry_status == 1){
+                                cart_data +=  `<div class="relation-btn">
+                                    <div class="service">
+                                        <a href="tel:${tel}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/service.png">
+                                            <div>客服</div>
+                                        </a>
+                                    </div>
+                                    <div class="askpricelist">
+                                        <a href="${inquiry_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/askpricelist.png">
+                                            <div>询价单</div>
+                                        </a>
+                                        <div class="countnum">${inquiry_num}</div>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="${cart_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/d-cart.png">
+                                            <div>购物车</div>
+                                        </a>
+                                        <div class="countnum">${data.goods.cart_goods_num}</div>
+                                    </div>
+                                </div>
+                                <!--加入购物车前-->
+                                <div data-change="afteradd" class="btnstatus" onclick="">询价中</div>`;
+                            }else{
+                                cart_data += `<div class="relation-btn">
+                                    <div class="service">
+                                        <a href="tel:${tel}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/service.png">
+                                            <div>客服</div>
+                                        </a>
+                                    </div>
+                                    <div class="askpricelist">
+                                        <a href="${inquiry_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/askpricelist.png">
+                                            <div>询价单</div>
+                                        </a>
+                                        <div class="countnum">${inquiry_num}</div>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="${cart_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/d-cart.png">
+                                            <div>购物车</div>
+                                        </a>
+                                        <div class="countnum">${data.goods.cart_goods_num}</div>
+                                    </div>
+                                </div>
+                                <!--加入购物车前-->
+                                <div data-change="beforeadd" class="btnstatus" onclick="">加入询价</div>`;
+                            }
+                        }else{
+                            if(data.goods.cart_goods_num == 0){
+                                cart_data += `<div class="relation-btn">
+                                    <div class="service">
+                                       <a href="tel:${tel}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/service.png">
+                                            <div>客服</div>
+                                        </a>
+                                    </div>
+                                    <div class="askpricelist">
+                                        <a href="${inquiry_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/askpricelist.png">
+                                            <div>询价单</div>
+                                        </a>
+                                        <div class="countnum">${inquiry_num}</div>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="${cart_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/d-cart.png">
+                                            <div>购物车</div>
+                                        </a>
+                                        <div class="countnum">${data.goods.cart_goods_num}</div>
+                                    </div>
+                                </div>
+                                <!--加入购物车前-->
+                                <div data-change="addcart" class="btnstatus" onclick="">加入购物车</div>
+                                <!--加入购物车后-->
+                                <div class="add-reduce" style="display:none;">
+                                    <div class="pro-count-option">
+                                        <img id="reduce" class="pro-btn pro-reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+                                        <input class="pro-count" type="number" name="countproduct" value="${data.goods.cart_goods_num}">
+                                        <img id="add" class="pro-btn pro-add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png">
+                                    </div>
+                                </div>`;
+                            }else{
+                                cart_data += `<div class="relation-btn">
+                                    <div class="service">
+                                        <a href="tel:${tel}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/service.png">
+                                            <div>客服</div>
+                                        </a>
+                                    </div>
+                                    <div class="askpricelist">
+                                        <a href="${inquiry_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/askpricelist.png">
+                                            <div>询价单</div>
+                                        </a>
+                                        <div class="countnum">${inquiry_num}</div>
+                                    </div>
+                                    <div class="cart">
+                                        <a href="${cart_url}">
+                                            <img src="__PUBLIC__/mobile/img/productdetail/d-cart.png">
+                                            <div>购物车</div>
+                                        </a>
+                                        <div class="countnum">${data.goods.cart_goods_num}</div>
+                                    </div>
+                                </div>
+                                <!--加入购物车前-->
+                                <div data-change="addcart" class="btnstatus" onclick="" style="display:none;">加入购物车</div>
+                                <!--加入购物车后-->
+                                <div class="add-reduce">
+                                    <div class="pro-count-option">
+                                        <img id="reduce" class="pro-btn pro-reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+                                        <input class="pro-count" type="number" name="countproduct" value="${data.goods.cart_goods_num}">
+                                        <img id="add" class="pro-btn pro-add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png">
+                                    </div>
+                                </div>`;
+                            }    
+                        }
+                        $("#cart-data").html(cart_data);
+                        //获取当前产品规格切换
+                        //3.选择商品规格
+                        $(".detail-parameter .infor").on("click", "span", function(){
+                            var goods_id = "{$goods['goods_id']}";
+                            var item = [];
+                            $(this).addClass("active").siblings().removeClass("active");
+                            $(this).prev().prop("checked", true);
+                            $('.detail-parameter').find('.active').each(function(){
+                                item.push($(this).prev().val());
+                            })
+                            var key = item.join('_');//组合规格
+                            var data = {goods_id:goods_id,key:key};
+                            ajax_spec(data);
+                        });                      
+                        //判定按钮是什么状态
+                        var $btn =$(".detail-buynav .btnstatus");
+                        var btnStatus = $(".detail-buynav .btnstatus").attr("data-change");
+                        if(btnStatus === "beforeadd"){
+                            $btn.html("加入询价单");
+                            $btn.attr("onclick", "beforeAdd()");
+                        }
+                        else if(btnStatus === "afteradd"){
+                            $btn.html("询价中").addClass("afteradd");
+                            $btn.attr("onclick", "");
+                        }
+                        else if(btnStatus === "addcart"){
+                            $btn.html("加入购物车");
+                            $btn.attr("onclick", "addCart(event)");
+                        }
+                    }else{
+                        // msg(data.msg);
+                    }
+                }
+        });
+    }    
+        
+        //点击点状按钮弹出菜单导航
+        //显示导航
+        $(".detail-header .more").click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            // $(".shortcut-menu").css({display: "block"});
+            $(".shortcut-menu").toggle();
+        })
+        $(document).click(function(){
+            // $(".shortcut-menu").css({display: "none"});
+            $(".shortcut-menu").hide();
+        });
+        //弹出输入数量框
+        inputNum("[name=countproduct]");
+        //底部固定处按钮相关js
+        //点击按钮相关
+        var $btn =$(".detail-buynav .btnstatus");
+        var btnStatus = $(".detail-buynav .btnstatus").attr("data-change");
+        var priceOffset = $(".askpricelist").offset();
+        var cartOffset =$(".cart").offset();
+        function beforeAdd(){
+            var $btn =$(".detail-buynav .btnstatus");
+            $btn.html("等待报价").addClass("afteradd");
+            var $askpricenum = $(".detail-buynav .askpricelist .countnum");
+            var num = parseInt($askpricenum.html());
+            var finalNum = num + 1;
+            $(".detail-buynav .askpricelist .countnum").html(finalNum);
+            $btn.attr("onclick", "");  
+        }
+        function afterAdd(){
+
+        }
+        function addCart(event){
+            var $askpricenum = $(".detail-buynav .cart .countnum");
+            $askpricenum.show();
+            $(event.target).hide().parent().find(".add-reduce").show();
+
+            var num = parseInt($(event.target).hide().parent().find(".add-reduce").find(".pro-count").val());
+            var finalNum = num + 1;
+            //获取当前购物车里面的货物总数
+            var nowCartNum = parseFloat($(".detail-buynav .cart .countnum").html());
+            $(".detail-buynav .cart .countnum").html(nowCartNum + 1);
+            $(event.target).hide().parent().find(".add-reduce").find(".pro-count").val(finalNum);
+        }
+        
+        //点击加按钮
+        $(document).on("click", ".pro-btn", function(){
+            if($(this).attr("id") === "add"){
+                var $askpricenum = $(".detail-buynav .cart .countnum");
+                var numAdd = parseFloat($(this).parent().find(".pro-count").val());
+                var finalNumAdd = numAdd + 1;
+                var nowCartNumAdd = parseFloat($(".detail-buynav .cart .countnum").html());
+                $(".detail-buynav .cart .countnum").html(nowCartNumAdd + 1);
+                $(this).parent().find(".pro-count").val(finalNumAdd);
+            }
+            if($(this).attr("id") === "reduce"){
+                var $askpricenum = $(".detail-buynav .cart .countnum");
+                var numReduce = parseFloat($(this).parent().find(".pro-count").val());
+
+                var finalNumReduce = numReduce - 1;
+                var nowCartNumReduce = parseFloat($(".detail-buynav .cart .countnum").html());
+                $(".detail-buynav .cart .countnum").html(nowCartNumReduce - 1);
+                $(this).parent().find(".pro-count").val(finalNumReduce);
+                if(finalNumReduce == 0){
+                    $(this).parent().parent().parent().find(".add-reduce").hide()
+                        .parent().find(".btnstatus").show();
+                    if((nowCartNumReduce - 1) == 0){
+                        $(".detail-buynav .cart .countnum").hide();
+                    }
+                }
+            }
+        });
+             
+        //判断数量个数来是否显示数字提示
+        if($(".detail-buynav .cart .countnum").html() != 0){
+            $(".detail-buynav .cart .countnum").show();
+        }
+        else{
+            $(".detail-buynav .cart .countnum").hide();
+        }
+        //判定按钮是什么状态
+        if(btnStatus === "beforeadd"){
+            $btn.html("加入询价单");
+            $btn.attr("onclick", "beforeAdd()");
+        }
+        else if(btnStatus === "afteradd"){
+            $btn.html("询价中").addClass("afteradd");
+            $btn.attr("onclick", "");
+        }
+        else if(btnStatus === "addcart"){
+            $btn.html("加入购物车");
+            $btn.attr("onclick", "addCart(event)");
+        }
+        //点击收藏按钮
+        $(".detail-buynav .favit").click(function(){
+            if($(this).attr("data-fav")){
+                $(this).attr("src", "__PUBLIC__/mobile/img/productdetail/beforefav.png").parent().css({color: "#000"});
+                $(this).attr("data-fav", "").prev().prop("checked", false);
+            }
+            else{
+                $(this).attr("src", "__PUBLIC__/mobile/img/productdetail/afterfav.png").parent().css({color: "#f00"});
+                $(this).attr("data-fav", "check").prev().prop("checked", true);
+            }
+        });
+        
+        /****
+        ***以下为跟下方固定按钮不相关的js代码
+        ***/
+        $(window).load(function(){
+            //轮播图
+            var mySwiper1 = new Swiper(".swiper-container1", {
+                direction: "horizontal",
+                autoplay: {
+                    delay: 10000,
+                    stopOnLastSlide: false,
+                    disableOnInteraction: false
+                },
+                loop: false,
+            })
+            //向下滚动后头部定位和位置定位       
+            var $floors = $(".floor");
+            var $anchor = $(".detail-header .center li");
+            var offsetTop = [];
+            for(var i = 0; i < $floors.length; i++){
+                offsetTop[i]=$($floors[i]).offset().top;
+            }
+            $(window).scroll(function(){
+                var scrollTop = $(window).scrollTop();
+                var fontSizeVal = parseFloat(document.getElementsByTagName("html")[0].style.fontSize);
+                if(scrollTop < 400 * fontSizeVal / 75){
+                    //设定的透明度变化范围高度
+                    var changeRangeVal = parseInt((400 * fontSizeVal / 75));
+                    //两倍透明度减小为0的取值
+                    var twoRatioVal = parseInt((400 * fontSizeVal / 75)) - (2 * scrollTop);
+                    //两倍透明度增大为1的取值
+                    var otherTwoRatioVal = (2 * scrollTop) - parseInt((400 * fontSizeVal / 75));
+                    //透明度比例值
+                    var val = scrollTop / changeRangeVal;
+                    //两倍透明度减小
+                    var reduceTwoRatioVal = twoRatioVal / changeRangeVal;
+                    //两倍透明度增大
+                    var addTwoRatioVal = otherTwoRatioVal / changeRangeVal;
+
+                    $(".detail-header").css({"backgroundColor": "rgba(255, 255, 255,"+ val.toFixed(2) +")"});
+                    $(".detail-header .center").css({"opacity": val.toFixed(2)});
+                    $(".detail-header .goback,.detail-header .more").css({"opacity": reduceTwoRatioVal.toFixed(2)});
+                    if(reduceTwoRatioVal.toFixed(2) <= 0){
+                        $(".detail-header .goback img").attr("src", "__PUBLIC__/mobile/img/productdetail/goback.png");
+                        $(".detail-header .more img").attr("src", "__PUBLIC__/mobile/img/productdetail/more.png");
+                        $(".detail-header .goback,.detail-header .more").css({"opacity": addTwoRatioVal.toFixed(2)});
+                    }
+                    else{
+                        $(".detail-header .goback img").attr("src", "__PUBLIC__/mobile/img/productdetail/shadowback.png");
+                        $(".detail-header .more img").attr("src", "__PUBLIC__/mobile/img/productdetail/shadowmenu.png");
+                        $(".detail-header .goback,.detail-header .more").css({"opacity": reduceTwoRatioVal.toFixed(2)});
+                    }
+                }
+                if(scrollTop > 400 * fontSizeVal / 75){
+                    $(".detail-header").css({"backgroundColor": "rgba(255, 255, 255, 1)"});
+                    $(".detail-header .center").css({"opacity": 1});
+                    $(".detail-header .goback img").attr("src", "__PUBLIC__/mobile/img/productdetail/goback.png");
+                    $(".detail-header .more img").attr("src", "__PUBLIC__/mobile/img/productdetail/more.png");
+                }
+
+                if(scrollTop >= (offsetTop[0]) && scrollTop <= (offsetTop[1] - 100)){
+                    $($anchor[0]).addClass("active").find("img").addClass("show").parent()
+                    .siblings().removeClass("active").find("img").removeClass("show");
+                }
+                if(scrollTop >= (offsetTop[1] - 100) && scrollTop <= (offsetTop[2] - 100)){
+                    $($anchor[1]).addClass("active").find("img").addClass("show").parent()
+                    .siblings().removeClass("active").find("img").removeClass("show"); 
+                }
+                if(scrollTop >= (offsetTop[2] - 100)){
+                    $($anchor[2]).addClass("active").find("img").addClass("show").parent()
+                    .siblings().removeClass("active").find("img").removeClass("show"); 
+                } 
+
+                if($(".detail-header .center").css("opacity") == 1){
+                    $(".detail-header").addClass("shadow");
+                }
+                else{
+                    $(".detail-header").removeClass("shadow");
+                }      
+            })
+
+            //点击锚点进行定位
+            $(".detail-header .center").on("click", "li", function(){
+                var $nowBtn = $(this);
+                var $floors = $(".floor");
+                var i = $nowBtn.index();
+                
+                var offsetTop=$($floors[i]).offset().top;
+                $("body,html").stop(true).animate({
+                    scrollTop:offsetTop
+                },500,function(){
+                    $nowBtn.addClass("active").find("img").addClass("show").parent()
+                    .siblings().removeClass("active").find("img").removeClass("show");
+                });	
+            });
+
+            //1.多商品点击出现详细商品信息按钮
+            $(document).on("click", ".switch-btn", function(){
+                if(!$(this).attr("data-clickbtn")){
+                    $(this).attr("src", "__PUBLIC__/mobile/img/productdetail/switchup.png");
+                    $(this).attr("data-clickbtn", "ok");
+                    $(this).parent().parent().parent().parent().find(".sub-product").slideDown(300);
+                }
+                else{
+                    $(this).attr("src", "__PUBLIC__/mobile/img/productdetail/switchdown.png");
+                    $(this).attr("data-clickbtn", "");
+                    $(this).parent().parent().parent().parent().find(".sub-product").slideUp(300);
+                }
+            });
+
+            //2.商品购买处
+            $(document).on("click", ".count-first", function(){
+                var nowthis = this;       
+                var cartOffset = $(".cart").offset();
+                var addimg = $(this).parents('.product-flyer').find('.left.left-float').find('img').attr('src');
+                var $flyer = $("<img class='flyer' src='" + addimg +"'>");
+                $flyer.fly({
+                    start: {
+                        left: event.pageX,
+                        top: event.clientY
+                    },
+                    end: {
+                        left: cartOffset.left + 40,
+                        top: window.innerHeight - 40,
+                        width: 0,
+                        height: 0
+                    },
+                    speed: 1.1,
+                    vertex_Rtop: 70,
+                    onEnd: function () {
+                        var nowCount = parseFloat($(nowthis).prev().find(".count").val());
+						$(nowthis).hide().prev().addClass("active").find(".count").val(nowCount + 1);
+                        this.destroy();
+                    }
+                });
+            });
+            //点击加按钮
+            $(document).on("click", ".add", function(){
+                var nowCount = parseFloat($(this).prev().val());
+                $(this).prev().val(nowCount + 1);
+            });
+            //点击减按钮
+            $(document).on("click", ".reduce", function(){
+                var nowCount = parseFloat($(this).next().val());
+                var finalCount = nowCount - 1;
+                $(this).next().val(finalCount);
+                if(finalCount <= 0){
+                    $(this).next().val(0);
+                    $(this).parent().removeClass("active").next().show();
+                }
+            });
+
+            //3.选择商品规格
+            $(".detail-parameter .infor").on("click", "span", function(){
+                $(this).addClass("active").siblings().removeClass("active");
+                $(this).prev().prop("checked", true);
+            });
+
+            //4.点击询价
+            $(".foryou-container").on("click", ".ask-btn", function(){
+                if($(this).attr("data-status")){
+                    $(this).html("等待报价").css({backgroundColor: "#D6D6D6"}).attr("data-status", "").prev().prop("checked", true);
+                }
+            });
+            
+        });
+
+        //页面加载完后若有购买数则显示完整加减按钮
+        $(window).load(function(){
+            var $allProducts = $(".multitype .count-option input");
+            $allProducts.each(function(index, domEle){
+                if(parseFloat($(this).val()) > 0){
+                    $(this).parent().addClass("active").next().hide();
+                }
+            });
+        });
+</script>
+</body>
+</html>

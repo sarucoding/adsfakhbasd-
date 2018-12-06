@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>我的供应商</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/supplier.css"/>
+</head>
+<body>
+    <!--头部-->
+	<div class="twostatus-header supplier-header">
+        <div class="container">
+            <a class="back" href="javascript:history.go(-1);">
+                <img src="__PUBLIC__/mobile/img/register/register1.png">
+            </a>
+            <span class="char">供应商列表</span>
+        </div>
+    </div>
+    <!--主体内容-->
+    <div class="supplier-detail">
+        <div class="supplier-content">
+        <volist name="store" id="v" key='key'>
+            <div class="supplier-item <if condition='$v.store_id ==STORE_ID'>current</if>">
+                <input type="hidden" name="shop_id" value="{$v.store_id}">
+                <a href="">
+                    <div class="avatar">
+                        <img src="{$v.store_logo}" alt="">
+                    </div>
+                    <div class="information">
+                        <div><span>店铺名:</span><span>{$v.store_name}</span><if $v.store_id ==STORE_ID><span>当前</span></if></div><div><span>联系人:</span><span>{$v.contract_man}</span></div>
+                        <div><span>联系方式:</span><span>{$v.service_phone}</span></div>
+                        <div>地址：{$v.store_address}</div>
+                    </div>
+                </a>
+            </div>
+        </volist>    
+        </div>
+    </div>
+
+    <!--底部新增供应商-->
+    <div class="supplier-add">
+        <div class="supplier-btn">+添加我的供应商</div>
+    </div>
+
+    <!--添加供应商弹出框-->
+    <div class="modalbox-supplier">
+        <div class="modaldialog-supplier">
+            <div class="content">
+                <div class="add-supplier">添加供应商</div>
+                <div class="input-code">
+                    <input type="text" name="invicode" value="" placeholder="请输入供应商邀请码">
+                </div>
+                <div class="not-found"></div>
+                <div class="found">
+                </div>
+               <div class="search-supplier">
+                    <div  id="lookup" >查找供应商</div>
+                    <div style="display: none" id="addstor">确认添加</div>
+                </div>
+                <div class="close"><img src="__PUBLIC__/mobile/img/cart/close.png" alt=""></div>
+            </div>
+        </div>
+    </div>
+    <!--点击店铺弹出的确认选项框-->
+    <div class="modalbox-selstore">
+        <div class="modaldialog-selstore">
+            <div class="confirm">
+                <div class="alertmsg">确认要选择当前店铺？</div>
+                <div class="confirm-btn">确定</div>
+            </div>
+            <div class="cancle">取消</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(e){
+            document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+        }, false);    
+    </script>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript">
+        //打开添加供应商窗口
+        $(".supplier-add .supplier-btn").click(function(){
+            $(".modalbox-supplier").addClass("active");
+            $(".modaldialog-supplier").addClass("move");
+        });
+        //关闭供应商窗口
+        $(".modalbox-supplier .close").click(function(){
+            $(".modalbox-supplier").removeClass("active");
+            $(".modaldialog-supplier").removeClass("move");
+        })
+        $(".modaldialog-supplier").click(function(e){ e.stopPropagation(); });
+        $(".modalbox-supplier").click(function(){
+            $(".modalbox-supplier").removeClass("active");
+            $(".modaldialog-supplier").removeClass("move");
+        });
+        //选择店铺
+        var shop_id;
+        $(".supplier-detail").on("click", ".supplier-item", function(e){
+            if($(this).hasClass('current')){
+                return false;
+            }
+            e.preventDefault();     
+            shop_id = $(this).find("[name=shop_id]").val();
+            console.log(shop_id);
+            $(".modalbox-selstore .confirm .alertmsg").html("确认要选择当前店铺？");         
+            $(".modalbox-selstore").addClass("active");
+            setTimeout(function(){
+                $(".modaldialog-selstore").addClass("move");
+            }, 300);
+        });
+        //点击确定按钮
+        $(".modalbox-selstore .confirm-btn").click(function(){
+            layui.use('layer',function(){
+            layer = layui.layer;
+           $.ajax({
+                type:"GET",
+                url:"/index.php?m=Mobile&c=User&a=switch_shop",
+                dataType:"JSON",
+                data:{"shop_id":shop_id},
+                success: function(object){
+                    if(object.status == 1){
+                        $(".modaldialog-selstore").removeClass("move");
+                            setTimeout(function(){
+                                $(".modalbox-selstore").removeClass("active");
+                                location.reload();
+                            }, 300);
+                        layer.msg(object.msg);
+                        location.reload()
+                    }else{
+                        layer.msg(object.msg)
+                       
+                    };
+                    
+                },
+                error:function(){
+                    layer.msg("网络错误，请稍后再试")
+                },
+            })
+           })
+            // $(".modaldialog-selstore").removeClass("move");
+            // setTimeout(function(){
+            //     $(".modalbox-selstore").removeClass("active");
+            //     location.reload();
+            // }, 300);
+        });
+        //点击取消按钮
+        $(".modalbox-selstore .cancle").click(function(){
+            $(".modaldialog-selstore").removeClass("move");
+            setTimeout(function(){
+                $(".modalbox-selstore").removeClass("active");
+            }, 300)
+        })
+        //阻止事件冒泡
+        $(".modaldialog-selstore").click(function(e){e.stopPropagation();});
+        $(".modalbox-selstore").click(function(e){
+            $(".modaldialog-selstore").removeClass("move");
+            setTimeout(function(){
+                $(".modalbox-selstore").removeClass("active");
+            }, 300)
+        })
+
+        //查找供应商
+        $("#lookup").click(function(e){
+            layui.use('layer',function(){
+            layer = layui.layer;
+            var code = $.trim($('[name=invicode]').val());
+           $.ajax({
+                type:"GET",
+                url:"/index.php?m=Mobile&c=User&a=lookupshop",
+                dataType:"JSON",
+                data:{"code":code},
+                success: function(object){
+                    var html = '';
+                    if(object.status == 1){
+                        html +=`<div class="avatar">
+                                <img src="${object.result.store_logo}" alt="">
+                                </div>
+                                <div class="information">
+                                    <input type="hidden" name="sid" value="${object.result.store_id}" />
+                                    <div><span>店铺名:</span><span>${object.result.store_name}</span></div>
+                                    <div><span>联系人:</span><span>${object.result.contract_man}</span></div>
+                                    <div><span>联系方式:</span><span>${object.result.service_phone}</span></div>
+                                    <div>${object.result.store_address}</div>
+                                </div>`;
+                                $('.found').html(html);
+                                $('#lookup').css({display: "none"});
+                                $('#addstor').attr("style", "");
+                                $('.not-found').html("");
+                    }
+                    if(object.status == -1){
+                        html += `<span>${object.msg}</span>`;
+                        $('.not-found').html(html);
+                        $('.found').html("");
+                    }
+                    
+                },
+                 error:function(){
+                    layer.msg("网络错误，请稍后再试")
+                },
+            })
+        })})
+
+        //添加供应商
+        $("#addstor").click(function(e){
+            layui.use('layer',function(){
+            layer = layui.layer;
+            var sid = $.trim($('[name=sid]').val());
+           $.ajax({
+                type:"GET",
+                url:"/index.php?m=Mobile&c=User&a=addstor",
+                dataType:"JSON",
+                data:{"sid":sid},
+                success: function(object){
+                    if(object.status == -1){
+                        layer.msg(object.msg);
+                    }else{
+                        layer.msg(object.msg),
+                        location.reload();
+                    };
+                    
+                },
+                error:function(){
+                    layer.msg("网络错误，请稍后再试")
+                },
+            })
+        })})
+
+    </script>
+</body>
+</html>

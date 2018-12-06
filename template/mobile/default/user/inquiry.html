@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>询价单</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+  <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/cart.css"/>
+  <style>
+    b{
+      font-weight: 500;
+    }
+    .cart-detail .cart-content{
+      margin-top: 0rem;
+    }
+    .cart-detail .store{
+      margin-bottom: 0rem;
+      font-size: 13px;
+    }
+    .inquiry-total{
+      font-size: 14px;
+      color: #939393;
+      margin: 0.1rem 0 0.3rem 0.45rem;
+    }
+    .inquiry-total b{
+      color:#f8566d;
+      font-weight: 500;
+    }
+    .visi{
+      visibility:hidden;
+      position: absolute;
+    }
+    .modalbox-delete .confirm div:first-child{
+      color: #4D4C4C;
+      font-size: 0.4rem;
+      text-align: center;
+      padding: 0.25rem 0;
+      border-bottom: 1px solid #D9D9DE;
+    }
+  </style>
+</head>
+<body>
+  <!-- 头部、返回、标题 -->
+  <div class="twostatus-header">
+    <div class="container">
+      <a class="back" href="javascript:history.go(-1);">
+        <img src="__PUBLIC__/mobile/img/register/register1.png">
+      </a>
+      <span class="char" style="margin-left: 37%;">询价单</span>
+    </div>
+  </div>
+<!-- 查询总计 -->
+<div class="inquiry-total">共有<b class="count-num">{$num}</b>件询价商品</div>
+<div class="cart-notempty">
+  <!--购物车详情-->
+  <div class="cart-detail">
+    <div class="store">
+      <!-- <img data-checkall="all" class="checkall check" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+      <input value="" name="" class="formcheckall visi" checked type="checkbox"> -->
+      <a href="###">
+        <img class="store-ico" src="__PUBLIC__/mobile/img/cart/cart_05.png">
+        <span>{$store['store_name']}</span>
+      </a>
+    </div>
+    <form action="" method="">
+    <!-- 商品 -->
+    <div class="cart-content" style="padding-bottom: 1rem;">
+      <!-- 商品item -->
+      <volist name="inquiry_list" id="v" key="k">
+      <div class="cart-item">
+        <!-- <div class="c-check">
+          <img data-check="check" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+          <input checked value="{$v.goods_id}" class="visi" type="checkbox">
+        </div> -->
+        <a href="{:U('goods/goods_info',array('goods_id'=>$v.goods_id))}">
+        <div class="c-info">
+          <img src="{$v.spec_img?$v.spec_img:$v.original_img}">
+          <div class="desc">
+            <input type="hidden" name="goods_id" value="{$v.goods_id}">
+            <div class="p-name" style="margin-top: .2rem">{$v.goods_name}</div>         
+            <div class="inquiry-desc" style="margin-top: .5rem">{$v.goods_remark}</div>
+          </div>
+        </div>
+        </a>
+        <div class="common delete">移除</div>
+      </div>
+     </volist>
+    </div>
+  </div>
+  <!--点击删除弹出的选项框-->
+  <div class="modalbox-delete">
+    <div class="modaldialog-delete">
+      <div class="confirm">
+        <div>确认要删除这<b class="sum-num"></b>种商品吗？</div>
+        <div class="sure">确定</div>
+      </div>
+      <div class="cancle">取消</div>
+    </div>
+  </div>
+  <!--底部固定结算-->
+  <div class="settling" style="position:fixed;bottom:0;">
+    <div class="total" style="width: 70%;">
+      <input checked value="" class="formcheckall visi" checked type="checkbox">
+      <!-- <div class="checkall"><img class="checkimg" data-checkall="all" src="__PUBLIC__/mobile/img/cart/cart_03.png">全选</div> -->
+      <div style="margin-left: 0.5rem; color: red;">共<b class="sum-num">{$num}</b>件</div>
+    </div>
+   <!--  <div class="ok-btn clear-opt" style="width: 25%; background-color: #ff3b30;">
+      <span>清除选中</span>
+    </div> -->
+    <div class="ok-btn" style="width: 30%;">
+      <input style="width: 100%;border: 0;" onclick="submitverify()" class="ok-btn" type="button" name="提交询价" value="提交询价">
+    </div>
+      
+  </div>
+</div>
+</form>
+<script src="__PUBLIC__/layui/layui.js"></script>
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function (e) {
+    document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+  }, false);
+  layui.use('layer',function(){
+    var layer = layui.layer;
+  });
+
+  //提交询价
+   function submitverify()
+    { 
+        var $items = $(".cart-content .cart-item");
+        var goods_id = [];
+        $items.each(function(idx, val){
+          goods_id.push($(val).find("input[name=goods_id]").val());
+        });
+        if (goods_id.length == 0) {
+          layer.msg("没有选中商品");
+          return false;
+        }
+        var data = {goods_id:goods_id};
+        $.ajax({
+            type : 'post',
+            url : '/index.php?m=Mobile&c=User&a=add_inquiry&t='+Math.random(),
+            data : data,
+            dataType : 'json',
+            success : function(res){
+                if(res.status == 1){
+                    // var url = "{:U('user/inquiry_success')}"
+                    window.location.href = url;
+                }else{
+                    layer.msg(res.msg);
+                }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg('网络失败，请刷新页面后重试');
+            }
+        })
+    }
+
+
+    // 单个删除 
+    $(".cart-content").on('click','.common.delete', function () {
+      //获取当前删除的商品的id值
+      var goods_id = $(this).parent().find("input[name=goods_id]").val();
+      $.ajax({
+            type : 'post',
+            url : '/index.php?m=Mobile&c=User&a=del_inquiry&t='+Math.random(),
+            data : {goods_id:goods_id},
+            dataType : 'json',
+            success : function(res){
+                if(res.status == 1){
+                    layer.msg(res.msg);
+                    location.reload();
+                }else{
+                    layer.msg(res.msg);
+                }
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg('网络失败，请刷新页面后重试');
+            }
+        })  
+    });
+
+
+    // 1.滑动菜单侧边出现选项按钮
+    swipefunc(".cart-content .cart-item", "cart-item", 1.133);
+
+</script>
+</body>
+</html>

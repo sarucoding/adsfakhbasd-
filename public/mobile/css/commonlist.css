@@ -1,0 +1,208 @@
+html{
+	background-color: #f4f4f4;
+}
+.commonlist-header .container .commonlist-title{
+	margin-left: 40%;
+}
+/*主体内容样式*/
+.commonlist-content .multitype{
+	background-color: #fff; 
+	margin-bottom: 0.133333rem;
+}
+.commonlist-content .foryou-container .product-detail{
+	margin-top: 0.2rem;
+	margin-bottom: 0.133333rem;
+}
+.commonlist-content .foryou-container .father-container{
+	padding: 0.133333rem 0.2rem;
+}
+.commonlist-content .foryou-container .left{
+	width: 30%;
+	height: 2.6rem;
+	box-sizing: border-box;
+	background-color: #FFFFFF;
+	padding-right: 0.2rem;
+}
+.commonlist-content .foryou-container .left img{
+	width: 2.6rem;
+	height: 2.6rem;
+	border-radius: 0.12rem;
+}
+.commonlist-content .foryou-container .right{
+	position: relative;
+	width: 70%;
+	min-height: 2.6rem;
+	box-sizing: border-box;
+	background-color: #FFFFFF;
+	padding-left: 0.333333rem;
+	padding-right: 0.133333rem;
+	border-left: 1px solid #f4f4f4;
+}
+.commonlist-content .foryou-container .right .switch span{
+	font-size: 12px;
+}
+.commonlist-content .foryou-container .right img.switch-btn{
+	width: 0.6rem;
+	height: 0.6rem;
+}
+.commonlist-content .foryou-container .product-title{
+	min-height: 0.426667rem;
+	font-size: 14px;
+	margin-top: 0.266667rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.commonlist-content .foryou-container .switch{
+	margin-top: 20%;
+}
+/*加减按钮处样式*/
+.commonlist-content .foryou-container .right .count-option{
+	font-size: 0.266667rem;
+	background-color: #EEEEEE;
+	border-radius: 0.266667rem; 
+	padding: 0.053333rem 0;
+	white-space: nowrap;
+	width: 0%;
+	overflow: hidden;
+}
+.commonlist-content .foryou-container .right .count-option.active{
+	width: 45%;
+	transition: width .2s linear;
+}
+.commonlist-content .foryou-container .right .count-option img{
+	vertical-align: middle;
+}
+.commonlist-content .foryou-container .right .count-first .first-add{
+    width: 0.6rem;
+    height: 0.6rem	;
+}
+.commonlist-content .foryou-container .right .count-option .count{
+	vertical-align: middle;
+    font-weight: 700;
+    width: 0.92rem;
+    text-align: center;
+    border: 0;
+    background: #eee;
+}
+.commonlist-content .foryou-container .right .count-option .reduce{
+    margin-right: 0.2rem;
+	margin-left: 0.133333rem;
+}
+.commonlist-content .foryou-container .right .count-option .add{
+    margin-left: 0.2rem;
+    margin-right: 0.133333rem;
+}
+.commonlist-content .foryou-container .right img.btn{
+	width: 0.506667rem;
+	height: 0.506667rem;
+}
+
+/*子产品内容*/
+.commonlist-content .sub-product{
+	width: 100%;
+	display: none;
+	overflow: hidden;
+}
+.commonlist-content .sub-product .sub{
+	min-height: 1.506667rem;
+	background-color: #FFFFFF;
+	box-sizing: border-box;
+	margin: 0 0.2rem;
+	padding: 0.133333rem;
+	border-top: 1px solid #f4f4f4;
+}
+
+.commonlist-content .sub-product .sub-right{
+	width: 100%;
+	box-sizing: border-box;
+}
+.commonlist-content .sub-product .sub-right .sub-title{
+	font-size: 0.32rem;
+	margin-bottom: 0.2rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.commonlist-content .sub-product .sub-right .sub-title span{
+	color: #FF1F1F;
+}
+.commonlist-content .foryou-container .sub-right .count-option{
+	font-size: 0.266667rem;
+	background-color: #EEEEEE;
+	border-radius: 0.266667rem; 
+	padding: 0.053333rem 0;
+	white-space: nowrap;
+	width: 0%;
+	overflow: hidden;
+}
+.commonlist-content .foryou-container .sub-right .count-option.active{
+	width: 30%;
+	transition: width .2s linear;
+}
+.commonlist-content .foryou-container .sub-right .count-option img{
+	vertical-align: middle;
+}
+.commonlist-content .foryou-container .sub-right .count-option .count{
+	vertical-align: middle;
+    font-weight: 700;
+    width: 0.9rem;
+    text-align: center;
+    border: 0;
+    background: #eee;
+}
+.commonlist-content .foryou-container .sub-right .count-option .reduce{
+	margin-right: 0.2rem;
+	margin-left: 0.133333rem;
+}
+.commonlist-content .foryou-container .sub-right .count-option .add{
+	margin-left: 0.2rem;
+	margin-right: 0.133333rem;
+}
+.commonlist-content .foryou-container .sub-right .count-first .first-add{
+	width: 0.6rem;
+	height: 0.6rem;
+}
+.commonlist-content .foryou-container .sub-right .count-option img.btn{
+	width: 0.506667rem;
+	height: 0.506667rem;
+}
+.commonlist-content .foryou-container .sub-right .sub-price{
+	font-size: 0.32rem;
+}
+.commonlist-content .foryou-container .sub-right .sub-price span{
+	color: #ff1f1f;
+}
+
+
+/*占位空白内容*/
+.no-content{
+	height: 1.2rem;
+}
+/*flyer图片样式*/
+.flyer{
+	width: 1rem;
+	height: 1rem;
+	z-index: 200;
+}
+
+/*询价按钮样式*/
+.foryou-container .right .ify-inquiry span {
+    font-size: 0.3rem;
+    float: left;
+    position: relative;
+    top: 2px;
+    left: -3px;
+}
+.switce-span {
+    background: #f08519;
+    color: #fff;
+    padding: 0.04rem 0.2rem 0.03rem 0.2rem;
+    border-radius: 5px;
+    width: 23%;
+    text-align: center;
+}
+.switce-span.active{
+	background: rgb(214, 214, 214);
+	pointer-events: none;
+}

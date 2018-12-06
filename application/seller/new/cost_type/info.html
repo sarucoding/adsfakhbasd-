@@ -1,0 +1,69 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>类型管理</div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('CostType/index')}">支出类型列表</a></li>
+                    <li class="active"><a>新增/编辑类型</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form method="post" id="addEditBrandForm">
+                    <input type="hidden" name="ct_id" value="{$info.ct_id}">
+                    <input type="hidden" name="act" value="{$act}">
+                    <dl>
+                        <dt><i class="required">*</i>类型名称：</dt>
+                        <dd>
+                            <input class="w400 text" type="text" value="{$info.ct_name}" name="ct_name" maxlength="30"/>
+                            <span id="err_ct_name" style="color:#F00; display:none;">类型名称不能为空</span>
+                            <p class="hint">请填写类型名称</p>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input type="button" class="submit" onclick="submitForm()" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script type="text/javascript">
+    var ajax_return_status =1;
+    function submitForm(){
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        var ct_name = $("input[name='ct_name']").val();
+        if (ct_name == ''){
+            layer.msg('名称必填！！',{icon:2});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type:'post',
+            url:"{:U('/seller/CostType/postHandle')}",
+            data:$('#addEditBrandForm').serialize(),
+            dataType:'json',
+            success:function (data) {
+                if (data.status == 1){
+                    layer.msg(data.msg,{icon:1},function () {
+                        window.location.href = data.url;
+                    });
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                    ajax_return_status =1;
+                }
+            },
+            error:function(){
+                layer.msg('网络繁忙，请稍后再试！！',{icon:2});
+                ajax_return_status =1;
+            }
+        })
+    }
+</script>
+</body>
+</html>

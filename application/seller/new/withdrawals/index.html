@@ -1,0 +1,84 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+	<include file="public/left"/>
+	<div id="layoutRight" class="ncsc-layout-right">
+		<div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>提现申请列表
+		</div>
+		<div class="main-content" id="mainContent">
+			<div class="tabmenu">
+				<ul class="tab pngFix">
+					<li class="active"><a href="{:U('withdrawals/index')}">提现申请列表</a></li>
+				</ul>
+			</div>
+			<!--<div class="alert alert-block mt10">
+				<ul class="mt5">
+					<li>1、点击进货入库按钮可以添加入库单</li>
+                    <li>2、入库单提交完成后需点击审核通过才计入商品库存，否则无效.</li>
+				</ul>
+			</div>-->
+			<form action="" id="search-form2" method="post">
+				<table class="search-form">
+					<tr>
+						<td><!--<a href="{:U('withdrawals/info')}" class="ncbtn ncbtn-mint" title="添加支出"><i class="icon-plus-sign"></i>添加支出</a>--></td>
+						<td class="w160"><input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入真实姓名" /></td>
+						<td class="tc w70"><label class="submit-border">
+							<input type="submit" class="submit" value="搜索"/>
+						</label></td>
+					</tr>
+				</table>
+			</form>
+			<table class="ncsc-default-table">
+				<thead>
+				<tr>
+					<th class="w40">ID</th>
+					<th class="w50">客户名称</th>
+					<th class="w50">申请时间</th>
+					<th class="w50">申请金额</th>
+					<th class="w50">银行机构名称</th>
+					<th class="w50">收款账号</th>
+					<th class="w50">账号开户名</th>
+					<th class="w50">状态</th>
+					<th class="w50">操作</th>
+				</tr>
+				</thead>
+				<empty name="list">
+			  		<tbody>
+			  		    <tr>
+			      		    <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+			    	    </tr>
+			        </tbody>
+			    <else/>
+				<tbody>
+                <php>$status = ['申请中','审核通过','审核未通过'];</php>
+				<volist name="list" id="val">
+					<tr class="bd-line">
+						<td>{$val.id}</td>
+						<td>{$val.user_name}</td>
+						<td>{$val.create_time|date="Y-m-d H:i:s",###}</td>
+						<td>{$val.money}</td>
+						<td>{$val.bank_name}</td>
+						<td>{$val.bank_card}</td>
+						<td>{$val.realname}</td>
+						<td>{$status[$val.status]}</td>
+						<td class="nscs-table-handle">
+							<span><a href="{:U('withdrawals/info',array('id'=>$val['id']))}" class="btn-bluejeans"><i class="icon-edit"></i><p>查看</p></a></span>
+							<!--<span><a href="javascript:void(0);" onclick="delfunc(this)" data-id="{$val['id']}" data-url="{:U('postHandle')}" class="btn-grapefruit"><i class="icon-trash"></i><p>删除</p></a></span>-->
+						</td>
+					</tr>
+				</volist>
+				</tbody>
+				</empty>
+				<tfoot>
+				<tr>
+					<td colspan="20">
+						{$page->show()}
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

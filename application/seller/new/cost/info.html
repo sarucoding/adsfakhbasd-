@@ -1,0 +1,139 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>税/费支出列表</div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('cost/index')}">税/费支出列表</a></li>
+                    <li class="active"><a>新增/编辑支出</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form method="post" id="addEditBrandForm">
+                    <input type="hidden" name="cost_id" value="{$info.cost_id}">
+                    <input type="hidden" name="act" value="{$act}">
+                    <dl>
+                        <dt><i class="required">*</i>支出名称：</dt>
+                        <dd>
+                            <input class="w130 text" type="text" value="{$info.cost_name}" name="cost_name" maxlength="30"/>
+                            <span id="err_cost_name" style="color:#F00; display:none;">支出名称不能为空</span>
+                            <p class="hint">请填写支出名称</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>支出类型：</dt>
+                        <dd>
+                            <select name="ct_id">
+                                <foreach name="ct_lists" item="val">
+                                    <option value="{$val.ct_id}" <if condition="$val.ct_id eq $info.ct_id">selected</if> >{$val.ct_name}</option>
+                                </foreach>
+                            </select>
+                            <span class="err" id="err_ct_id"></span>
+
+                            <p class="hint">请选择支出类型</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>支出金额：</dt>
+                        <dd>
+                            <input class="w130 text" type="number" value="{$info.cost_money}" name="cost_money" maxlength="30"/>
+                            <span id="err_cost_money" style="color:#F00; display:none;">支出金额不能为空</span>
+                            <p class="hint">请填写支出金额</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>备注：</dt>
+                        <dd>
+                            <input class="w130 text" type="text" value="{$info.cost_remark}" name="cost_remark"/>
+                            <p class="hint">请填写备注</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>付款凭证：</dt>
+                        <dd>
+                            <div class="ncsc-goods-default-pic">
+                                <div class="goodspic-uplaod">
+                                    <div class="upload-thumb">
+                                        <img id="original_img2" src="{$info.cost_img|default='/public/images/default_goods_image_240.gif'}">
+                                    </div>
+                                    <input name="cost_img" id="original_img" value="{$info.cost_img}" type="hidden">
+                                    <p class="hint">上传付款凭证。</p>
+                                    <div class="handle">
+                                        <div class="ncsc-upload-btn">
+                                            <a onclick="GetUploadify3(1,'','bill','upload_call_back');">
+                                                <p><i class="icon-upload-alt"></i>图片上传</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="demo"></div>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input type="button" class="submit" onclick="submitForm()" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script type="text/javascript">
+    var ajax_return_status =1;
+    function submitForm(){
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        var cost_name = $("input[name='cost_name']").val();
+        var ct_id = $("select[name='ct_id']").val();
+        var cost_money = $("input[name='cost_money']").val();
+        if (cost_name == ''){
+            layer.msg('名称必填！！',{icon:2});
+            return false;
+        }
+        if (ct_id == ''){
+            layer.msg('支出类型必选！！',{icon:2});
+            return false;
+        }
+        if (cost_money <= 0){
+            layer.msg('支出金额必须大于0！！',{icon:2});
+            return false;
+        }
+        var original_img = $("#original_img").val();
+        if (original_img == '' && {$store.is_voucher} == 1){
+            layer.msg('请上传凭证',{icon:2});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type:'post',
+            url:"{:U('/seller/cost/postHandle')}",
+            data:$('#addEditBrandForm').serialize(),
+            dataType:'json',
+            success:function (data) {
+                if (data.status == 1){
+                    layer.msg(data.msg,{icon:1},function () {
+                        window.location.href = data.url;
+                    });
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                    ajax_return_status =1;
+                }
+            },
+            error:function(){
+                layer.msg('网络繁忙，请稍后再试！！',{icon:2});
+                ajax_return_status =1;
+            }
+        })
+    }
+    //图片上传回调方法
+    function upload_call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+        $("#original_img2").attr('src', fileurl_tmp);
+    }
+</script>
+</body>
+</html>

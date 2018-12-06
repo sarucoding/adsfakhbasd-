@@ -1,0 +1,56 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>报价管理<i class="icon-angle-right"></i>报价明细
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('offer/index')}">报价单列表</a></li>
+                    <li class="active"><a>报价明细</a></li>
+                </ul>
+            </div>
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w40">ID</th>
+                    <th class="w50">商品名称</th>
+                    <th class="w50">商品规格</th>
+                    <th class="w50">报价方式</th>
+                    <th class="w50">所报价</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.offer_id}</td>
+                            <td>{$val.goods_name}</td>
+                            <td>{$val.spec_key_name}</td>
+                            <td><if condition="$val.offer_type eq 0">固定报价<else/>浮动报价</if></td>
+                            <td><if condition="$val.offer_type eq 1">浮动:<else/>固定:</if>{$val.offer_price}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

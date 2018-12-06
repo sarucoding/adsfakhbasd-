@@ -1,0 +1,202 @@
+<include file="public/head"/>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<if condition='$info.is_contract eq 0'>
+<style>
+    .settle{display: none}
+</style>
+</if>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>店铺<i class="icon-angle-right"></i>客户管理</div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('User/index')}">客户列表</a></li>
+                    <li class="active"><a>编辑客户</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form id="handleposition" method="post" onsubmit="return false;">
+                    <dl>
+                        <dt>客户名称：</dt>
+                        <dd>
+                            {$info.realname}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>联系人：</dt>
+                        <dd>
+                            <input class="w130 text" name="remark" value="{$info.remark}" type="text"/>
+                            <span class="err" id="err_remark"></span>
+                            <p class="hint">填写联系人</p>
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt>手机：</dt>
+                        <dd>
+                            {$info.mobile}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>服务人员：</dt>
+                        <dd>
+                            <select name="seller_id">
+                                <foreach name="service" item="vo">
+                                    <option value="{$vo.seller_id}" <if condition="$vo.seller_id eq $info.seller_id">selected</if>>{$vo.real_name}</option>
+                                </foreach>
+                            </select>
+                            <span class="err" id="err_seller_id"></span>
+                            <p class="hint">添加服务人员后该用户所有的交易将按照服务人员提成比例提成</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>是否显示所有商品价格：</dt>
+                        <dd class="onoff">
+                            <label for="is_look1" class="cb-enable <if condition='$info.is_look eq 1'>selected</if>"><span>是</span></label>
+                            <label for="is_look2" class="cb-disable <if condition='$info.is_look eq 0'>selected</if>"><span>否</span></label>
+                            <input id="is_look1" name="is_look" value="1" type="radio" <if condition='$info.is_look eq 1'>checked</if>>
+                            <input id="is_look2" name="is_look" value="0" type="radio" <if condition='$info.is_look eq 0'>checked</if>>
+                            <p class="hint">设置是否可以看到商城所有商品价格</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>账期开关：</dt>
+                        <dd class="onoff">
+                            <label for="is_lock1" class="cb-enable settle_on <if condition='$info.is_contract eq 1'>selected</if>"><span>开启</span></label>
+                            <label for="is_lock2" class="cb-disable settle_off <if condition='$info.is_contract eq 0'>selected</if>"><span>关闭</span></label>
+                            <input id="is_lock1" name="is_contract" value="1" type="radio" <if condition='$info.is_contract eq 1'>checked</if>>
+                            <input id="is_lock2" name="is_contract" value="0" type="radio" <if condition='$info.is_contract eq 0'>checked</if>>
+                            <p class="hint">账期开关，不开启表示现款后货</p>
+                        </dd>
+                    </dl>
+
+                    <dl class="settle" style="background: #E7E7E7">
+                        <dt style="font-size: 14px;">账期方案设置</dt>
+                    </dl>
+                    <dl class="settle">
+                        <dt>结算周期：</dt>
+                        <dd>
+                            <ul class="ncsc-form-radio-list">
+                                <li><label><input name="settle_cycle" type="radio" value="0" <if condition='$info.settle_cycle eq 0'>checked</if>>日结</label></li>
+                                <li><label><input name="settle_cycle" type="radio" value="1" <if condition='$info.settle_cycle eq 1'>checked</if>>周结</label></li>
+                                <li><label><input name="settle_cycle" type="radio" value="2" <if condition='$info.settle_cycle eq 2'>checked</if>>月结</label></li>
+                            </ul>
+                            <span class="err" id="err_settle_cycle"></span>
+                            <p class="hint">请选择结算周期，表示按天日/周/月将订单汇总生成结算单</p>
+                        </dd>
+                    </dl>
+                    <dl class="settle">
+                        <dt>账期：</dt>
+                        <dd>
+                            <input class="w130 text" name="settle_interval" value="{$info.settle_interval}" type="number"/>
+                            <span class="err" id="err_settle_interval"></span>
+                            <p class="hint">表示结算单生成后多少日/周/月的账期，如果结算周期为日结那么单位就是天，周结单位为周，月结单位为月</p>
+                        </dd>
+                    </dl>
+                    <dl class="settle pay_date" data="<if condition='$info.settle_cycle eq 0'>0<else/>1</if>" <if condition='$info.settle_cycle eq 0'>style="display:none;"</if>>
+                        <dt>支付日期：</dt>
+                        <dd>
+                            <select name="settle_day">
+                                {$option}
+                            </select>
+                            <span class="err" id="err_settle_day"></span>
+                            <p class="hint">该日期表示账期的最后一个周/月的哪一天之前必须结算，只有结算周期为周结、月结时才有</p>
+                        </dd>
+                    </dl>
+                    <dl class="settle">
+                        <dt>账期设置说明：</dt>
+                        <dd>
+                            <p style="color: red" class="hint">如某客户结算周期为日结，账期为2天，客户5号的结算单必须在7号晚上12点以前结清，否则视为逾期，日结一般货到付款。</p>
+                            <p style="color: red" class="hint">如某客户结算周期为周结，账期为1周，支付日期为星期三，客户本年第10周的结算单必须在第11周的星期三晚上12点以前结清，否则视为逾期。</p>
+                            <p style="color: red" class="hint">如某客户结算周期为月结，账期为3月，支付日期为15号，客户3月份的结算单必须在6月份的15号晚上12点以前结清，否则视为逾期。</p>
+                            <p style="color: red" class="hint">有逾期结算单的客户将不能在本店商城下单。</p>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input type="hidden" name="re_id" value="{$info.re_id}">
+                        <input id="submit" type="submit" class="submit" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $(document).on("click", '#submit', function (e) {
+                        $('#submit').attr('disabled',true);
+                        verifyForm();
+                    })
+                    $(".settle_on").click(function(){
+                        var data = $('.pay_date').attr('data');
+                        $('.settle').show();
+                        if(data == 1){
+                            $('.pay_date').show();
+                        }else{
+                            $('.pay_date').hide();
+                        }
+
+                    });
+                    $(".settle_off").click(function(){
+                        $('.settle').hide();
+                    });
+                    $("input[name='settle_cycle']").click(function(){
+                        var val = $(this).val();
+                        if(val == 0){
+                            $('.pay_date').hide();
+                            $('.pay_date').attr('data',0);
+                        }else if(val == 1){
+                            var html_str = '<option value="">请选择支付日期</option>';
+                            html_str += '<option value="1">周一</option>';
+                            html_str += '<option value="2">周二</option>';
+                            html_str += '<option value="3">周三</option>';
+                            html_str += '<option value="4">周四</option>';
+                            html_str += '<option value="5">周五</option>';
+                            html_str += '<option value="6">周六</option>';
+                            html_str += '<option value="7">周日</option>';
+                            $("select[name='settle_day']").html(html_str);
+                            $('.pay_date').show();
+                            $('.pay_date').attr('data',1);
+                        }else{
+                            var html_str = '<option value="">请选择支付日期</option>';
+                            for(var i=1; i<=28; i++){
+                                html_str += '<option value="'+i+'">'+i+'号</option>';
+                            }
+                            $("select[name='settle_day']").html(html_str);
+                            $('.pay_date').show();
+                            $('.pay_date').attr('data',1);
+                        }
+                    })
+                })
+                function verifyForm(){
+                    $('span.err').hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "{:U('User/edit')}",
+                        data: $('#handleposition').serialize(),
+                        async:false,
+                        dataType: "json",
+                        error: function () {
+                            layer.alert("服务器繁忙, 请联系管理员!");
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.msg(data.msg,{icon: 1,time: 2000},function(){
+                                    location.href = "{:U('Seller/User/index')}";
+                                });
+                            } else {
+                                $('#submit').attr('disabled',false);
+                                $.each(data.result, function (index, item) {
+                                    //$('span.err').show();
+                                    $('#err_'+index).text(item).show();
+                                });
+                                layer.msg(data.msg, {icon: 2,time: 3000});
+                            }
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

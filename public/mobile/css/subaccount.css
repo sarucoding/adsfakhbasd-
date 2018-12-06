@@ -1,0 +1,169 @@
+html{
+    background-color: #f4f4f4;
+}
+.twostatus-header a{
+    text-decoration: none;
+}
+/*一、账号管理部分样式*/
+.account-detail .account-title{
+    margin-bottom: 0.25rem;
+}
+.account-detail .account-title h1{
+    padding: 0 0.4rem;
+    font-size: 0.4rem;
+    color: #888;
+}
+.account-detail .account-content{
+    background: #fff url(../img/rightarrow.png) 96% center no-repeat;
+	background-size: 0.226667rem 0.386667rem;
+    padding: 0.2rem 0.266667rem;
+    margin-bottom: 0.266667rem;
+}
+.account-detail .account-content .containone{
+    margin-bottom: 0.2rem;
+}
+.account-detail .account-content .type{
+    display: inline-block;
+    font-size: 0.346667rem;
+    background-color: #00B051;
+    color: #fff;
+    border-radius: 0.333333rem;
+    padding: 0 0.266667rem;
+    line-height: 0.533333rem;
+}
+.account-detail .account-content .containtwo{
+    margin-bottom: 0.2rem;
+}
+.account-detail .account-content .name{
+    display: inline-block;
+    font-size: 0.346667rem;
+    margin-left: 0.2rem;
+}
+.account-detail .account-content .permission{
+    position: relative;
+}
+.account-detail .account-content .permission .phone{
+    position: absolute;
+    bottom: 0;
+    margin-left: 0.2rem;
+    color: #888;
+    font-size: 0.4rem;
+}
+.account-detail .account-content .permission .pay{
+    color: #ff5642;
+    font-size: 0.533333rem;
+    margin-left: 50%; 
+}
+.account-detail .account-content .permission .order{
+    color: #ff5642;
+    font-size: 0.533333rem;
+    margin-left: 0.4rem;
+}
+.account-detail .account-content .permission .pay img{
+    width: 0.28rem;
+    height: 0.28rem;
+}
+.account-detail .account-content .permission .order img{
+    width: 0.28rem;
+    height: 0.28rem;
+}
+
+/*底部新建子账户按钮*/
+.sunaccount-add{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f4f4f4;
+    padding: 0.4rem 0;
+}
+.sunaccount-add .add-btn{
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    background-color: #00B050;
+    padding: 0.266667rem 0;
+    font-size: 0.32rem;
+    border-radius: 0.666667rem;
+    color: #fff;
+}
+
+/*二、账号详情、添加账户*/
+.newaccount-detail {
+    background-color: #fff;
+}
+.newaccount-content {
+    margin: 0 0.266667rem;
+}
+.newaccount-content .common {
+    position: relative;
+    font-size: 0;
+    box-sizing: border-box;
+    padding: 0.466667rem 0.2rem;
+    border-bottom: 1px solid #CACACA;
+}
+.newaccount-content .common div:nth-child(1) {
+    width: 13%;
+    text-align-last: justify;
+    color: #333333;
+}
+.newaccount-content .common div {
+    display: inline-block;
+    font-size: 0.32rem;
+    color: #333333;
+}
+.newaccount-content .common div:nth-child(2) {
+    margin-left: 8%;
+    width: 73%;
+}
+.newaccount-content .common div input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+}
+.newaccount-content .addnew-permission .temp-con div{
+    display: inline-block;
+}
+.newaccount-content .addnew-permission .temp-con div input{
+    width: auto;
+}
+.newaccount-content .addnew-permission .temp-con div.pay{
+    width: auto;
+    text-align-last: auto;
+    color: #333333;
+}
+.newaccount-content .addnew-permission .temp-con img{
+    width: 0.36rem;
+    height: 0.36rem;
+    vertical-align: middle;
+}
+.newaccount-content .addnew-permission .temp-con span{
+    vertical-align: middle;
+}
+.newaccount-content .addnew-permission .temp-con div.order{
+    width: auto;
+}
+input::-ms-input-placeholder{ color:#B6B6B6; }
+input::-webkit-input-placeholder{ color:#B6B6B6; }
+input::-moz-placeholder{ color:#B6B6B6; }
+/*底部保存按钮*/
+.account-save{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f4f4f4;
+    padding: 0.4rem 0;
+}
+.account-save .save-btn{
+    display: block;
+    width: 70%;
+    margin: auto;
+    border: 0;
+    outline: 0;
+    background-color: #00B050;
+    padding: 0.266667rem 0;
+    font-size: 0.32rem;
+    border-radius: 0.666667rem;
+    color: #fff;
+}

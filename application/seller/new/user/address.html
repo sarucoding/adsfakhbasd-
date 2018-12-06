@@ -1,0 +1,84 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>客户管理<i class="icon-angle-right"></i>收货地址
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('User/index')}">客户列表</a></li>
+                    <li class="active"><a>地址列表</a></li>
+                </ul>
+            </div>
+            <div class="alert alert-block mt10">
+                <ul class="mt5">
+                    <li>1、可对客户的每个地址设置不同的运费。</li>
+                    <li>2、如未设置运费则视为运费到付，如设置运费为0则为免运费。</li>
+                </ul>
+            </div>
+
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w40">地址ID</th>
+                    <th class="w50">店名</th>
+                    <th class="w50">收货人</th>
+                    <th class="w50">收货电话</th>
+                    <th class="w50">收货地址</th>
+                    <th class="w50">运费</th>
+                    <th class="w50">操作</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.address_id}</td>
+                            <td>{$val.shop_name}</td>
+                            <td>{$val.consignee}</td>
+                            <td>{$val.mobile}</td>
+                            <td>{$region_list[$val.province]} {$region_list[$val.city]} {$region_list[$val.district]} {$val.address}</td>
+                            <td><if condition="$val.uaf_freight !== null">{$val.uaf_freight}<else/>未设置</if></td>
+                            <td class="nscs-table-handle">
+                                <span><a href="javascript:;" data-url="{:U('User/edit_freight',array('address_id'=>$val['address_id']))}" onclick="edit_freight(this)" class="btn-bluejeans"><i class="icon-edit"></i><p>设置运费</p></a></span>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script>
+    function edit_freight(obj)
+    {
+        var url = $(obj).attr('data-url');
+        layer.open({
+            type: 2,
+            title: '运费设置',
+            shadeClose: true,
+            shade: 0.5,
+            area: ['380px', '240px'],
+            content: url
+        });
+
+    }
+</script>
+</body>
+</html>

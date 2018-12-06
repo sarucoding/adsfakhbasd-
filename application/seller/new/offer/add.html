@@ -1,0 +1,234 @@
+<include file="public/head"/>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    #handleposition dt{width: 10% !important;}
+    #handleposition dd{width: 89% !important;}
+</style>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>报价管理<i class="icon-angle-right"></i>添加报价
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('offer/index')}">报价单列表</a></li>
+                    <li class="active"><a>添加报价</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form id="handleposition" method="post" onsubmit="return false;">
+                    <input type="hidden" name="inquiry_id" value="{$inquiry_id}">
+                    <dl class="luck">
+                        <dt><i class="required">*</i>选择客户：</dt>
+                        <dd>
+                            <input class="w130 text" style="cursor: pointer" readonly <if condition="!$user">id="select_user"  placeholder="点击选择客户"<else/>value="{$user.realname}"</if> type="text"/>
+                            <span id="type_msg" style="color:red">{$user.type}</span>
+                            <input class="w130 text" name="user_id" type="hidden" value="{$user.user_id}"/>
+                            <span class="err" id="err_user_id"></span>
+                            <p class="hint">请选择客户</p>
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt><i class="required">*</i>报价方式：</dt>
+                        <dd>
+                            <label><input name="offer_type" type="radio" value="0" checked>固定报价</label>&nbsp;&nbsp;&nbsp;
+                            <label><input name="offer_type" type="radio" value="1">浮动报价</label>
+                            <span class="err" id="err_offer_type"></span>
+                            <p class="hint">请选择报价方式，固定报价价格不随商城价格变动而变动，浮动报价会随商城价格变动而变动</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>添加商品：</dt>
+                        <dd>
+                            <button onclick="get_goods_lists()" class="layui-btn layui-btn-sm"><i
+                                    class="icon-plus-sign"></i> 添加商品
+                            </button>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>商品列表：</dt>
+                        <dd>
+                            <p style="font-size: 14px;font-weight: 600;color:red;">注意：如选择的固定报价则在报价栏输入实际报价价格，如选择的浮动报价则在报价栏输入正数、负数或者0，输入正数相当于在商城售价基础上增加了多少元作为报价，负数则在商城售价基础减少多少元作为报价，浮动报价价格会随商城售价变化而变化，固定价格不会。</p>
+                            <div style="text-align: right">
+                                批量报价：<input placeholder="商城售价基础上加减百分之多少" id="batch" type="text"  onkeyup="this.value=this.value.replace(/[^-\d.]/g,'')" onpaste="this.value=this.value.replace(/[^-\d.]/g,'')">%&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="batch_btn" class="layui-btn layui-btn-sm" value="确定">
+                            </div>
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col width="90">
+                                    <col width="130">
+                                    <col width="100">
+                                    <col width="60">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>规格</th>
+                                    <th>商城售价</th>
+                                    <th style="text-align: center">上次报价</th>
+                                    <th style="text-align: center"><span id="price_title" style="color:red;">固定报价</span></th>
+                                    <th align="center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>{$goods_html}
+                                </tbody>
+                            </table>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input id="submit" type="submit" class="submit" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#batch_btn').click(function(){
+                        var batch_scale = $('#batch').val()/100;
+                        var offer_type = $("input[name='offer_type']:checked").val();
+                        $(".shop_price").each(function(idx,item){
+                            if(offer_type == 1){
+                                var offer_price = batch_scale * $(this).val();
+                            }else{
+                                var offer_price = (batch_scale + 1) * $(this).val();
+                            }
+                            $("input[name='offer_price[]']:eq("+idx+")").val(offer_price.toFixed(2));
+                        })
+                    })
+                    $('#batch').keypress(function(e){
+                        var key=e.which;
+                        if(key==13){
+                            $('#batch_btn').click();
+                            return false;
+                        }
+                    })
+                    $(document).on("click", '#submit', function (e) {
+                        $('#submit').attr('disabled', true);
+                        verifyForm();
+                    })
+                    $("#select_user").click(function(){
+                        var url = "{:U('seller/user/ajax_user_lists')}";
+                        layer.open({
+                            type: 2,
+                            title: '选择客户',
+                            shadeClose: true,
+                            shade: 0.5,
+                            area: ['380px', '600px'],
+                            content: url
+                        });
+                    })
+                    $("input[name='offer_type']").click(function(){
+                        if($(this).val() == '1'){
+                            $('#price_title').html('浮动报价');
+                        }else{
+                            $('#price_title').html('固定报价');
+                        }
+                    })
+                })
+                //图片上传回调方法
+                function upload_call_back(fileurl_tmp){
+                    $("#original_img").val(fileurl_tmp);
+                    $("#original_img2").attr('src', fileurl_tmp);
+                }
+                function get_goods_lists() {
+                    var user_id = $("input[name='user_id']").val();
+                    if(user_id == ''){
+                        layer.msg('请先选择客户',{icon:2});
+                        return false;
+                    }
+                    var url = "{:U('seller/goods/ajax_goods_lists1')}";
+                    layer.open({
+                        type: 2,
+                        title: '选择商品',
+                        shadeClose: true,
+                        shade: 0.5,
+                        area: ['370px', '600px'],
+                        content: url
+                    });
+                }
+                function del_goods(obj){
+                    $('.goods'+$(obj).attr('data-id')).remove();
+                }
+                function select_user_call_back(data){
+                    $("input[name='user_id']").val(data.user_id);
+                    $("#select_user").val(data.realname);
+                    $("#select_user").attr('disabled',true);
+                    if(data.type == '账期客户'){
+                        $("#type_msg").text('此客户为账期客户，建议选择固定报价');
+                    }else{
+                        $("#type_msg").text('此客户为非账期客户，建议选择浮动报价');
+                    }
+                    layer.closeAll();
+                }
+                function call_back(data) {
+                    var user_id = $("input[name='user_id']").val();
+                    var id_str = '';
+                    $.each(data,function(idx,item){
+                        id_str += item.goods_id + ',';
+                    });
+                    id_str = id_str.substr(0, id_str.length - 1);
+                    layer.load(1,{shade:0.3});
+                    $.ajax({
+                        url:"{:U('ajax_goods_lists')}",
+                        data:{goods_ids:id_str,user_id:user_id},
+                        dataType:'json',
+                        success:function(res){
+                            $('.layui-table tbody').append(res.data);
+                            layer.closeAll();
+                        }
+                    })
+                }
+                function verifyForm() {
+                    var text = $('.layui-table tbody').text().trim();
+                    if(text == ''){
+                        layer.msg('请选择要报价的商品');
+                        $('#submit').attr('disabled', false);
+                        return false;
+                    }
+                    var i = 0;
+                    $("input[name='offer_price[]']").each(function(idx,item){
+                        if($(item).val() == ''){
+                            i++;
+                            $('#submit').attr('disabled', false);
+                            return false;
+                        }
+                    })
+                    if(i > 0){
+                        layer.msg('请完善报价');
+                        return false;
+                    }
+                    $('span.err').hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "{:U('offer/add')}",
+                        data: $('#handleposition').serialize(),
+                        async: false,
+                        dataType: "json",
+                        error: function () {
+                            layer.alert("服务器繁忙, 请联系管理员!");
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.msg(data.msg, {icon: 1, time: 2000}, function () {
+                                    location.href = "{:U('Seller/offer/index')}";
+                                });
+                            } else {
+                                $('#submit').attr('disabled', false);
+                                console.log(data.result);
+                                $.each(data.result, function (index, item) {
+                                    //$('span.err').show();
+                                    $('#err_' + index).text(item).show();
+                                });
+                                layer.msg(data.msg, {icon: 2, time: 3000});
+                            }
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

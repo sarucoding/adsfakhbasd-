@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>报价单</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta charset="UTF-8">
+	<script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/tariff.css">
+</head>
+<body style="background-color:#e6e6e6">
+<!-- 通用头、两项 -->
+<div class="twostatus-header">
+	<div class="container">
+		<a class="back" href="javascript:history.go(-1);">
+			<img src="__PUBLIC__/mobile/img/register/register1.png">
+		</a>
+		<span class="char">报价单</span>
+	</div>
+</div>
+<!-- 报价总计 -->
+<table></table>
+<div class="offer-total">我的报价商品共{$count}件</div>
+<!-- 商品内容 -->
+<div class="offer-content">
+	<!-- 头 -->
+	<ul class="content-head clear-float" style="background: #f29b76">
+		<li class="width30">产品名称</li>
+		<li class="width25">规格</li>
+		<li class="width20">报价</li>
+		<li class="width25">历史报价</li>
+	</ul>
+	<!-- 内容 -->
+	<div class="content-body">
+		<!-- 表格中商品名称行，有个属性 rowspan 要获取td的数量动态给值，不然无法跨列  -->
+		<volist name="goods" id="v" key='key'>
+			<div class="goods"> 
+				<table style="overflow:hidden;width: 100%">
+					<volist name="v['child']" id="vo">
+						<tr>
+							<if condition='$key eq 0'>
+								<td rowspan="<?php echo count($v['child'])+1;?>" class="offer-td1 width30">
+									<a href="" class="a-blue">{$v.goods_name}</a>	
+								</td>
+							</if>
+							<td class="width25 smllfont border-left">{$vo.spec_key_name}</td>
+							<td class="width20 border-left">￥{$vo.offer_price}</td>
+							<td class="width25 border-left"><a href="{:U('User/bill_history',array('id'=>$vo.goods_id,'key'=>$vo.spec_key))}" class="a-green">查看历史</a></td>
+						</tr>
+					</volist>
+				</table>
+			</div>	
+		</volist>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function(e){
+					document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+	}, false);
+
+</script>
+</body>
+</html>

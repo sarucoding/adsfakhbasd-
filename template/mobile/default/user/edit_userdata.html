@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>设置密码</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+  <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+  <link rel="stylesheet" href="__PUBLIC__/mobile/css/tariff.css">
+  <link rel="stylesheet" href="__PUBLIC__/mobile/css/order.css">
+  <link rel="stylesheet" href="__PUBLIC__/mobile/css/usercenter.css">
+  <style>
+    input::-ms-input-placeholder{ color:#d3d3d3;font-size: 13px; }
+    input::-webkit-input-placeholder{ color:#d3d3d3;font-size: 13px; }
+    input::-moz-placeholder{ color:#d3d3d3;font-size: 13px; }
+    .none{ display: none; }
+    html{ background:#f4f4f4; }
+  </style>
+</head>
+<body>
+  <div class="twostatus-header" style="padding-bottom: 0.6rem;margin-bottom:0;">
+		<div class="container">
+			<a class="back" href="javascript:history.go(-1);">
+				<img src="__PUBLIC__/mobile/img/register/register1.png">
+			</a>
+			<span style="margin-left: 35%">个人资料</span>
+		</div>
+		<!-- 个人信息 -->
+		<div class="set-usermsg clear-float" style="margin: 0 0.4rem;">
+				<span class="data-span">头像</span>
+				<!-- 头像 -->
+				<img src="{$user['head_pic']}" class="avater data-avater">
+		</div>
+	</div>
+	<!--其他信息-->
+	<form action="" method="">
+
+		<div class="set-help">
+			<p>
+				<span>用户名</span>
+				<input type="text" name="mobile" value ="{$user['mobile']}" readonly class="right-float data-gray">
+			</p>
+			<p>
+				<span>昵称</span>
+				<input type="text" name="realname" value ="{$user['realname']}" class="right-float data-gray">
+			</p>
+					</div>
+		<!-- 提交 -->
+    	<input type="button" value="保存" class="pay-upwd-sub">
+		<!-- 遮挡层 -->
+		<div class="order-cover" style="top:0;">
+			<div class="upload">
+				<div class="head-font clear-float">
+					<span>上传头像</span>
+					<img src="__PUBLIC__/mobile/img/pay/xx_03.jpg" class="right-float">
+				</div>
+				<div class="upload-img">
+					<div class="upload-avatar">
+						<input type="file" name="head_pic" value="" class="sub-img">
+						<img src="__PUBLIC__/mobile/img/pay/frame.png">
+					</div>
+					<p>请上传新的头像</p>
+					<input type="button" value="确认上传" name="" class="sure" />
+				</div>
+			</div>
+		</div>
+	</form>
+	
+  <script src="__PUBLIC__/mobile/js/jquery-1.11.3.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (e) {
+      document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+    }, false);
+   
+    // 上传图片
+		$(function () {
+			// 点击图片触发input
+			$('.upload-avatar>img').click(function () {
+				$(this).prev().click();
+			});
+
+			// 显示预览
+			//绑定更换头像实现预览的效果
+			$(".sub-img").on('change', function () {
+				var file = $(this).val();
+				setImagePreview(file);
+			});
+			//实现实时预览的函数
+			function setImagePreview(avalue) {
+				var docObj = $('.sub-img')[0]; //input
+				var imgObjPreview = $('.upload-avatar>img')[0];  //img
+				if (docObj.files && docObj.files[0]) {
+					imgObjPreview.style.width = '2.5rem';
+					imgObjPreview.style.height = '2.43rem';
+					// 设置、替换img的路径
+					imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+				}
+				return true;
+			}
+		});
+
+		// 显示上传头像
+		var cover = $('.order-cover');
+		$('.set-usermsg').click(function () {
+			cover.addClass('cover-color');
+		});
+
+		// X 关闭遮挡层
+		$(".upload").click(function(e) {
+			e.stopPropagation();
+		})
+		$('.head-font img,.order-cover').click(function () {
+			$('.upload').slideUp(300);
+			setTimeout(() => {
+				cover.removeClass('cover-color');
+			}, 400);
+			setTimeout(() => {
+				$('.upload').slideDown(100);
+			}, 600);
+		});	
+  </script>
+</body>
+</html>

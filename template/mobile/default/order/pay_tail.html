@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html style="background:#f4f4f4;">
+<head>
+    <title>收银台</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" href="__PUBLIC__/mobile/css/tariff.css">
+    <!-- 输入密码样式 -->
+</head>
+<body>
+<!-- 头部、订单中心、标题、需支付 -->
+<div class="morefont-header clear-float" style="margin:0;">
+    <div class="container clear-float">
+        <a class="back left-float" href="javascript:history.go(-1);">
+            <img src="__PUBLIC__/mobile/img/register/register1.png">
+        </a>
+        <span class="char">收银台</span>
+        <a class="edit right-float" href="">订单中心</a>
+    </div>
+    <div class="right-float payable">需支付：<b>{$order.order_amount}</b></div>
+</div>
+
+<table></table>
+<!-- 方式 -->
+<div class="pay-way">支付方式</div>
+
+<!-- 支付主体 -->
+<div class="pay-content">
+
+    <!-- 支付宝&微信 -->
+    <div class="aliwx">
+        <if condition="$is_weixin eq 1">
+            <!-- 微信 -->
+            <div class="content-nth2" style="border-bottom:1px solid #dcdcdc">
+                <div class="remain-opt clear-float">
+                    <div>
+                        <img src="__PUBLIC__/mobile/img/pay/pay-wx.png">
+                    </div>
+                    <div class="opt-cue">
+                        <p>微信支付</p>
+
+                        <p>微信安全支付</p>
+                    </div>
+                    <div class="opt-last">
+                        <input value="pay_code=weixin" type="radio" name="pay_radio" checked class="visibility ">
+                        <img id="weixin" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+                    </div>
+                </div>
+            </div>
+            <else/>
+            <!-- 支付宝 -->
+            <div class="content-nth2">
+                <div class="remain-opt clear-float">
+                    <div>
+                        <img src="__PUBLIC__/mobile/img/pay/alipay.png">
+                    </div>
+                    <div class="opt-cue">
+                        <p>支付宝支付</p>
+
+                        <p>支付宝安全支付</p>
+                    </div>
+                    <div class="opt-last">
+                        <input value="pay_code=alipay" type="radio" checked name="pay_radio" class="visibility ">
+                        <img id="alipay" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+                    </div>
+                </div>
+            </div>
+
+        </if>
+    </div>
+</div>
+
+<!-- 底部支付框 点击弹出密码框 -->
+<div class="pay-bottom">
+    <span id="pay_type_name">立即支付&nbsp;{$order.order_amount}</span>
+</div>
+
+
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer;
+    });
+    document.addEventListener("DOMContentLoaded", function (e) {
+        document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+    }, false);
+
+    // 控制选中后图片切换支付方式
+    (function () {
+
+        // 微信、支付宝
+        var payimg = $('.aliwx .opt-last>img');
+        var img1 = payimg.eq(1);
+        var img2 = payimg.eq(0);
+        img1.click(function () {
+            $(this).attr("src", "__PUBLIC__/mobile/img/cart/cart_03.png").prev().prop("checked", true);
+            img2.attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png").prev().prop("checked", false);
+        });
+        img2.click(function () {
+            $(this).attr("src", "__PUBLIC__/mobile/img/cart/cart_03.png").prev().prop("checked", true);
+            img1.attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png").prev().prop("checked", false);
+        });
+        $('.pay-bottom').click(function(){
+            var pay_radio = $("input[name='pay_radio']:checked").val();
+            var order_id = "{$order.order_id}";
+            if(pay_radio == 'pay_code=alipay'){
+                //支付宝直接跳转
+                location.href = "{:U('payment/getTailCode')}?pay_radio=pay_code=alipay&order_id="+order_id;
+            }else {
+                $.ajax({
+                    type: 'post',
+                    url: "{:U('payment/getTailCode')}",
+                    data: {pay_radio: pay_radio, order_id: order_id},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 1) {
+                            var code_obj = eval('(' + data.result + ')');
+                            callpay(code_obj);
+                        } else {
+                            layer.msg(data.msg, {icon: 2});
+                        }
+                    },
+                    error: function (msg) {
+                        layer.msg('网络连接失败');
+                    }
+                })
+            }
+        })
+    })();
+    //调用微信JS api 支付
+    function jsApiCall(data)
+    {
+        WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',data,
+                function(res){
+                    //WeixinJSBridge.log(res.err_msg);
+                    if(res.err_msg == "get_brand_wcpay_request:ok") {
+                        location.href = "{:U('pay_tail_success',array('order_id'=>$order.order_id))}";
+                    }else{
+                        layer.msg('支付已取消');
+                        //location.href='$back_url';
+                    }
+                }
+        );
+    }
+
+    function callpay(data)
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall(data);
+        }
+    }
+
+</script>
+</body>
+</html>

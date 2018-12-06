@@ -1,0 +1,459 @@
+/*一、地址管理页面样式*/
+/*显示详细地址部分样式*/
+.addnew-header .container .back img{
+    display: inline-block;
+}
+.address-detail{
+    background-color: #fff;
+    padding-top: 0.266667rem;
+}
+.address-content{
+    margin: 0 0.466667rem;
+    overflow: hidden;
+}
+.address-content::before{
+    content: "";
+    display: table;
+}
+.address-item{
+    position: relative;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f4f4f4;
+    transition: all .3s linear;
+}
+.address-item .set-default-tag{
+    position: absolute;
+    display: inline-block;
+    width: 6%;
+    top: 40%;
+}
+.address-item .set-default-tag img{
+    position: absolute;
+    width: 0.48rem;
+    height: 0.48rem;
+}
+.address-item .detail-info{
+    display: inline-block;
+    position: relative;
+    left: 8%;
+    width: 92%;
+    vertical-align: middle;
+}
+.address-item .name{
+    font-size: 0.426667rem;
+}
+.address-item .info{
+    font-size: 0.346667rem;
+    margin-top: 0.2rem;
+}
+.address-item .info span:nth-child(2){
+    margin-left: 0.266667rem;
+}
+.address-item .info span:nth-child(3){
+    font-size: 12px;
+    background-color: #F02F0F;
+    border-radius: 0.106667rem;
+    color: #fff;
+    padding: 0 0.106667rem;
+    vertical-align: middle;
+    margin-left: 0.466667rem;
+}
+.address-item .location{
+    position: relative;
+    font-size: 12px;
+    margin-top: 0.2rem;
+}
+.address-item .location span:first-child{
+    margin-right: 0.266667rem;
+}
+.address-item .location img{
+    position: absolute;
+    bottom: 0;
+    width: 0.48rem;
+    height: 0.48rem;
+    margin-right: 0.4rem;
+}
+.address-item .location span:nth-child(1){
+    width: 88%;
+    display: inline-block;
+    vertical-align: text-top;
+}
+.address-item .location span:nth-child(2){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 60%;
+    display: inline-block;
+    vertical-align: text-top;
+}
+.address-item .buttons{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: -3.0rem;
+    font-size: 0;
+}
+.address-item .buttons div{
+    display: inline-block;
+}
+.address-item .buttons div:nth-child(1){
+    width: 1.8rem;
+    text-align: center;
+    background-color: #C2C2C2;
+    color: #fff;
+    font-size: 14px;
+    height: 100%;
+    line-height: 2.7rem;
+}
+.address-item .buttons div:nth-child(2){
+    width: 1.2rem;
+    text-align: center;
+    background-color: #F02F0F;
+    color: #fff;
+    font-size: 14px;
+    height: 100%;
+    line-height: 2.7rem;
+}
+/*新建收货地址按钮*/
+.address-add{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0.4rem 0;
+}
+.address-add a{
+    text-decoration: none;
+}
+.address-add .add-btn{
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    background-color: #00B050;
+    padding: 0.266667rem 0;
+    font-size: 14px;
+    border-radius: 0.666667rem;
+    color: #fff;
+}
+
+/*二、新建联系人页面样式*/
+input::-ms-input-placeholder{ color:#B6B6B6; }
+input::-webkit-input-placeholder{ color:#B6B6B6; }
+input::-moz-placeholder{ color:#B6B6B6; } 
+.addnew-detail{
+    background-color: #fff;
+}
+.addnew-content{
+    margin: 0 0.266667rem;
+}
+.addnew-content .common{
+    font-size: 0;
+    padding: 0.466667rem 0;
+    border-bottom: 1px solid #CACACA;
+}
+.addnew-content .common div{
+    display: inline-block;
+    font-size: 15px;
+}
+.addnew-content .common div:nth-child(1){
+    width: 21%;
+    color: #646464;
+    text-align-last: justify;
+}
+.addnew-content .common div:nth-child(2){
+    margin-left: 0.2rem;
+    width: 76%;
+}
+.addnew-content .addnew-zone div:nth-child(2){
+    width: 65%;
+}
+.addnew-content .common div input{
+    border: 0;
+    outline: 0;
+    width: 100%;
+}
+.addnew-content .addnew-zone div img{
+    width: 0.773333rem;
+    height: 0.346667rem;
+}
+.addnew-content div.addnew-address{
+    padding-bottom: 1.333333rem;
+}
+/*底部按钮*/
+.address-save{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 0.4rem 0;
+}
+.address-save .save-btn{
+    display: block;
+    width: 70%;
+    margin: auto;
+    border: 0;
+    outline: 0;
+    background-color: #00B050;
+    padding: 0.266667rem 0;
+    font-size: 14px;
+    border-radius: 0.666667rem;
+    color: #fff;
+}
+
+/*弹出模态窗口*/
+.modalbox-back{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+	pointer-events: none;
+	opacity: 0;
+	transition: all .3s linear;
+}
+.modalbox-back.active{
+	pointer-events: auto;
+	background: rgba(0, 0, 0, 0.5);
+	opacity: 1;
+}
+.modaldialog-back{
+    position: relative;
+    top: 40%;
+    margin: 0 0.666667rem;
+}
+.modaldialog-back .content{
+    background-color: #fff;
+    border-radius: 0.133333rem;
+}
+.modaldialog-back .content div:nth-child(1){
+    padding: 1.2rem 0;
+    text-align: center;
+    font-size: 0.373333rem;
+    border-bottom: 1px solid #EDEDED;
+}
+.modaldialog-back .content div:nth-child(2){
+    font-size: 0;
+}
+.modaldialog-back .content div:nth-child(2) span{
+    display: inline-block;
+    font-size: 0.32rem;
+    width: 50%;
+    text-align: center;
+    padding: 0.466667rem 0;
+}
+.modaldialog-back .content div:nth-child(2) span.active{
+    background-color: #FE4212;
+    color: #fff;
+}
+
+/*三、编辑联系人页面样式*/
+.editaddress-header .edit{
+    color: #A1A1A1;
+}
+
+/*点击删除按钮弹出的对话框的样式*/
+/*点击删除按钮弹出的选项*/
+.modalbox-editdelete{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+	opacity: 0;
+	transition: all .3s linear; 
+	pointer-events: none;
+}
+.modalbox-editdelete.active{
+	pointer-events: auto;
+	background: rgba(0, 0, 0, 0.5);
+	opacity: 1;
+}
+.modaldialog-editdelete{
+	position: absolute;
+	width: 100%;
+	bottom: 0.266667rem;
+	left: 0;
+	transition: transform .3s linear;
+	transform: translateY(100%);
+}
+.modaldialog-editdelete.move{
+	transform: translateY(0%);
+}
+.modalbox-editdelete .confirm{
+	margin: 0.266667rem 0.266667rem;
+	background-color: #fff;
+	border-radius: 0.133333rem;
+	color: #FF3B30;
+}
+.modalbox-editdelete .confirm div:first-child{
+	color: #4D4C4C;
+	font-size: 0.24rem;
+	text-align: center;
+	padding: 0.426667rem 0;
+	border-bottom: 1px solid #D9D9DE;
+}
+.modalbox-editdelete .confirm div:last-child{
+	font-size: 0.4rem;
+	text-align: center;
+	padding: 0.506667rem 0;
+}
+.modalbox-editdelete .cancle{
+	background-color: #fff;
+	border-radius: 0.133333rem;
+	text-align: center;
+	font-size: 0.4rem;
+	margin: 0 0.266667rem;
+	padding: 0.506667rem 0;
+	color: #007AFF;
+}
+
+/*点击地区选择按钮弹出对话框样式*/
+.modalbox-selectzone{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s linear;
+    z-index: 999;
+}
+.modalbox-selectzone.active{
+    opacity: 1;
+    pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modaldialog-selectzone{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    transform: translateY(100%);
+    transition: transform .3s linear; 
+}
+.modaldialog-selectzone.move{
+    transform: translateY(0%);
+}
+.modaldialog-selectzone .zone{
+    font-size: 0.24rem;
+    border-bottom: 1px solid #efdede;
+}
+.modaldialog-selectzone .zone .title-head{
+    position: relative;
+    margin: 0.266667rem 0.466667rem 0 0.466667rem;
+}
+.modaldialog-selectzone .zone .title-head div:nth-child(1){
+    color: #A2A2A2;
+    font-size: 0.32rem;
+    text-align: center;
+    margin-bottom: 0.266667rem;
+}
+.modaldialog-selectzone .zone .title-head div:not(:first-child){
+    display: inline-block;
+    padding: 0.133333rem 0.2rem;
+    font-size: 0.32rem;
+}
+.modaldialog-selectzone .zone .title-head div.active{
+    color: #F35338;
+    border-bottom: 1px solid #F35338;
+}
+.modaldialog-selectzone .zone .title-head img.close{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0.36rem;
+    height: 0.36rem;
+}
+.modaldialog-selectzone .zone .title-head img.back{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0.2rem;
+    height: 0.36rem;
+}
+.modaldialog-selectzone .zone-detail.anima{
+    animation: zoneMove .3s linear;
+}
+@keyframes zoneMove{
+    0% {transform: translateX(100%);}
+    20% {transform: translateX(80%);}
+    40% {transform: translateX(60%);}
+    60% {transform: translateX(40%);}
+    80% {transform: translateX(20%);}
+    100% {transform: translateX(0%);}
+}
+.modaldialog-selectzone .zone-detail .content{
+    height: 7rem;
+    overflow-y: scroll;
+    margin: 0 0.466667rem;
+    padding-left: 0.2rem;
+}
+.modaldialog-selectzone .zone-detail .content li{
+    padding: 0.2rem 0;
+    font-size: 0.32rem;
+}
+.opt-last{
+    position: relative;
+    padding: 0.466667rem 0;
+}
+.opt-last span{
+    font-size: 15px;
+    color: #646464;
+}
+.opt-last img{
+    font-size: 15px;
+    color: #646464;
+    width: 0.48rem;
+    height: 0.48rem;
+}
+.default {
+	position: relative;
+    padding: 0.466667rem 0;
+}
+.default div{
+    display: inline-block;
+    vertical-align: middle;
+}
+.default .title{
+    color: #646464;
+    font-size: 15px;
+}
+.default .btn{
+    float: right;
+}
+.default .btn label{
+    width: 0.693333rem;
+    height: 0.393333rem;
+    background-color: #ccc;
+    border-radius: 14px;
+    float: right;
+    margin: 8px 10px 0 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+}
+.default .btn label em{
+    width: 0.346667rem;
+	height: 0.346667rem;
+	float: left;
+	margin: 1px;
+	border-radius: 13px;
+	box-shadow: 2px 3px 8px rgba(0,0,0,.1);
+	background: #fff;
+}
+.default .btn input:checked+label{
+    background-color: #00b050;
+}
+.default .btn input:checked+label em{
+    float: right;
+}
+
+/*占位*/
+.address-nothing{
+    height: 1.6rem;
+    background-color: #fff;
+}

@@ -1,0 +1,253 @@
+/*1.注册页面样式*/
+/*头部样式*/
+.register{
+	background-color: #fff;
+}
+.register-head{
+	border-bottom: 0.05rem solid #ddd;
+}
+.register-head .container{
+	margin: 0 0.666667rem;
+	text-align: center;
+	padding: 0.333333rem 0;
+}
+.register-head .container h2{
+	font-size: 0.48rem;
+}
+.register-head .container a{
+	text-decoration: none;
+	background-image: url(../img/register/register1.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	background-size: 0.28rem 0.453333rem;
+	width: 0.28rem;
+	height: 0.453333rem;
+	padding: 0.066667rem 0;
+}
+/*中间表单*/
+.register-form{
+	margin-top: 1.333333rem;
+}
+.register-form .r-form{
+	margin: 0 0.4rem;
+}
+.r-form .r-common:not(:last-child){
+	margin-top: 0.88rem;
+}
+.r-form .r-common:last-child{
+	margin-top: 1.733333rem;
+}
+.r-form .r-common div{
+	font-size: 0.45rem;
+	display: inline-block;
+	font-weight: 400;
+}
+.r-form .r-common div:first-child{
+	width: 25%;
+	text-align-last: justify;
+	box-sizing: border-box;
+	padding: 0 0.133333rem;
+}
+.r-form .r-common:not(:last-child){
+	border-bottom: 0.02rem solid #d2d2d2;
+	padding-bottom: 0.04rem;
+}
+.phoneNum .i-phone{
+	width: 70%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.r-common input::-ms-input-placeholder{ color:#B3B2B2; }
+.r-common input::-webkit-input-placeholder{ color:#B3B2B2; }
+.r-common input::-moz-placeholder{ color:#B3B2B2; }
+.phoneNum .i-phone input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+	font-size: 0.45rem;
+}
+.idenCode .i-idencode{
+	width: 40%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.idenCode .i-idencode input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.idenCode .getcode{
+	color: #33C073;
+	margin-left: 0.48rem;
+}
+.upwd .i-upwd{
+	width: 62%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.upwd .i-upwd input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.upwd .isshow img{
+	width: 0.706667rem;
+	height: 0.506667rem;
+}
+.inviCode .i-invicode{
+	width: 70%;
+	box-sizing: border-box;
+	padding-left: 0.266667rem; 
+}
+.inviCode .i-invicode input{
+	width: 100%;
+	border: 0;
+	outline: 0;
+}
+.ok-btn{
+	width: 100%;
+	text-align: center;
+}
+.ok-btn input{
+	width: 90%;
+	background-color: #2BBD6E;
+	height: 1.013333rem;
+	border: 0;
+	outline: 0;
+	border-radius: 0.066667rem;
+	color: #fff;
+	font-size: 0.466667rem;
+	font-weight: 700;
+}
+.register .policy{
+	text-align: center;
+	margin-top: 0.373333rem;
+}
+.register .policy p{
+	font-size: 0.32rem;
+}
+.register .policy p a{
+	color: #F08519;
+}
+
+/*2.忘记密码样式*/
+.retrieve-main{
+	width: 90%;
+	margin:0 auto;
+}
+.retrieve-head{
+	border-bottom: 0.05rem solid #ddd;
+}
+.retrieve-head .container{
+	margin: 0 0.666667rem;
+	text-align: center;
+	padding: 0.333333rem 0;
+}
+.retrieve-head .container h2{
+	font-size: 0.48rem;
+}
+.retrieve-head .container a{
+	text-decoration: none;
+	background-image: url(../img/register/register1.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	background-size: 0.28rem 0.453333rem;
+	width: 0.28rem;
+	height: 0.453333rem;
+	padding: 0.066667rem 0;
+	float:left;
+}
+/*中间表单*/
+.retrieve-form{
+	margin-top: 1.333333rem;
+	font-size: 15px;
+}
+.retrieve-form form>div.child-three{
+	border-bottom: 0.03rem solid #d2d2d2;
+	color:#929292;
+	padding: 0rem 0.3rem 0.07rem 0.15rem;
+	margin-bottom: 0.8rem;
+}
+.retrieve-form .form-span{
+	text-align-last: justify;
+	display: inline-block;
+	width:22%;
+	margin-right: 0.5rem;
+	color:#323232;
+}
+.retrieve-form input{
+	border:none;
+	width:37%;
+	font-size: 13px;
+}
+.retrieve-form form div.child-three img{
+	width:0.75rem;
+	height:0.55rem;
+	float:right;
+}
+.retrieve-form input[type="button"]{
+	width:100%;
+	border-radius: 0.1rem;
+	background: #2bbd6d;
+	color:#fff;
+	padding: 0.2rem 0;
+	margin-top: 1rem;
+	font-size: 15px;
+}
+
+/*3.登录页面样式*/
+.login-form input{
+	font-size: 16px;
+	border:none;
+	vertical-align: middle;
+}
+.login-form .border input{
+	width: 80%;
+	display: inline-block;
+}
+.login-form input::-ms-input-placeholder{ color:#929292; }
+.login-form input::-webkit-input-placeholder{ color:#929292; }
+.login-form input::-moz-placeholder{ color:#929292 } 
+.login-btn input[type="button"]{
+	width:100%;
+	border-radius: 0.1rem;
+	background: #2bbd6e;
+	color:#fff;
+	padding: 0.2rem 0;
+	margin-bottom: 0.5rem;
+	font-size: 17px;
+}
+.welcome{
+	font-size: 40px;
+	margin: 23% 28%;
+	text-align: center;
+}
+.login{
+	width:84%;
+	margin:0 auto;
+}
+.login-form .border{
+	border-bottom: 0.02rem solid #d2d2d2;
+	padding-bottom: 0.08rem;
+}
+.login-form div{
+	margin-bottom: 1rem;
+}
+.login-form .border img{
+	width:0.573333rem;
+	height: 0.6rem;
+	vertical-align: middle;
+	margin-right: 0.6rem;
+	display: inline-block;
+}
+.login-form .login-btn div a{
+	color:#383838;
+	text-decoration: none;
+}
+.login-form .login-btn div{
+	display: flex;
+	justify-content: space-between;
+	padding: 0 0.2rem;
+	font-size: 15px;
+	color:#5b5b5b;
+}

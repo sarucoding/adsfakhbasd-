@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html style="background:#f4f4f4;">
+<head>
+    <title>收银台</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" href="__PUBLIC__/mobile/css/tariff.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/confirmorder.css"/>
+    <!-- 输入密码样式 -->
+</head>
+<body>
+<!-- 头部、订单中心、标题、需支付 -->
+<div class="morefont-header clear-float" style="margin:0;">
+    <div class="container clear-float">
+        <a class="back left-float" href="javascript:history.go(-1);">
+            <img src="__PUBLIC__/mobile/img/register/register1.png">
+        </a>
+        <span class="char">收银台</span>
+        <a class="edit right-float" href="">订单中心</a>
+    </div>
+    <div class="right-float payable">需支付：<b>{$settle.settle_amount}</b></div>
+</div>
+
+<table></table>
+<!-- 方式 -->
+<div class="pay-way">支付方式</div>
+
+<!-- 支付主体 -->
+<div class="pay-content">
+    <if condition="$user_money gt 0">
+        <div class=" content-first">
+            <div class="remain-opt clear-float">
+                <div>
+                    <img src="__PUBLIC__/mobile/img/pay/remain-sum.png">
+                </div>
+                <div class="opt-cue">
+                    <p>余额支付</p>
+                    <p>账户余额支付</p>
+                </div>
+                <div class="opt-last">
+                    <if condition="$user.paypwd eq ''">
+                        请先<a href="{:U('user/pay_setting')}" style="color: #FF2A06">设置支付密码</a>
+                        <else/>
+                        <input value="" type="checkbox" name="is_balance" class="visibility">
+                        <img src="__PUBLIC__/mobile/img/cart/nocheck.png">
+                    </if>
+                </div>
+            </div>
+            <div class="opt-sum">账户余额:￥{$user.store_money}</div>
+        </div>
+    </if>
+    <!-- 支付宝&微信 -->
+    <div class="aliwx">
+        <if condition="$is_weixin eq 1">
+            <!-- 微信 -->
+            <div class="content-nth2" style="border-bottom:1px solid #dcdcdc">
+                <div class="remain-opt clear-float">
+                    <div>
+                        <img src="__PUBLIC__/mobile/img/pay/pay-wx.png">
+                    </div>
+                    <div class="opt-cue">
+                        <p>微信支付</p>
+
+                        <p>微信安全支付</p>
+                    </div>
+                    <div class="opt-last">
+                        <input value="pay_code=weixin" type="radio" name="pay_radio" checked class="visibility ">
+                        <img id="weixin" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+                    </div>
+                </div>
+            </div>
+            <else/>
+            <!-- 支付宝 -->
+            <div class="content-nth2">
+                <div class="remain-opt clear-float">
+                    <div>
+                        <img src="__PUBLIC__/mobile/img/pay/alipay.png">
+                    </div>
+                    <div class="opt-cue">
+                        <p>支付宝支付</p>
+
+                        <p>支付宝安全支付</p>
+                    </div>
+                    <div class="opt-last">
+                        <input value="pay_code=alipay" type="radio" checked name="pay_radio" class="visibility ">
+                        <img id="alipay" src="__PUBLIC__/mobile/img/cart/cart_03.png">
+                    </div>
+                </div>
+            </div>
+
+        </if>
+    </div>
+</div>
+<div class="ftc_wzsf">
+    <div class="srzfmm_box">
+        <div class="qsrzfmm_bt clear_wl">
+            <img src="__PUBLIC__/mobile/img/pay/xx_03.jpg" class="tx close left-float">
+            <span class="left-float">请输入支付密码</span>
+
+            <input type="text" value="" name="pwd" class="receive-input" style="width:1.7rem; visibility: hidden;">
+        </div>
+        <div class="zfmmxx_shop">
+            <div class="zhifu_price">余额支付￥<span id="user_money">{$user_money}</span></div>
+        </div>
+        <ul class="mm_box">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="numb_box">
+        <div class="xiaq_tb">
+            <img src="__PUBLIC__/mobile/img/pay/jftc_14.jpg">
+        </div>
+        <ul class="nub_ggg">
+            <li><a href="javascript:void(0);" class="zf_num">1</a></li>
+            <li><a href="javascript:void(0);" class="zj_x zf_num">2</a></li>
+            <li><a href="javascript:void(0);" class="zf_num">3</a></li>
+            <li><a href="javascript:void(0);" class="zf_num">4</a></li>
+            <li><a href="javascript:void(0);" class="zj_x zf_num">5</a></li>
+            <li><a href="javascript:void(0);" class="zf_num">6</a></li>
+            <li><a href="javascript:void(0);" class="zf_num">7</a></li>
+            <li><a href="javascript:void(0);" class="zj_x zf_num">8</a></li>
+            <li><a href="javascript:void(0);" class="zf_num">9</a></li>
+            <li><a href="javascript:void(0);" class="zf_empty">清空</a></li>
+            <li><a href="javascript:void(0);" class="zj_x zf_num">0</a></li>
+            <li><a href="javascript:void(0);" class="zf_del">删除</a></li>
+        </ul>
+    </div>
+    <div class="tb2">
+        <img src="__PUBLIC__/mobile/img/pay/15.jpg" style="height:0.43rem;">
+    </div>
+    <div class="hbbj"></div>
+</div>
+<!-- 底部支付框 点击弹出密码框 -->
+<div class="pay-bottom">
+    <span id="pay_type_name">立即支付&nbsp;{$settle.settle_amount}</span>
+</div>
+
+
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer;
+    });
+    document.addEventListener("DOMContentLoaded", function (e) {
+        document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+    }, false);
+
+    // 控制选中后图片切换支付方式
+    (function () {
+        $('.content-first .opt-last>img').click(function () {
+            var input_sum = $(this).attr("src");
+            if (input_sum == "__PUBLIC__/mobile/img/cart/yescheck.png") {
+                $(this).attr("src", "__PUBLIC__/mobile/img/cart/nocheck.png").prev().prop('checked', false);
+            } else {
+                $(this).attr("src", "__PUBLIC__/mobile/img/cart/yescheck.png").prev().prop('checked', true);
+            }
+        });
+        // 微信、支付宝
+        var payimg = $('.aliwx .opt-last>img');
+        var img1 = payimg.eq(1);
+        var img2 = payimg.eq(0);
+        img1.click(function () {
+            $(this).attr("src", "__PUBLIC__/mobile/img/cart/cart_03.png").prev().prop("checked", true);
+            img2.attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png").prev().prop("checked", false);
+        });
+        img2.click(function () {
+            $(this).attr("src", "__PUBLIC__/mobile/img/cart/cart_03.png").prev().prop("checked", true);
+            img1.attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png").prev().prop("checked", false);
+        });
+    })();
+    function pay_sub(){
+        var pay_radio = $("input[name='pay_radio']:checked").val();
+        var settle_id = "{$settle.settle_id}";
+        if(pay_radio == 'pay_code=alipay'){
+            //支付宝直接跳转
+            location.href = "{:U('payment/getSettleCode')}?pay_radio=pay_code=alipay&settle_id="+settle_id;
+        }else {
+            $.ajax({
+                type: 'post',
+                url: "{:U('payment/getSettleCode')}",
+                data: {pay_radio: pay_radio, settle_id: settle_id},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 1) {
+                        var code_obj = eval('(' + data.result + ')');
+                        callpay(code_obj);
+                    } else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                },
+                error: function (msg) {
+                    layer.msg('网络连接失败');
+                }
+            })
+        }
+    }
+    //调用微信JS api 支付
+    function jsApiCall(data)
+    {
+        WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',data,
+                function(res){
+                    //WeixinJSBridge.log(res.err_msg);
+                    if(res.err_msg == "get_brand_wcpay_request:ok") {
+                        location.href = "{:U('pay_success',array('settle_id'=>$settle.settle_id))}";
+                    }else{
+                        layer.msg('支付已取消');
+                        //location.href='$back_url';
+                    }
+                }
+        );
+    }
+
+    function callpay(data)
+    {
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }else{
+            jsApiCall(data);
+        }
+    }
+    $(function () {
+        var is_pay_balance = 0;
+        //出现浮动层
+        $(".pay-bottom").click(function () {
+            //如果有使用余额则打开密码输入键盘，否则提交订单
+            if($("input[name='is_balance']:checked").length > 0 && is_pay_balance == 0){
+                $(".ftc_wzsf").addClass('cover-form');
+                $(".numb_box").slideDown(400);
+            }else{
+                pay_sub();
+            }
+        });
+        // 点 X 关闭浮动
+        $(".close").click(function () {
+            $(".ftc_wzsf").addClass('pay-hide');
+            setTimeout(function(){
+                $(".ftc_wzsf").removeClass('cover-form pay-hide');
+            }, 330);
+            $(".mm_box li").removeClass("mmdd");
+            $(".mm_box li").html("");
+            i = 0;
+        });
+        // 隐藏键盘
+        $(".xiaq_tb").click(function () {
+            $(".numb_box").slideUp(400);
+        });
+        // 显示键盘
+        $(".tb2").click(function () {
+            $(".numb_box").slideDown(400);
+        });
+        $('.mm_box li').click(function(){
+            $(".numb_box").slideDown(400);
+        })
+        // 将键盘的值，传给密码框，再把6位密码赋给input
+        var i = 0;
+        $(".nub_ggg li .zf_num").click(function () {
+            var mm_li =  $(".mm_box li").eq(i);
+            if (i < 6) {
+                mm_li.addClass("mmdd");
+                mm_li.attr("data", $(this).text());
+                i++;
+                if (i == 6) {
+                    setTimeout(function () {
+                        var data = "";
+                        $(".mm_box li").each(function () {
+                            data += $(this).attr("data");
+                        });
+                        $('.receive-input').val(data);  // 传值给input
+                        $(".ftc_wzsf").addClass('pay-hide');
+                        setTimeout(function(){
+                            $(".ftc_wzsf").removeClass('cover-form pay-hide');
+                        }, 330);
+                        $(".mm_box li").removeClass("mmdd");
+                        $(".mm_box li").html("");
+                        i = 0;
+                        $.ajax({
+                            type:'post',
+                            url:"{:U('balance_pay')}",
+                            dataType:'json',
+                            data:{settle_id:"{$settle.settle_id}",password:data},
+                            success:function(res){
+                                if(res.status == 1){
+                                    is_pay_balance = 1;
+                                    pay_sub();
+                                }else if(res.status == 2){
+                                    location.href = "{:U('pay_success',array('settle_id'=>$settle.settle_id))}";
+                                }else{
+                                    layer.msg(res.msg,{icon:2});
+                                }
+                            }
+                        })
+                    }, 100);
+                };
+            }
+        });
+        // 删除
+        $(".nub_ggg li .zf_del").click(function () {
+            if (i > 0) {
+                i--
+                $(".mm_box li").eq(i).removeClass("mmdd");
+                $(".mm_box li").eq(i).attr("data", "");
+            }
+        });
+        // 清空
+        $(".nub_ggg li .zf_empty").click(function () {
+            $(".mm_box li").removeClass("mmdd");
+            $(".mm_box li").attr("data", "");
+            i = 0;
+        });
+    });
+</script>
+</body>
+</html>

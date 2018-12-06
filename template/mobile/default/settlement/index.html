@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html style="background:#f4f4f4;">
+<head>
+    <title>结算列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" href="__PUBLIC__/mobile/css/tariff.css">
+    <link rel="stylesheet" href="__PUBLIC__/cji/mescroll.css">
+</head>
+<body>
+<!-- 头部、返回、标题 -->
+<div class="twostatus-header"style="position: fixed;width: 100%;z-index: 999">
+    <div class="container">
+        <a class="back" href="javascript:history.go(-1);">
+            <img src="__PUBLIC__/mobile/img/register/register1.png">
+        </a>
+        <span class="char">账单列表</span>
+    </div>
+    <div class="settlement">
+        <span class="excision active" data-index="0">待支付</span>
+        <span data-index="1">已支付</span>
+    </div>
+</div>
+<div style="height:2.6rem;"></div>
+<!-- 待结算 -->
+<div class="Alist-one" id="settle0">
+    <!-- 账单信息 -->
+    <div id="settle-div0">
+
+    </div>
+</div>
+
+<!-- 已结算 -->
+<div class="Alist-two none" id="settle1">
+    <div id="settle-div1">
+
+    </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+<script src="__PUBLIC__/cji/mescroll.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (e) {
+        document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+    }, false);
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer;
+    });
+    $(function(){
+        var navIndex = 0;//当前选中
+        var mescrollArr = new Array();//菜单所对应的mescroll对象
+        //初始化首页
+        var mescrollId = 'settle';//mescroll容器id
+        var dataListId = 'settle-div';//数据列表id
+        mescrollArr[navIndex] = initMescroll(mescrollId+navIndex, dataListId+navIndex);
+        /*初始化菜单*/
+        $('.settlement span').click(function(){
+            var i=Number($(this).attr("data-index"));
+            if(navIndex!=i) {
+                navIndex=i;
+                //取出菜单所对应的mescroll对象,如果未初始化则初始化
+                if(mescrollArr[i]==null) mescrollArr[i]=initMescroll(mescrollId+i, dataListId+i);
+            }
+        })
+        /*创建MeScroll对象*/
+        function initMescroll(mescrollId,clearEmptyId){
+            //创建MeScroll对象,内部已默认开启下拉刷新,自动执行up.callback,刷新列表数据;
+            var mescroll = new MeScroll(mescrollId, {
+                //上拉加载的配置项
+                up: {
+                    callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page) { getListData(page); }
+                    noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
+                    empty: {
+                        icon: "__PUBLIC__/cji/res/img/mescroll-empty.png", //图标,默认null
+                        tip: "暂无相关数据~", //提示
+                        //btntext: "去逛逛 >", //按钮,默认""
+                        //点击按钮的回调,默认null
+//                        btnClick: function(){
+//                            alert("点击了按钮,具体逻辑自行实现");
+//                        }
+                    },
+                    clearEmptyId: clearEmptyId //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+                }
+            });
+            return mescroll;
+        }
+        /*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+        function getListData(page){
+            //联网加载数据
+            console.log("navIndex="+navIndex+", page.num="+page.num);
+            getListDataFromNet(navIndex, page.num, page.size, function(data){
+                //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+                console.log("data.length="+data.length);
+                mescrollArr[navIndex].endSuccess(data.length);//传参:数据的总数; mescroll会自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+                //设置列表数据
+                setListData(data);
+            }, function(){
+                //联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+                mescrollArr[navIndex].endErr();
+            });
+        }
+
+        /*设置列表数据*/
+        function setListData(data){
+            var listDom = $('#'+dataListId+navIndex);
+            var html_str = '';
+            var jump_url = "{:U('settle_pay')}";
+            var order_url = "{:U('order/detail')}";
+            $.each(data,function(idx,item){
+                html_str += `<div class="Alist-content">
+                        <ul class="Alist-ul">
+                        <li class="Alist-firstli">
+                        <span>账单编号：<b style="color:#4e4e4e;">${item.settle_sn}</b></span>
+                <span class="green">${item.settle_status_new}</span>
+                        </li>
+                        <li>账单生成时间：<span style="color:#4e4e4e;">${item.settle_add_time}</span></li>
+                <li>最迟还款时间：<span style="color:#4e4e4e;">${item.settle_end_time}</span></li>
+                            ${item.clear_time}
+                <li>逾期时间：<span style="color:#4e4e4e;">${item.overdue_days}</span></li>
+                <li>账单订单数：<span style="color:#4e4e4e;">${item.order_count}个</span></li>
+                <li>已支付金额：<span style="color:#4e4e4e;">￥${item.has_pay}</span></li>
+                            ${item.settle_discount}
+                <li>账单金额：<i>￥${item.settle_total}</i></li>
+                </ul>
+                <div class="Alist-table">
+                            <!-- 订单表格 -->
+                        <div class="show-table">
+                        <div class="click-show">
+                        <span class="show-span">查看详情</span>
+                        <img src="__PUBLIC__/mobile/img/pay/table-down.png" class="show-img">
+                        </div>`
+                if(item.settle_status != 1){
+                      html_str += `<div class="go-account">
+                        <p class="hide-p">
+                        <a href="${jump_url}?settle_id=${item.settle_id}" style="color: #fefafa;">去结算</a>
+                        </p>
+                        </div>`;
+                }
+                      html_str +=  `</div>
+                        <div class="none table-news">
+                        <p class="table-p">账单订单信息</p>
+                        <table>
+                            <!-- 头 -->
+                        <thead>
+                        <tr>
+                        <td class="width30">订单编号</td>
+                        <td class="width25">订单金额</td>
+                        <td class="width20">操作</td>
+                        </tr>
+                        </thead>`
+                            <!-- 内容 -->
+                $.each(item.order,function(i,val){
+                    html_str += `<tr>
+                    <td class="width30 size03">${val.order_sn}</td>
+                    <td class="width25 red">${val.total_amount}</td>
+                            <td class="width20"><a href="${order_url}?order_id=${val.order_id}" class="green">订单详情</a></td>
+                            </tr>`;
+                })
+
+
+                            <!-- 尾 -->
+                        html_str += `<tfoot>
+                        <tr>
+                        <td colspan="4" class="tfoot-td clear-float">
+                        <div class="right-float">
+                        <span style="color:#888">共计金额：</span>
+                <span class="red">￥${item.settle_total}</span>
+                </div>
+                </td>
+                </tr>
+                </tfoot>
+                </table>
+                    <!-- 隐藏表格 -->
+                <div class="hide-table">
+                        <img src="__PUBLIC__/mobile/img/pay/table-up.png">
+                        </div>`;
+                if(item.settle_status != 1){
+                    html_str += `<div class="" style="text-align: center;">
+                            <p class="hide-p">
+                            <a href="${jump_url}?settle_id=${item.settle_id}" style="color: #fefafa;">去结算</a>
+                            </p>
+                            </div>`;
+                }
+                        html_str += `</div>
+                        </div>
+                        </div>`;
+            });
+            listDom.append(html_str);
+        }
+
+        /*联网加载列表数据*/
+        function getListDataFromNet(navIndex,pageNum,pageSize,successCallback,errorCallback) {
+            $.ajax({
+                type: 'GET',
+                url: "{:U('index')}",
+                data: {settle_status:navIndex,page:pageNum,limit:pageSize},
+                dataType: 'json',
+                success: function (data) {
+                    successCallback(data);
+                }
+            })
+        }
+        //禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
+        document.ondragstart=function() {return false;}
+    })
+    // 待结算、已结算切换
+    $('.settlement').on('click','span',function(){
+        $(this).addClass('active').siblings().removeClass('active');
+        var a = $('.settlement span').eq(0) , b = $('.settlement span').eq(1);
+        if ( a.is('.active') ) {
+            $('.Alist-one').show();
+            $('.Alist-two').hide();
+        };
+        if ( b.is('.active') ) {
+            $('.Alist-one').hide();
+            $('.Alist-two').show();
+        };
+    });
+
+    // 显示表格
+    $(document).on('click', '.show-table .click-show', function () {
+        $(this).parent().hide().siblings().show();
+    });
+
+    // 隐藏表格
+    $(document).on('click', '.hide-table img', function () {
+        $(this).parent().parent().hide();
+        $(this).parent().parent().siblings('.show-table').show();
+    });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>分类</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/tariff.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/order.css">
+  <link rel="stylesheet" href="__PUBLIC__/cji/mescroll.css">
+  <link rel="stylesheet" href="__PUBLIC__/cji/mescroll-option.css">
+</head>
+<body style=" position: fixed; width: 100%;">
+  <!-- 头：搜索框、一级下拉 -->
+<div id="header" class="header">
+  <!--搜索框-->
+  <div class="search clear-float">
+    <div class="search-container">
+      <a class="left left-float" href="tel:{$tel}">
+        <img src="__PUBLIC__/mobile/img/classify/head-img1.png"  />
+      </a>
+      <a href="{:U('goods/search')}">
+      <div class="keyword-container" style="top: -0.15rem">
+        <img src="__PUBLIC__/mobile/img/search.png" alt="" style="width: 0.426667rem;" />
+        <input type="text" name="keyword" id="keyword" value="" placeholder="搜索商品名称" />
+      </div>
+      </a>
+      <a class="right right-float" href="javascript:void(0)">
+        <img src="__PUBLIC__/mobile/img/classify/head-img2.png" />    
+      </a>
+      <div class="shortcut-menu" style="top: 1.066667rem;right: 0.213333rem;">
+        <a class="common-item" href="{:U('index/index')}">
+          <i>首页</i>
+        </a>
+        <a class="common-item" href="{:U('commonlist/index')}">
+          <i>常用清单</i>
+        </a>
+        <a class="common-item" href="{:U('cart/index')}">
+          <i>购物车</i>
+        </a>
+        <a class="common-item" href="{:U('user/index')}">
+          <i>个人中心</i>
+        </a>
+        <!--三角箭头-->
+        <div class="triangle_border_up">
+          <span class="triangle_border_inner"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 滑动菜单 -->
+  <div class="order-status clear-float">
+    <ul id="cat">
+    <foreach name="store" item="vo" key="k">
+      <li <if condition="$k eq 0">class="head-active"</if> data-id={$vo['cat_id']}  >
+          {$vo['cat_name']}
+      </li>
+    </foreach>
+    </ul>
+    <div class="status-dropdown right-float">
+    <img src="__PUBLIC__/mobile/img/classify/shadow.png" class="shadow-img">
+      <img src="__PUBLIC__/mobile/img/classify/double_arrow1.png">
+    </div>
+  </div>
+  <!-- 筛选 -->
+  <div class="two-menu">
+    <div class="menu-font menu-active">综合</div>
+    <div class="sales-updown menu-font">销量<img src="__PUBLIC__/mobile/img/classify/screen.png" style="width:0.3rem;vertical-align:unset;height:0.29rem" class="menu-img ">
+    <input type="hidden" name="order" value = ""/>
+    </div>
+    <div class="two-menu-opt">
+      筛选
+      <img src="__PUBLIC__/mobile/img/classify/screen1.png" style="width:0.28rem;height:0.3rem" class="menu-img">
+    </div>
+  </div>
+</div>
+<!-- 主体 -->
+<div class="ify-content clear-float">
+  <div class="ify-shadow"></div>
+  <!-- 左侧 -->
+  <div class="ify-option left-float">
+    <ul>
+    <foreach name="cat_class" item="v" key="k">
+      <li <if condition="$k eq 0">class="opt-active "</if>>{$v['cat_name']}
+          <input class="" type="hidden" name="catid" value="{$v['cat_id']}">
+      </li>
+
+    </foreach>
+    </ul>
+  </div>
+  <!-- 左侧 -->
+  <div class="commonlist-content right-float">
+    <div id="mescroll" class="foryou-container left-margin china-food" style="background-color:#fff;overflow: scroll;height: auto;position: fixed;top: 4.1rem;width:77.5%; bottom: 1rem;">
+      <div class="sweetwine-detail clear-float" id="newsList">
+      </div>
+    </div>
+  </div>
+</div>
+<!--页面底部-->
+<include file="public/foot"/>
+<!-- 选择框 -->
+<div class="order-cover" style="top:1.5rem;z-index: 11;">
+  <div class="twostatus-header">
+    <!-- 全部分类 -->
+    <div class="cover-status">
+      <div class="clear-float" style="padding: 0.15rem 0.25rem;">
+        <div class="left-float status-up" style="font-size: 0.37rem;">请选择分类</div>
+        <div class="status-up right-float status-img">
+          <img src="__PUBLIC__/mobile/img/classify/double_arrow2.png" style="width: 0.65rem;height: 0.5rem;">
+        </div>
+      </div>
+      <div class="cover-menu ">
+        <ul class="order-menu-one">
+          <foreach name="store" item="vo" key="k">
+              <li data-id={$vo['cat_id']}>
+                  <span <if condition="$k eq 0">class="active"</if>>{$vo['cat_name']}</span>
+              </li>
+          </foreach>  
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 筛选框 -->
+<div class="ify-cover">
+  <div class="ify-cover-opt">
+    <!-- 标题 -->
+    <div class="cover-up">
+      <span style="font-size:0.4rem">品牌</span>
+    </div>
+    <!-- 列表 -->
+    <ul class="clear-float">
+    <foreach name="brand" item="v" key="k">
+      <li>{$v['name']}</li>
+      <input type="hidden" name="brand_id" value="{$v['id']}">
+    </foreach>
+    </ul>
+    <div class="cover-bottom">
+      <span class="cover-reset">重置</span><span class="cover-confirm">确定</span>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script src="__PUBLIC__/cji/mescroll.js" type="text/javascript" charset="utf-8"></script>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery.fly.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function (e) {
+    document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+  }, false);
+
+  // 订单状态滚动到头和尾
+  slither();
+
+ //加载分类
+ function catajax(cid){
+     $.ajax({
+        type:'POST',
+        url:"/index.php?m=Mobile&c=Goods&a=ajax_calss",
+        dataType:'JSON',
+        async: false,
+        data :{cid:cid},
+        success: function(obj){
+            var html = "";
+            for(var i = 0; i < obj.length; i++){
+              if(i == 0){
+                html += `<li class="opt-active">${obj[i].cat_name}`;
+                html += `<input class="" type="hidden" name="catid" value="${obj[i].cat_id}"></li>`;
+              }else{
+                if(obj.length-1 == i){
+                  html += `<li style="margin-bottom: 162px;">${obj[i].cat_name}`;
+                  html += `<input class="" type="hidden" name="catid" value="${obj[i].cat_id}"></li>`;
+                }else{
+                  html += `<li>${obj[i].cat_name}`;
+                  html += `<input class="" type="hidden" name="catid" value="${obj[i].cat_id}"></li>`;
+                }
+                
+              }
+            }
+            $(".ify-option ul").html(html);
+            //获取cid默认值
+            var defaultCid = parseInt($(".ify-option>ul>li.opt-active").next().val());
+        }
+   });
+  }
+
+      var brands = '';
+  $(function () {
+      // 页面一加载就获取默认选中的id
+      $("#test li").click(function(){
+        var index = $(this).index()+1;
+        alert(index);
+        return false;
+      });
+      
+      /****
+      **以下为商品品牌筛选相关事件
+      ***/
+      
+      // 点击显示筛选框
+      $(".two-menu").on("click", ".two-menu-opt", function () {
+        $('.ify-cover').addClass('cover-color').show()
+          .find('.ify-cover-opt').addClass('ify-cover-move');
+      });
+      // 选中相关品牌
+      $(".ify-cover-opt").on('click', 'ul li', function () {
+        if($(this).hasClass("ify-cover-active")){
+          $(this).removeClass("ify-cover-active");
+        }
+        else{
+          $(this).addClass("ify-cover-active");
+        }       
+      });
+      
+
+
+      
+      // 点击 "重置" ul返回默认状态
+      $(".ify-cover-opt").on("click", ".cover-reset", function () {
+        $(this).parent().prev().find('li').removeClass('ify-cover-active');
+      })
+           
+      // 遮挡层 点击隐藏
+      $('.ify-cover').click(function () {
+        $('.ify-cover-opt').removeClass('ify-cover-move');
+        $(this).removeClass('cover-color');
+      });
+      
+      // 阻止事件冒泡
+      $('.ify-cover-opt').click(function (e) { e.stopPropagation(); })
+      
+      // 点击多品下拉箭头单自下拉
+      $(document).on("click", ".switch-btn", function () {
+        if ($(this).attr("src") === "__PUBLIC__/mobile/img/switchdown.png") {
+          $(this).attr("src", "__PUBLIC__/mobile/img/switchup.png");
+          $(this).parent().parent().parent().find(".sub-product").slideDown(500);
+        } else {
+          $(this).attr("src", "__PUBLIC__/mobile/img/switchdown.png");
+          $(this).parent().parent().parent().find(".sub-product").slideUp(500);
+        };
+      });
+      
+       
+      // 询价按钮点击
+      // $('.switch').on('click', '.ify-inquiry', function () {
+      //   $(this).hide().siblings().show();
+      // })
+      // 选择框 添加class ;选择框内选中后，隐藏遮挡层
+      // $('.order-cover .cover-menu ul').on('click', 'li', function () {
+      //   $(this).find('span').addClass('active').parent().siblings()
+      //     .find('span').removeClass('active');
+      //   setTimeout(() => {
+      //     $('.order-cover').removeClass('cover-color');
+      //   }, 200);
+      // });     
+    });
+</script>
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+      //创建MeScroll对象
+      var mescroll = new MeScroll("mescroll", {
+        up: {
+          auto:false,//初始化完毕,是否自动触发上拉加载的回调
+          //isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+          callback: getListData, //上拉加载的回调
+          empty: {
+            icon: "__PUBLIC__/cji/res/img/mescroll-empty.png", //图标,默认null
+            tip: "暂无相关数据~", //提示
+            // btntext: "去逛逛 >", //按钮,默认""
+            // btnClick: function(){
+            //   alert("点击了按钮,具体逻辑自行实现");
+            // } 
+          },
+          clearEmptyId: "newsList" //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+        }
+      });
+      //点击点状按钮弹出菜单导航
+      //显示导航
+      $(".header .search a.right").click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        // $(".shortcut-menu").css({display: "block"});
+        $(".shortcut-menu").toggle();
+      })
+      $(document).click(function(){
+        // $(".shortcut-menu").css({display: "none"});
+        $(".shortcut-menu").hide();
+      });
+      // 滑动菜单 横拉条 获取滑动菜单的ID cid
+      $('#header .order-status>ul').on("click", "li", function () {
+        $(this).addClass('head-active').siblings().removeClass('head-active');
+        var cid = $(this).attr('data-id');
+
+        var iid = parseInt($(this).attr("data-id"));
+        $(".order-menu-one [data-id=" + iid + "] span").addClass("active").parent().siblings().find("span").removeClass("active");
+
+        catajax(cid);
+        mescroll.resetUpScroll();
+      });
+      // 点击切换商品列表 获取右侧选择框ID lid
+      $('.ify-option>ul').on('click', 'li', function () {
+          $(this).addClass('opt-active').siblings().removeClass('opt-active');
+          var cid = $(this).attr("data-lid");
+          var catid = parseInt($(this).find("input").val());
+          mescroll.resetUpScroll();
+      });
+      //菜单联动
+      var curNavIndex = 0;
+      $('.order-menu-one').on('click', 'li', function () {
+        $(this).find('span').addClass('active').parent().siblings()
+          .find('span').removeClass('active');
+        setTimeout(() => {
+          $('.order-cover').removeClass('cover-color');
+        }, 200);
+
+        var iid = parseInt($(this).attr("data-id"));
+        $(".order-status [data-id=" + iid + "]").addClass("head-active").siblings().removeClass("head-active");
+
+        var cid = $(this).attr('data-id');
+        catajax(cid);
+        mescroll.resetUpScroll();
+
+        var li = $('.order-status ul li.head-active');
+        var moveX = li.position().left + li.parent().scrollLeft();
+        var pageX = document.documentElement.clientWidth;
+        var blockWidth = li.width();
+        var left = moveX - (pageX / 2) + (blockWidth / 2);
+        $(".order-status ul").animate({ scrollLeft: left }, 200);
+        if (curNavIndex != iid) {
+            curNavIndex = iid;
+            $("#order" + curNavIndex).show().siblings('.order-pay').hide();
+            $("#content-ul" + curNavIndex).show();
+        }
+      })
+      //打开数字键盘窗口
+      inputNum(".count", inputNum_callback);
+      function inputNum_callback(elem, num){
+        var data = [];
+        data["num"] = num;
+        data["key"] = $(elem).parent().find("[name=key]").val();
+        data["goods_id"] = $(elem).parent().find("[name=goods_id]").val();
+        ajax_cart(data);
+      }
+      //1.多品购买处第一次购买
+      $(document).on("click", ".count-first", function(){
+        var nowthis = this;       
+        var cartOffset = $(".ify-cart").offset();
+        var addimg = $(this).parents('.fiy-img').find('.left.left-float').find('img').attr('src');
+        var $flyer = $("<img class='flyer' src='" + addimg +"'>");
+        
+        $flyer.fly({
+          start: {
+            left: event.pageX,
+            top: event.clientY
+          },
+          end: {
+            left: cartOffset.left + 40,
+            top: window.innerHeight - 40,
+            width: 0,
+            height: 0
+          },
+          speed: 1.1,
+          vertex_Rtop: 70,
+          onEnd: function () {
+            var goods_id;
+            var key;
+            var countProduct;
+            var nowCount = parseFloat($(nowthis).prev().find(".count").val());
+            $(nowthis).hide().prev().addClass("active").find(".count").val(nowCount + 1);
+            countProduct = $(nowthis).prev().find(".count").val();
+            goods_id = $(nowthis).prev().find("[name=goods_id]").val();
+            key = $(nowthis).prev().find("[name=key]").val();
+            var data = [];
+            data['num'] = countProduct;
+            data['key'] = key;
+            data['goods_id'] = goods_id;
+            ajax_cart(data);
+
+            this.destroy();
+          }
+        });
+      });
+      //点击加按钮
+      $(document).on("click", ".add", function(){
+        var goods_id;
+        var key;
+        var countProduct;
+        var nowCount = parseFloat($(this).parent().find(".count").val());
+        $(this).parent().find(".count").val(nowCount + 1);
+        countProduct = $(this).parent().find(".count").val();
+        goods_id = $(this).parent().find("[name=goods_id]").val();
+        key = $(this).parent().find("[name=key]").val();
+        var data = [];
+        data['num'] = countProduct;
+        data['key'] = key;
+        data['goods_id'] = goods_id;
+        ajax_cart(data);
+      });
+      //点击减按钮
+      $(document).on("click", ".reduce", function(){
+        var goods_id;
+        var key;
+        var countProduct;
+        var nowCount = parseFloat($(this).parent().find(".count").val());
+        var finalCount = nowCount - 1;
+        if(Number.isInteger(finalCount) === false){
+          finalCount = finalCount.toFixed(1);
+        }
+        $(this).parent().find(".count").val(finalCount);
+        countProduct = $(this).parent().find(".count").val();
+        goods_id = $(this).parent().find("[name=goods_id]").val();
+        key = $(this).parent().find("[name=key]").val();
+        if(finalCount <= 0){
+          $(this).parent().removeClass("active").next().show();
+          $(this).parent().find(".count").val(0); //
+          countProduct = 0; //
+        }
+        var data = [];
+        data['num'] = countProduct;
+        data['key'] = key;
+        data['goods_id'] = goods_id;
+        ajax_cart(data);
+      });
+      //点击询价按钮
+      $(document).on("click", ".switce-span", function(){
+        $(this).addClass("active").html("询价中");
+        var goods_id = $(this).parent().find("[name=goods_id]").val();
+        var key = $(this).parent().find("[name=key]").val();
+        var data = {goods_id:goods_id};
+        ajax_inquiry(data);
+
+
+
+        //以下为ajax请求
+        function ajax_inquiry(data){
+          $.ajax({
+            type:"GET",
+            url:"/index.php?m=Mobile&c=Goods&a=ajax_inquiry",
+            dataType:"JSON",
+            data:data,
+            success: function(object){
+              console.log(object);
+            },
+            error:function(){
+
+            },
+          })
+        }
+
+      });
+      // 点击 “确认” 隐藏遮挡层并提交选择的品牌数据
+      $(".ify-cover-opt").on("click", ".cover-confirm", function () {
+        $('.ify-cover-opt').removeClass('ify-cover-move')
+          .parent().removeClass('cover-color');
+        var selectBrand = []; //选择的品牌
+        var $brands = $(".ify-cover-opt ul li");
+        $brands.each(function(index, domEle){   
+          if($(domEle).hasClass("ify-cover-active")){
+            selectBrand.push($(domEle).next().val());
+          }
+        });
+        //发送异步请求
+        brands = selectBrand.join(",");
+        mescroll.resetUpScroll();
+      });
+      //输入提交数量
+      // $('input[name="countproduct"]').on('input propertychange', function() {
+      //   var nowCount = $(this).val();
+      //   var goods_id = $(this).parent().find("[name=goods_id]").val();
+      //   var key = $(this).parent().find("[name=key]").val();
+      //   var data = [];
+      //   data['num'] = nowCount;
+      //   data['key'] = key;
+      //   data['goods_id'] = goods_id;
+      //   ajax_cart(data);
+      // })
+      function ajax_cart(data){
+        $.ajax({
+          type:"GET",
+          url:"/index.php?m=Mobile&c=Cart&a=ajax_add_cart",
+          dataType:"JSON",
+          data:{"num":data['num'],"key":data['key'],"goods_id":data['goods_id']},
+          success: function(object){
+
+          },
+          error:function(){
+
+          },
+        })
+      }
+      // 筛选框 选中字体颜色变化
+      $('#header .two-menu').on('click', '.menu-font', function () {
+        $(this).addClass('menu-active').siblings().removeClass('menu-active');
+        // 销量img箭头
+        if ($(this).hasClass("sales-updown")) {
+          if ($(this).find("img").attr("src") == "__PUBLIC__/mobile/img/classify/screen2.png") {
+            $(this).find("img").attr("src", "__PUBLIC__/mobile/img/classify/screen3.png");
+            $(this).find('input').val('1');
+          } else {
+            $(this).find("img").attr("src", "__PUBLIC__/mobile/img/classify/screen2.png");
+            $(this).find('input').val('2');
+          }
+        } else {
+          $('.sales-updown>img').attr("src", "__PUBLIC__/mobile/img/classify/screen.png");
+          $('.menu-font').find('input').val("");
+        }
+
+        mescroll.resetUpScroll();
+      });
+      /*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+      function getListData(page){
+          //联网加载数据
+          // console.log("page.num="+page.num);
+        getListDataFromNet(page.num, page.size, function(data){
+          //联网成功的回调,隐藏上拉加载的状态
+          mescroll.endSuccess(data.length);//传参:数据的总数; mescroll会自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+          //设置列表数据
+          setListData(data, true);
+        }, function(){
+          //联网失败的回调,隐藏上拉加载的状态
+          mescroll.endErr();
+        });
+      }
+      /*设置列表数据*/
+      function setListData(data, isAppend) {
+        var html = '';
+        $.each(data,function(idx,item){
+          if(item.child.length > 1){
+            var url = "{:U('Goods/goods_info')}";
+            html += `<div class="multitype clear-float fiy-img">
+                      <a href="${url}?goods_id=${item.goods_id}"><div class="left left-float">
+                        <img src="${item.original_img}">
+                      </div>
+                      <div class="right right-float">
+                        <div class="product-title">${item.goods_name}</div></a>
+                        <!-- 点击显示价格 -->
+                        <div class="switch clear-float">`;
+
+                          if(item.offer_price != ''){
+                            html += `<div class="ify-inquiry">
+                            <input type="radio" value="" style="visibility: hidden;position: absolute;">
+                            <span class="switce-span switce-Loading">￥${item.offer_price}`;
+                            if(item.max_offer_price != '' && item.offer_price < item.max_offer_price){
+                              html += `-￥${item.max_offer_price}`;
+                            }
+                            html +=  `</span></div>`;
+                          }else{
+                            html += `<div class="ify-inquiry">
+                            <input type="hidden" name="goods_id" value="${item.goods_id}"/>
+                            <input type="hidden" name="key" value="${item.key}"/>
+                            <span class="switce-span">询价</span>
+                            </div>`;
+                          }
+                            html += `<img class="switch-btn right-float" src="__PUBLIC__/mobile/img/switchdown.png">
+                            </div></div>`;
+                      html += `<div class="sub-product left-float">`;
+              $.each(item.child,function(i,val){
+                html += `<div class="sub clear-float">
+                              <div class="sub-right right-float">
+                              <a href="${url}?goods_id=${item.goods_id}&key=${val.key}">
+                                <div class="sub-title"><span>${val.spec_key_name}</span></div>
+                                </a>
+                                <div class="sub-buy clear-float ">`;
+
+                                if(val.offer_price != ''){
+                                  html += `<span class="sub-price"><span>${val.offer_price}</span></span>
+                                  <div class="count-option right-float">
+                                    <img class="btn reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+                                    <input type="hidden" name="goods_id" value="${val.goods_id}"/>
+                                    <input type="hidden" name="key" value="${val.key}"/>
+                                    <input class="count" type="number" name="countproduct" value="${val.cart_goods_num}">
+                                    <img class="btn add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png">
+                                  </div>
+                                  <div class="count-first right-float">
+                                    <img class="btn first-add" src="__PUBLIC__/mobile/img/commonlist/add.png" alt="">
+                                  </div>`;
+                                }else if(item.type != '3'){
+                                   html += `<div class="ify-inquiry">
+                                    <input type="hidden" name="goods_id" value="${val.goods_id}"/>
+                                    <input type="hidden" name="key" value="${val.key}"/>
+                                  <span class="switce-span">询价</span>
+                                  </div>`;
+                                }else if(val.inquiry_status == '1'){
+                                  html += `<div class="ify-inquiry">
+                                  <input type="radio" value="" style="visibility: hidden;position: absolute;">
+                                  <span class="switce-span active">询价中</span>
+                                  </div>`;
+                                }
+                                  html += `</div></div></div>`;
+                    })
+                html += `</div></div></div>`;
+          }else{
+            var url = "{:U('Goods/goods_info')}";
+            html += `<div class="singletype clear-float fiy-img">
+              <div class="left left-float">
+              <a href="${url}?goods_id=${item.goods_id}"><img src="${item.original_img}"></div>
+              <div class="right right-float">
+              <div class="product-title">${item.goods_name}</div></a>
+              <div class="switch clear-float switch-foot">`;
+              if(item.offer_price != ''){
+                html += `<div class="ify-inquiry">
+                  <input type="radio" value="" style="visibility: hidden;position: absolute;"> 
+                  <span class="switce-span switce-Loading">￥${item.offer_price}</span>
+                  </div><div class="count-option right-float">
+                      <img class="btn reduce" src="__PUBLIC__/mobile/img/commonlist/cart_18.png">
+                      <input type="hidden" name="goods_id" value="${item.goods_id}"/>
+                      <input type="hidden" name="key" value="${item.key}"/>
+                      <input class="count" type="number" name="countproduct" value="${item.cart_goods_num}">
+                      <img class="btn add" src="__PUBLIC__/mobile/img/commonlist/cart_20.png">
+                    </div>
+                    <div class="count-first right-float">
+                      <img class="btn first-add" src="__PUBLIC__/mobile/img/commonlist/add.png" alt="">
+                    </div>`;
+              }else if(item.inquiry_status == '1'){
+                html += `<div class="ify-inquiry">
+                  <input type="radio" value="" style="visibility: hidden;position: absolute;">
+                  <span class="switce-span active">询价中</span>
+                  </div>`;
+              }else{
+                html += `<div class="ify-inquiry">
+                  <input type="hidden" name="goods_id" value="${item.goods_id}"/>
+                  <input type="hidden" name="key" value="${item.key}"/>
+                  <span class="switce-span">询价</span>
+                  </div>`;
+              }
+                html += `</div></div></div>`;
+          }
+        
+      })
+
+        if (isAppend) {
+          $('.sweetwine-detail').append(html);
+        } else{
+          $('.sweetwine-detail').html(html);
+        }
+        //判断是否有购买数
+        var $allProducts = $(".sweetwine-detail .count-option .count");
+          $allProducts.each(function(index, domEle){
+            if(parseFloat($(this).val()) > 0){
+            $(this).parent().addClass("active").next().hide();
+          }
+        });
+      }
+      
+      /*联网加载列表数据*/
+      var downIndex=0;
+      function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
+        var defaultCid = parseInt($(".ify-option>ul>li.opt-active").find("input").val());
+        var order = $('.menu-font').find('input').val();
+        var data = [];
+        var brand = brands;
+        data["cat_id"] = defaultCid;
+        data["page"] = pageNum;
+        data["limit"] = pageSize;
+        data["order"] = order;
+        $.ajax({
+            type:"GET",
+            url:"/index.php?m=Mobile&c=Goods&a=ajax_goods_list",
+            dataType:"JSON",
+            data:{"cat_id":data["cat_id"],"limit":data["limit"],"page":data["page"],"order":data["order"],"brand":brand},
+            success: function(object){
+              successCallback(object);
+            }
+        })
+      }
+      
+      //禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
+      document.ondragstart=function() {return false;}
+    });
+  </script>
+</body>
+</html>

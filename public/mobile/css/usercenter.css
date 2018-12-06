@@ -1,0 +1,481 @@
+/*1.用户基本信息样式*/
+/*1.1背景头像等*/
+#user{
+	margin-bottom: 0.133333rem;
+}
+#user .userinfo1{
+	position: relative;
+	width: 100%;
+	height: 4.72rem;
+	background-image: url(../img/usercenter/bk_03.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+#user .userinfo1:before{
+	content: '';
+	background-color: rgba(0, 0, 0, 0.5);
+    display: block;
+    width: 100%;
+    height: 4.72rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+}
+#user .userinfo1 .container{
+	position: relative;
+	min-height: 2.733333rem;
+	z-index: 10;
+}
+#user .userinfo1 .container:before{
+	display: table;
+	content: "";
+}
+#user .check-ok{
+	display: inline-block;
+	min-height: 1.2rem;
+	text-align: center;
+	margin-top: 0.506667rem;
+	margin-left: 0.586667rem;
+}
+#user .check-ok p{
+	color: #fff;
+	font-size: 12px;
+}
+#user .check-ok img{
+	width: 0.973333rem;
+	height: 0.866667rem;
+}
+#user .name{
+	text-align: center;
+	margin-top: 0.4rem;
+}
+#user .name h3{
+	font-size: 0.48rem;
+	color: #ffffff;
+	height: 0.626667rem;
+}
+#user .avatar{
+	text-align: center;
+	position: absolute;
+	left: 50%;
+	margin-left: -1.333333rem;
+	top: 120%;
+}
+#user .avatar img{
+	border-radius: 50%;
+	width: 2.666667rem;
+	height: 2.666667rem; 
+}
+/*1.2账户余额管理一览*/
+#user .userinfo2 a{
+	color: #ffffff;
+}
+#user .userinfo2 .left{
+	background-color: #00B051;
+	width: 49%;
+	height: 1.626667rem;
+	color: #ffffff;
+}
+#user .userinfo2 .right{
+	background-color: #00B051;
+	width: 49%;
+	height: 1.626667rem;
+	line-height: 1.626667rem;
+	text-align: right;
+}
+#user .userinfo2 .left div:first-child {
+	min-height: 0.493333rem;
+	font-size: 0.373333rem;
+	margin-left: 0.133333rem;
+	margin-top: 0.266667rem;
+}
+#user .userinfo2 .left div:last-child {
+	min-height: 0.333333rem;
+	font-size: 0.32rem;
+	margin-left: 0.133333rem;
+	margin-top: 0.2rem;
+}
+#user .userinfo2 .right div:last-child {
+	font-size: 0.48rem;
+	margin-right: 0.4rem;
+}
+#user .userinfo2 .right div:last-child img{
+	width: 0.426667rem;
+	height: 0.426667rem;
+	vertical-align: middle;
+	margin-left: 0.066667rem;
+}
+/*2.订单部分样式*/
+#order .order-container{
+	width: 98%;
+	margin: auto;
+	height: 4.773333rem;
+	border-radius: 0.066667rem;
+	background-color: #ffffff;
+	color: #939393;
+}
+#order .one{
+	min-height: 0.466667rem;
+	margin: 0 0.266667rem;
+	padding: 0.333333rem 0;
+}
+#order .one div:first-child{
+	font-size: 14px;
+}
+#order .one div:first-child img{
+	vertical-align: middle;
+	margin-right: 0.066667rem;
+	width: 0.28rem;
+	height: 0.333333rem;
+	transform: translateY(-0.026667rem);
+}
+#order .one div:last-child img{
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.2rem;
+	width: 0.186667rem;
+	height: 0.266667rem;
+	/*transform: translateY(0.08rem);*/
+}
+#order .one div:last-child a{
+	display: inline-block;
+	vertical-align: middle;
+	color: #939393;
+	font-size: 12px;
+}
+#order .line{
+	height: 2px;
+	background-color: #00B050;
+	margin: 0 0.266667rem;
+}
+#order .two{
+	min-height: 1.466667rem;
+	margin: 0 0.266667rem;
+}
+#order .two div{
+	width: 50%;
+	font-size: 14px;
+	text-align: center;
+	padding: 0.533333rem 0;
+}
+#order .two div.active{
+	color: #00B050;
+}
+
+#order .three-cash{
+	min-height: 1.333333rem;
+	margin: 0 0.266667rem;
+}
+#order .three-cash li{
+	float: left;
+	width: 16.66%;
+	text-align: center;
+}
+#order .three-cash li a{
+	display: block;
+	color: #939393;
+	text-decoration: none;
+}
+#order .three-cash li a img{
+	width: 0.733333rem;
+	height: 0.666667rem;
+}
+#order .three-cash li a div{
+	margin-top: 0.333333rem;
+	font-size: 12px;
+}
+
+#order .three-account{
+	min-height: 1.4rem;
+	margin: 0 0.266667rem;
+}
+#order .three-account li{
+	float: left;
+	width: 20%;
+	text-align: center;
+}
+#order .three-account li a{
+	display: block;
+	color: #939393;
+	font-size: 0.266667rem;
+	text-decoration: none;
+}
+#order .three-account li a img{
+	width: 0.733333rem;
+	height: 0.666667rem;
+}
+#order .three-account li a div{
+	margin-top: 0.333333rem;
+	font-size: 12px;
+}
+/*3.账单部分样式*/
+#bill{
+	margin-top: 0.266667rem;
+}
+#bill .bill-container{
+	width: 98%;
+	min-height: 3.6rem;
+	background-color: #ffffff;
+	margin: auto;
+	border-radius: 0.066667rem;
+	color: #939393;
+}
+#bill .one{
+	min-height: 0.466667rem;
+	margin: 0 0.266667rem;
+	padding: 0.333333rem 0;
+}
+#bill .one div:first-child{
+	font-size: 14px;
+}
+#bill .one div:first-child img{
+	vertical-align: middle;
+	margin-right: 0.066667rem;
+	width: 0.346667rem;
+	height: 0.32rem;
+	transform: translateY(-0.026667rem);
+}
+#bill .one div:last-child img{
+	vertical-align: middle;
+	display: inline-block;
+	margin-left: 0.2rem;
+	width: 0.186667rem;
+	height: 0.266667rem;
+	/*transform: translateY(0.08rem);*/
+}
+#bill .one div:last-child a{
+	vertical-align: middle;
+	display: inline-block;
+	color: #939393;
+	font-size: 12px;
+}
+#bill .line{
+	height: 2px;
+	background-color: #00B050;
+	margin: 0 0.266667rem;
+}
+#bill .two{
+	margin: 0 0.266667rem;
+}
+#bill .two li{
+	width: 33%;
+	float: left;
+	text-align: center;
+}
+#bill .two li p:first-child{
+	min-height: 0.533333rem;
+	font-size: 14px;
+	margin-top: 0.266667rem;
+}
+#bill .two li p:last-child{
+	font-size: 12px;
+	margin-top: 0.266667rem;
+}
+#bill .line2{
+	height: 1px;
+	background-color: #F4F4F4;
+	margin: 0.266667rem 0.266667rem 0 0.266667rem;
+}
+#bill .account{
+	min-height: 0.6rem;
+	text-align: center;
+	padding-top: 0.266667rem;
+	padding-bottom: 0.266667rem;
+}
+#bill .account a{
+	font-size: 14px;
+	color: #939393;
+	text-decoration: none;
+}
+/*4.其他信息部分样式*/
+#otherinfo{
+	margin-top: 0.266667rem;
+}
+#otherinfo .otherinfo-container{
+	width: 98%;
+	min-height: 4.32rem;
+	border-radius: 0.066667rem;
+	background-color: #ffffff;
+	margin: auto; 
+}
+#otherinfo .line{
+	height: 1px;
+	background-color: #F4F4F4;
+	margin: 0 0.266667rem;
+}
+#otherinfo .common{
+	min-height: 0.493333rem;
+	background-image: url(../img/usercenter/user_49.png);
+	background-size: 0.253333rem 0.36rem;
+	background-position: center right;
+	background-repeat: no-repeat;
+	margin: 0 0.266667rem;
+	padding: 0.466667rem 0;
+	border-bottom: 1px solid #f4f4f4;
+}
+#otherinfo .common a{
+	color: #939393;
+	font-size: 14px;
+	display: block;
+	text-decoration: none;
+}
+/*5.帮助部分样式*/
+#help{
+	margin-top: 0.266667rem;
+}
+#help .help-container{
+	width: 98%;
+	min-height: 3.573333rem;
+	border-radius: 0.066667rem;
+	background-color: #ffffff;
+	margin: auto; 
+}
+#help .helpcenter{
+	min-height: 0.493333rem;
+	background-image: url(../img/usercenter/user_49.png);
+	background-size: 0.253333rem 0.36rem;
+	background-position: center right;
+	background-repeat: no-repeat;
+	margin: 0 0.266667rem;
+	padding: 0.466667rem 0;
+}
+#help .helpcenter a{
+	color: #939393;
+	font-size: 14px;
+	display: block;
+	text-decoration: none;
+}
+#help .helpcenter a img{
+	width: 0.32rem;
+	height: 0.333333rem;
+	transform: translateY(0.04rem);
+	margin-right: 0.066667rem;
+}
+#help .line{
+	height: 2px;
+	background-color: #00B050;
+	margin: 0 0.266667rem;
+}
+#help .help-btn{
+	margin-top: 0.4rem;
+}
+#help .help-btn ul{
+	min-height: 1.2rem;
+	margin: 0 0.533333rem;
+}
+#help .help-btn ul li{
+	float: left;
+	width: 33.3%;
+	box-sizing: border-box;
+}
+#help .help-btn ul li:first-child{
+	padding-right: 1.333333rem;
+}
+ #help .help-btn ul li:last-child{
+ 	padding-left: 1.333333rem;
+ }
+#help .help-btn ul li a{
+	display: block;
+	color: #939393;
+	font-size: 12px;
+	text-align: center;
+	text-decoration: none;
+}
+#help .help-btn ul li a p{
+	margin-top: 0.2rem;
+}
+#help .help-btn ul li a img{
+	width: 0.613333rem;
+	height: 0.613333rem;
+}
+
+#nothing{
+	height: 1.2rem;
+}
+
+
+/* 账户设置 */
+.set-usermsg{
+	margin: 0 0.4rem;
+	margin-top: 0.2rem;
+	position: relative;
+}
+.set-usermsg .avater{
+	border-radius: 50%;
+	width: 2.3rem;
+	height: 2.3rem;
+	vertical-align: middle;
+}
+.set-usermsg .msg{
+	margin-left: 5%;
+	display: inline-block;
+	width: 67%;
+	vertical-align: middle;
+	position: relative;
+}
+.set-usermsg .msg .p1{
+	margin-bottom: 0.3rem;
+	font-size: 13px;
+}
+.set-usermsg .msg .p2{
+	font-size: 10px;
+	color: #939393;
+}
+.set-usermsg .msg img{
+	width:0.3rem;
+	height:0.8rem;
+	position: absolute;
+	right: 0;
+	bottom: 0.3rem;
+}
+.set-help{
+	background: #fff;
+	padding: 0 0.4rem;
+}
+.set-help p{
+	padding: 0.45rem 0;
+	font-size: 14px;
+}
+.set-help p~p{
+	border-top: 1px solid #d9d9d9;
+}
+.set-quit{
+	text-align: center;
+	padding: 0.2rem 0;
+	background: #fff;
+	position: fixed;
+	bottom: 0.5rem;
+	width:100%;
+	font-size: 16px;
+}
+/* user-data */
+/* .set-help a{ display: block; } */
+/* .set-help a~a{
+	border-top: 1px solid #ddd;
+} */
+.set-usermsg .data-avater{
+	width: 1.5rem;
+	height:1.5rem;
+	float: right;
+}
+.set-usermsg .data-span{
+	  font-size: 14px;
+    position: absolute;
+    top: 0.5rem;
+}
+.data-img {
+    width: 0.2rem;
+    height: 0.4rem;
+    float: right;
+    margin-left: 0.2rem;
+}
+.set-help input.data-gray{
+	color: #939393;
+	font-size: 12px;
+	text-align: right;
+	width: 85%;
+	border: none;
+}

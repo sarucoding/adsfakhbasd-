@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>订单提交</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<meta charset="UTF-8">
+	<script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+	<script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/order.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+</head>
+<body>
+<!-- 头部、返回、标题 -->
+<div class="twostatus-header">
+	<div class="container">
+		<a class="back" href="{:U('index/index')}">
+			<img src="__PUBLIC__/mobile/img/register/register1.png">
+		</a>
+		<span class="char">订单提交</span>
+	</div>
+</div>
+<!-- 完成主体 -->
+<div class="order-sub-content">
+	<div>
+		<img src="__PUBLIC__/mobile/img/order/ellipse.png">
+		<p>订单提交成功</p>
+		<span>您的订单已提交完成，请等待系统确认，商家发货。</span>
+	</div>
+	<div style="line-height: 0.7rem;">
+		<p>订单编号：{$order.order_sn}</p>
+		<p>订单价格：{$order.total_amount}元</p>
+		<p>下单时间：{$order.add_time|date="Y-m-d H:i:s",###}</p>
+	</div>
+	<div class="go-to">
+		<div class="go-where">
+			<a href="{:U('order/detail',array('order_id'=>$order['order_id']))}">查看订单</a>
+			<a href="{:U('index/index')}" class="comm">返回首页</a>
+		</div>
+	</div>
+</div>
+
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function(e){
+		document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+	}, false);
+</script>
+</body>
+</html>

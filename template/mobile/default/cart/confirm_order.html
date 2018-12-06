@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>确认订单</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/picker.min.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/confirmorder.css"/>
+</head>
+<body>
+	<!--头部-->
+	<div class="order-header">
+		<div class="container">
+			<a class="back" href="javascript:history.go(-1);">
+				<img src="__PUBLIC__/mobile/img/register/register1.png">
+			</a>
+			<span class="char">填写订单</span>
+		</div>
+	</div>
+	<form id="theForm">
+	<!--地址选择部分-->
+	<div class="confirm-address clear-float">
+		<if condition="$address neq ''">
+			<a href="{:U('user/address_list',array('act'=>'order','address_id'=>$address.address_id))}">
+				<div class="container">
+					<div class="name">{$address.shop_name}</div>
+					<div class="customer">{$address.consignee} <span>{$address.mobile|yc_mobile=###}</span></div>
+					<div class="address-detail"><if condition="$address.is_default"><span>默认</span></if>{$regionList[$address.province]}{$regionList[$address.city]}{$regionList[$address.district]}{$address.address}</div>
+				</div>
+				<input type="hidden" name="address_id" value="{$address.address_id}">
+				<div class="jump"><img src="__PUBLIC__/mobile/img/cart/bigarrow.png"></div>
+			</a>
+			<else/>
+			<a href="{:U('user/add_address',array('act'=>'order'))}">
+				<div class="left-float container">
+					<div style="float: left;margin-left: 20px;"><img style="width: 0.8rem;" src="__PUBLIC__/mobile/img/add_circle.png"></div>
+					<p style="float: left;margin-left: 10px;line-height: 0.8rem;">请添加收货地址</p>
+				</div>
+			</a>
+		</if>
+	</div>
+
+	<!--支付方式-->
+	<div class="confirm-payway clear-float">
+		<div class="online left-float">
+			<input <if condition="$user.is_contract neq 1">checked</if> name="pay_type" value="0" type="radio" style="visibility: hidden; position: absolute; top: 0; left: 0;">
+			<img data-type="online" src="__PUBLIC__/mobile/img/cart/cart_<if condition='$user.is_contract neq 1'>03<else/>15</if>.png">
+			<span>现款购买</span>
+		</div>
+		<div class="offline right-float">
+			<input name="pay_type" checked type="radio" value="1" style="visibility: hidden; position: absolute; top: 0; left: 20px;">
+			<img data-type="offline" <if condition="$user.is_contract neq 1">class="not_choose"</if> src="__PUBLIC__/mobile/img/cart/cart_<if condition='$user.is_contract eq 1'>03<else/>not</if>.png">
+			<span>账期购买</span>
+		</div>
+	</div>
+
+	<!--商品详细信息-->
+	<div class="confirm-detail">
+		<!--店铺名-->
+		<div class="store">
+			<a href="javascript:;">
+				<img class="img1" src="__PUBLIC__/mobile/img/cart/cart_05.png">
+				<span>{$store_name}</span>
+				<!--<img class="img2" src="__PUBLIC__/mobile/img/cart/cart_07.png">-->
+			</a>
+		</div>
+		<!--购买产品信息-->
+		<div class="confirm-content">
+			<foreach name="cartList" item="val">
+			<div class="cart-item">
+				<div class="c-info">
+					<div class="img-container">
+						<img src="<if condition='$val.spec_img'>{$val.spec_img}<else/>{$val.original_img}</if>">
+					</div>
+					<div class="desc">
+						<div class="p-name"><span>{$val.goods_name}</span><span class="right-float">×<i>{$val.goods_num}</i></span></div>
+						<if condition="$val.spec_key_name"><div class="p-select"><a href="javascript: void(0)">{$val.spec_key_name}</a></div></if>
+						<div class="p-price">
+							<div class="price-container">
+								<span class="price">￥<i>{$val.offer_price}</i></span>
+							</div>
+							<div class="count-option-container">
+								<div class="count-option" cart_id="{$val.id}">
+									<img class="btn reduce" src="__PUBLIC__/mobile/img/cart/cart_18.png">
+									<input type="number" name="goods_num" class="count" value="{$val.goods_num}">
+									<img class="btn add" src="__PUBLIC__/mobile/img/cart/cart_20.png">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</foreach>
+		</div>
+		<!--配送-->
+		<div class="confirm-distribution">
+			<div class="info clear-float">
+				<div class="info1 left-float"><p>配送</p></div>
+				<div class="info2 right-float">
+					<p>商家配送</p>
+					<p>工作日、双休日与节假日均可配送</p>
+				</div>
+			</div>
+			<div class="select-btn">
+				<img src="__PUBLIC__/mobile/img/cart/suboption-btn.png">
+			</div>
+			<!--选择配送方式(模态窗口)-->
+			<div class="modalbox-distribution">
+				<div class="modaldialog-distribution">
+					<div class="distribution-way">
+						<div class="one">配送方式</div>
+						<div class="two">
+							<div>
+								<input checked name="shipping_code" value="seller" style="visibility: hidden; position: absolute; top: 0; left: 0;" type="radio">
+								<span class="active">商家配送</span>
+							</div>
+							<div>
+								<input name="shipping_code" value="self" style="visibility: hidden; position: absolute; top: 0; left: 20px;" type="radio">
+								<span>门店自提</span>
+							</div>
+						</div>
+						<div class="confirm-btn">
+							<div>确定</div>
+						</div>
+						<a class="close-btn" href="javascript: void(0)" title="关闭"><img src="__PUBLIC__/mobile/img/cart/close.png"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--送货时间-->
+		<div class="confirm-time">
+			<div class="info">
+				最佳送达时间：<span>13:00</span>前
+				<input name="collect_time" type="hidden" value="13:00">
+			</div>
+			<div id="con-select-btn" class="select-btn">
+				<img src="__PUBLIC__/mobile/img/cart/suboption-btn.png">
+			</div>
+			<!--选择最佳收货时间弹出窗口-->
+			<!-- <div class="modalbox-time active">
+				<div class="modaldialog-time">
+					<div class="time">
+						<div class="title">最佳收货时间</div>
+						<div class="confirm-btn">
+							<div>确定</div>
+						</div>
+						<a class="close-btn" href="javascript: void(0)" title="关闭"><img src="__PUBLIC__/mobile/img/cart/close.png"></a>
+					</div>
+				</div>
+			</div> -->
+		</div>
+		<!--留言-->
+		<div class="confirm-msg">
+			<div class="info">
+				<span>留言</span>
+				<input type="text" name="user_note" value="" placeholder="建议留言前与商家沟通确认">
+			</div>
+		</div>
+	</div>
+
+	<!--发票信息-->
+	<div class="confirm-invoice">
+		<div class="info clear-float">
+			<div class="info1 left-float">发票</div>
+			<div class="info2 right-float">不开发票</div>
+		</div>
+		<div class="select-btn">
+			<img src="__PUBLIC__/mobile/img/cart/suboption-btn.png">
+		</div>
+		<!--发票类型选择-->
+		<div class="modalbox-invoice">
+			<div class="modaldialog-invoice">
+				<div class="invoice">
+					<div class="title">发票</div>
+					<div class="aboutinvoice" style="display: none">
+						<div class="type">
+							<div class="typename">发票类型</div>
+							<div class="ticketname">
+								<input style="display: none;" type="radiobox">
+								<span class="active">普通发票</span>
+							</div>
+						</div>
+						<div class="belongto">
+							<div class="belong">发票抬头</div>
+							<div class="belongtype">
+								<input style="display: none;" type="radiobox">
+								<!--<span>个人</span>-->
+								<span class="active">单位</span>
+							</div>
+							<div class="belongcom belongname">
+								<input type="text" name="invoice_title" placeholder="请输入发票抬头" value="{$invoice.invoice_title}">
+							</div>
+							<div class="belongcom belongnum">
+								<input type="text" name="taxpayer" placeholder="请在此填写纳税人识别号" value="{$invoice.taxpayer}">
+							</div>
+						</div>
+					</div>
+					<div class="content">
+						<div class="contentname">发票内容<span>发票内容选项已根据税法调整，具体请以展示为准</span></div>
+						<div class="contentrequire">
+							<input style="display: none;" name="invoice_desc" type="radio" value="明细">
+							<span>商品明细</span>
+							<input style="display: none;" checked name="invoice_desc" type="radio" value="不开发票">
+							<span class="active">不开发票</span>
+						</div>
+						<div class="otherinfo">发票内容将显示详细商品名称与价格信息</div>
+					</div>
+					<div class="confirm-btn">
+						<div>确定</div>
+					</div>
+					<a class="close-btn" href="javascript: void(0)" title="关闭"><img src="__PUBLIC__/mobile/img/cart/close.png"></a>
+					<p class="mustknow">发票须知</p>
+					<!--点击发票须知弹出窗口-->
+					<div class="modalbox-mustknow">
+						<div class="modaldialog-mustknow">
+							<div class="mustknow-content">
+								<div class="desc">
+									<h1>发票税号说明</h1>
+									<h3>1、什么是纳税人识别号、统一社会信用代码？</h3>
+									<p>纳税人识别号是税务登记证上的号码，通常简称为"税
+										号"，每个企业的纳税人识别号都是唯一的。这个属于
+										每个人自己且终身不变的数字代码很可能成为我们的第
+										二张"身份证"。
+									</p>
+								</div>
+								<div class="close">我知道了</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--余额抵扣支付方式-->
+	<div class="balance-way clear-float" <if condition="$user.is_contract eq 1">style="display: none"</if>>
+		<div class="info left-float">
+			<div class="pay-name">余额</div>
+			<div class="pay-number">可用余额为<span>￥<i>{$user.store_money}</i></span></div>
+		</div>
+		<div class="isuse-btn right-float">
+			<if condition="$user.paypwd eq ''">
+				请先<a href="{:U('user/pay_setting')}" style="color: #FF2A06">设置支付密码</a>
+				<else/>
+				<input type="checkbox" checked value="1" name="is_use_balance" style="position:absolute;left:0;top:0;visibility:hidden;">
+				<img data-select="ok" src="__PUBLIC__/mobile/img/cart/yescheck.png">
+			</if>
+		</div>
+	</div>
+
+	<!-- 插件 支付层 -->
+	<div class="ftc_wzsf">
+		<div class="srzfmm_box">
+			<div class="qsrzfmm_bt clear_wl">
+			<img src="__PUBLIC__/mobile/img/pay/xx_03.jpg" class="tx close left-float">
+			<span class="left-float">请输入支付密码</span>
+
+			<input type="text" value="" name="pwd" class="receive-input" style="width:1.7rem; visibility: hidden;">
+			</div>
+			<div class="zfmmxx_shop">
+			<div class="zhifu_price">余额支付￥<span id="user_money">0</span></div>
+			</div>
+			<ul class="mm_box">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			</ul>
+		</div>
+		<div class="numb_box">
+			<div class="xiaq_tb">
+			<img src="__PUBLIC__/mobile/img/pay/jftc_14.jpg">
+			</div>
+			<ul class="nub_ggg">
+			<li><a href="javascript:void(0);" class="zf_num">1</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">2</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">3</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">4</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">5</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">6</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">7</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">8</a></li>
+			<li><a href="javascript:void(0);" class="zf_num">9</a></li>
+			<li><a href="javascript:void(0);" class="zf_empty">清空</a></li>
+			<li><a href="javascript:void(0);" class="zj_x zf_num">0</a></li>
+			<li><a href="javascript:void(0);" class="zf_del">删除</a></li>
+			</ul>
+		</div>
+		<div class="tb2">
+			<img src="__PUBLIC__/mobile/img/pay/15.jpg" style="height:0.43rem;">
+		</div>
+		<div class="hbbj"></div>
+	</div>
+    </form>
+	<!--结算价格和运费-->
+	<div class="confirm-price">
+
+	</div>
+
+	<!--底部固定部分会遮挡内容，这个用来多显示一部分-->
+	<div class="confirm-nothing"></div>
+
+	<!--底部固定提交部分-->
+	<div class="footer-container">
+		<div class="confirm-submit">
+			<div class="total">
+				<div>￥<i>0</i></div>
+			</div>
+			<div class="ok-btn">
+				<span>提交订单</span>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function(e){
+			document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+		}, false);
+	</script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+	<script type="text/javascript">
+		function ajax_order_price(is_submit = 0){
+            var data = $('#theForm').serialize();
+            if(is_submit == 1){
+                data += '&act=submit_order';
+            }
+			$.ajax({
+				type: "POST",
+				url: "{:U('Mobile/Cart/order_handle')}",
+				dataType: 'json',
+				data: data,
+				success: function (data) {
+					console.log(data);
+					if(data.status == 1){
+						var data = data.result;
+						var str_html = `<div class="total-money">
+								<span class="title">商品金额</span>
+								<span class="right-float product-price">￥<i>${data.goods_price}</i></span>
+								</div>`;
+						str_html += '<div class="freight-charge"><span class="title">运费</span><span class="right-float charge-price">';
+						if(data.shipping_price > 0){
+							str_html += '+￥<i>'+data.shipping_price+'</i>';
+						}else{
+							str_html += data.shipping_price;
+						}
+						str_html += '</span></div>';
+						if(data.user_money > 0){
+							str_html += `<div class="deduction">
+									<span class="title">余额支付</span>
+									<span class="right-float deduction-price">-￥<i>${data.user_money}</i></span>
+									</div>`;
+						}
+						$('.confirm-price').html(str_html);
+						$('#user_money').html(data.user_money);
+						$('.total').find('i').html(data.order_amount);
+					}else if(data.status == 2){
+						var pay_url = "{:U('order_pay')}";
+						window.location.href = pay_url+'?order_sn='+data.result;
+					}else{
+						layer.msg(data.msg,{icon:2});
+					}
+				}
+			})
+		}
+		function change_cart_num(cart_id,goods_num,obj){
+			$.ajax({
+				type: "POST",
+				url: "{:U('Mobile/Cart/ajax_goods_num')}",
+				dataType: 'json',
+				data: {id:cart_id,num:goods_num},
+				success:function(result){
+					if(result.status != 1){
+						layer.msg(result.msg,{icon:2});
+						setTimeout(function(){
+							layer.closeAll();
+						},1000)
+					}else{
+						obj.parent('.count-option').find('input').val(goods_num);
+						obj.parent().parent().parent().parent().find(".p-name span:last-child i").html(goods_num);
+						ajax_order_price();
+					}
+				}
+			})
+		}
+		//数字键盘回调函数
+		function inputNum_callback(obj,num){
+			var cart_id = $(obj).parent('.count-option').attr('cart_id');
+			change_cart_num(cart_id,num,$(obj));
+		}
+		layui.use(['layer', 'form'], function(){
+			var layer = layui.layer;
+			ajax_order_price();//初始化价格
+		});
+		(function(){
+			inputNum("[name=goods_num]",inputNum_callback);
+			$(document).ajaxStart(function(){
+				layer.load(2,{shade: 0.1});
+			})
+			$(document).ajaxStop(function(){
+				layer.closeAll('loading');
+			})
+			//1.配送方式选择
+			//1.1打开选择窗口
+			$(".confirm-distribution .select-btn").click(function(){
+				$(".modaldialog-distribution").addClass("move");
+				$(".modalbox-distribution").addClass("active");
+			});
+			//1.2关闭选择窗口
+			$(".modalbox-distribution .close-btn").click(function(){
+				$(".modaldialog-distribution").removeClass("move");
+				$(".modalbox-distribution").removeClass("active");
+			});
+			//阻止事件冒泡(点击遮罩层也要关闭弹出窗口)
+			$(".modaldialog-distribution").click(function(e){e.stopPropagation();});
+			$(".modalbox-distribution").click(function(e){
+				$(".modaldialog-distribution").removeClass("move");
+				$(".modalbox-distribution").removeClass("active");
+			});
+
+			//2.发票类型选择
+			//2.1打开窗口
+			$(".confirm-invoice .select-btn").click(function(){
+				$(".modaldialog-invoice").addClass("move");
+				$(".modalbox-invoice").addClass("active");
+			});
+			//2.2关闭选择窗口
+			$(".modalbox-invoice .close-btn").click(function(){
+				$(".modaldialog-invoice").removeClass("move");
+				$(".modalbox-invoice").removeClass("active");
+			});
+			//阻止事件冒泡
+			$(".modaldialog-invoice").click(function(e){e.stopPropagation();});
+			$(".modalbox-invoice").click(function(e){
+				$(".modaldialog-invoice").removeClass("move");
+				$(".modalbox-invoice").removeClass("active");
+			});
+			//3.最佳收货时间选择
+			var selectBtn = document.getElementById("con-select-btn");
+			var data1 = [
+				{text: "8:00", value: 1},{text: "9:00", value: 2},{text: "10:00", value: 3},{text: "11:00", value: 4},
+				{text: "12:00", value: 5},{text: "13:00", value: 6},{text: "14:00", value: 7},{text: "15:00", value: 8},
+				{text: "16:00", value: 9},{text: "17:00", value: 10},{text: "18:00", value: 11}
+			];
+			var picker = new Picker({
+				data: [data1],
+				selectedIndex: [5]
+			});
+			picker.on("picker.select", function(selectedVal, selectedIndex){
+				$(".confirm-time .info span").html(data1[selectedIndex[0]].text);
+				$("input[name='collect_time']").val(data1[selectedIndex[0]].text);
+			});
+			selectBtn.addEventListener("click", function(){
+				picker.show();
+			});
+			//点击遮罩层关闭窗口
+			$(".picker-panel").click(function(e){e.stopPropagation();});
+			$(".picker").click(function(){
+				$(".picker-mask").removeClass("show");
+				$(".picker-panel").removeClass("show");
+				var that = this;
+				setTimeout(function(){
+					$(that).css({display: "none"});
+				}, 500)
+			})
+			//4.点击加减按钮
+			$(".confirm-content").on("click", ".add,.reduce", function(){
+				var nowCount = parseFloat($(this).parent('.count-option').find('input').val());
+				if($(this).hasClass('add')){
+					nowCount = nowCount + 1;
+				}else if($(this).hasClass('reduce') && nowCount > 1){
+					nowCount = nowCount - 1;
+				}else{
+					return false;
+				}
+				var cart_id = $(this).parent('.count-option').attr('cart_id');
+				var obj = $(this);
+				change_cart_num(cart_id,nowCount,obj);
+			});
+
+			//余额抵扣
+			$(".balance-way .isuse-btn img").click(function(){
+				if($(this).attr("data-select")){
+					$(this).attr("data-select", "").attr("src", "__PUBLIC__/mobile/img/cart/nocheck.png").prev().prop("checked", false);
+				}
+				else{
+					$(this).attr("data-select", "ok").attr("src", "__PUBLIC__/mobile/img/cart/yescheck.png").prev().prop("checked", true);
+				}
+				ajax_order_price();
+			});
+
+			//5.点击支付方式切换
+			$('.confirm-payway div').click(function(){
+				var img_obj = $(this).find('img');
+				if(img_obj.hasClass('not_choose')){
+					layer.msg('请联系商家开通账期');
+					return false;
+				}
+				img_obj.attr("src", "__PUBLIC__/mobile/img/cart/cart_03.png")
+					.prev().prop("checked", true)
+					.next().next().css({color: "#00B050"})
+					.parent().siblings().find("img").attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png")
+					.next().css({color: "#8C8C8C"});
+
+				if(img_obj.attr("data-type") === "online"){
+					$(".balance-way").show();
+					//$(".balance-way").find(".isuse-btn img").attr("src", "__PUBLIC__/mobile/img/cart/cart_15.png");
+					// $(".confirm-price .deduction i").parent().parent().show();
+				}
+				else if(img_obj.attr("data-type") === "offline"){
+					$(".balance-way").hide();
+					//$(".balance-way").find(".isuse-btn img").attr("src", "__PUBLIC__/mobile/img/cart/close.png").attr("data-select","").prev().prop("checked", false);
+					//选择非在线支付后抵扣处要恢复到默认未抵扣状态
+					//商品总价
+				}
+				ajax_order_price();
+			});
+
+			//6.点击配送选择配送方式
+			$(".modalbox-distribution .two div").on("click", "span", function(){
+				$(this).addClass("active").prev().prop("checked", true).parent().siblings().find("span").removeClass("active");
+				// $(".confirm-distribution .info2 p:first-child").html($(this).html());
+			});
+			//选择好后点击确定按钮
+			$(".modalbox-distribution .confirm-btn div").click(function(){
+				var html = $(this).parent().prev().find("span.active").html();
+				$(".confirm-distribution .info2 p:first-child").html(html);
+				$(".modaldialog-distribution").removeClass("move");
+				$(".modalbox-distribution").removeClass("active");
+				ajax_order_price();
+			})
+
+			//7.点击发票须知弹出相关内容
+			$(".modalbox-invoice .mustknow").click(function(){
+				$(".modalbox-mustknow").addClass("active");
+			});
+			$(".modalbox-mustknow .close").click(function(){
+				$(".modalbox-mustknow").removeClass("active");
+			});
+			$(".modaldialog-mustknow").click(function(e){ e.stopPropagation(); });
+			$(".modalbox-mustknow").click(function(e){
+				$(".modalbox-mustknow").removeClass("active");
+			});
+			//8.点击不开发票和商品明细的切换
+			$(".modalbox-invoice .contentrequire").on("click", "span", function(){
+				$(this).addClass("active").siblings().removeClass("active");
+				$(this).prev().prop("checked", true);
+				if($(this).html() === "商品明细"){
+					$(".modalbox-invoice .aboutinvoice").show();
+				}
+				else{
+					$(".modalbox-invoice .aboutinvoice").hide();
+				}
+				// $(".confirm-invoice .info2").html($(this).html());
+			});
+			//选择好后点击确定按钮
+			$(".modalbox-invoice .confirm-btn div").click(function(){
+				var html = $(this).parent().prev().find("span.active").html();
+				if($("input[name='invoice_desc']:checked").val() == '明细'){
+					if($("input[name='invoice_title']").val() == ''){
+						layer.msg('请输入发票抬头');
+						return false;
+					}
+					var taxpayer = $("input[name='taxpayer']").val();
+					if(!/^([0-9A-Z]){15,}$/.test(taxpayer)){
+						layer.msg('请输入正确的纳税人识别号');
+						return false;
+					}
+				}
+				$(".confirm-invoice .info2").html(html);
+				$(".modaldialog-invoice").removeClass("move");
+				$(".modalbox-invoice").removeClass("active");
+			});
+			//9.若选中在线-余额抵扣，则在提交时显示密码输入窗口
+			$(function () {
+				//出现浮动层
+				$(".confirm-submit .ok-btn").click(function () {
+					//如果有使用余额则打开密码输入键盘，否则提交订单
+					if($("#user_money").text() > 0){
+						$(".ftc_wzsf").addClass('cover-form');
+						$(".numb_box").slideDown(400);
+					}else{
+						ajax_order_price(1);
+					}
+				});
+				// 点 X 关闭浮动
+				$(".close").click(function () {
+					$(".ftc_wzsf").addClass('pay-hide');
+					setTimeout(function(){
+						$(".ftc_wzsf").removeClass('cover-form pay-hide');
+					}, 330);
+					$(".mm_box li").removeClass("mmdd");
+					$(".mm_box li").html("");
+					i = 0;
+				});
+				// 隐藏键盘
+				$(".xiaq_tb").click(function () {
+					$(".numb_box").slideUp(400);
+				});
+				// 显示键盘
+				$(".tb2").click(function () {
+					$(".numb_box").slideDown(400);
+				});
+				$('.mm_box li').click(function(){
+					$(".numb_box").slideDown(400);
+				})
+				// 将键盘的值，传给密码框，再把6位密码赋给input
+				var i = 0;
+				$(".nub_ggg li .zf_num").click(function () {
+					var mm_li =  $(".mm_box li").eq(i);
+					if (i < 6) {
+                        mm_li.addClass("mmdd");
+                        mm_li.attr("data", $(this).text());
+                        i++;
+                        if (i == 6) {
+                            setTimeout(function () {
+                                var data = "";
+                                $(".mm_box li").each(function () {
+                                    data += $(this).attr("data");
+                                });
+                                $('.receive-input').val(data);  // 传值给input
+                                ajax_order_price(1);
+                                $(".ftc_wzsf").addClass('pay-hide');
+                                setTimeout(function(){
+                                    $(".ftc_wzsf").removeClass('cover-form pay-hide');
+                                }, 330);
+                                $(".mm_box li").removeClass("mmdd");
+                                $(".mm_box li").html("");
+                                i = 0;
+                            }, 100);
+                        };
+					}
+				});
+				// 删除
+				$(".nub_ggg li .zf_del").click(function () {
+					if (i > 0) {
+                        i--
+                        $(".mm_box li").eq(i).removeClass("mmdd");
+                        $(".mm_box li").eq(i).attr("data", "");
+					}
+				});
+				// 清空
+				$(".nub_ggg li .zf_empty").click(function () {
+					$(".mm_box li").removeClass("mmdd");
+					$(".mm_box li").attr("data", "");
+					i = 0;
+				});
+			});
+		})();
+	</script>
+</body>
+</html>

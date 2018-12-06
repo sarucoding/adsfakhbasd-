@@ -1,0 +1,112 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+	<include file="public/left"/>
+	<div id="layoutRight" class="ncsc-layout-right">
+		<div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>应收账单
+		</div>
+		<div class="main-content" id="mainContent">
+			<div class="tabmenu">
+				<ul class="tab pngFix">
+					<li class="active"><a href="{:U('settlement/index')}">账单列表</a></li>
+				</ul>
+			</div>
+			<div class="alert alert-block mt10">
+				<ul class="mt5">
+					<li>1、冲账是指除商城在线支付外的收款方式收到的货款进行抵扣</li>
+                    <li>2、货款折让是指给客户账单打折优惠</li>
+				</ul>
+			</div>
+			<form action="" id="search-form2" method="post">
+				<table class="search-form">
+					<tr>
+						<td><!--<a href="{:U('stock/add')}" class="ncbtn ncbtn-mint" title="新增账单"><i class="icon-plus-sign"></i>进货入库</a>--></td>
+						<td class="w160"><input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入客户名称" /></td>
+						<td class="tc w70"><label class="submit-border">
+							<input type="submit" class="submit" value="搜索"/>
+						</label></td>
+					</tr>
+				</table>
+			</form>
+			<table class="ncsc-default-table">
+				<thead>
+				<tr>
+					<!--<th class="w40">账单ID</th>-->
+					<th class="w50">客户名称</th>
+					<th class="w50">账单金额</th>
+					<th class="w50">已收金额</th>
+					<th class="w50">应收金额</th>
+					<th class="w50">折让金额</th>
+					<th class="w50">订单数量</th>
+					<th class="w50">账单状态</th>
+					<th class="w50">生成时间</th>
+					<th class="w50">结清时间</th>
+					<th class="w100">操作</th>
+				</tr>
+				</thead>
+				<empty name="list">
+			  		<tbody>
+			  		<tr>
+			      		<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+			    	</tr>
+			      </tbody>
+			  <else/> 
+				<tbody>
+				<volist name="list" id="val">
+					<tr class="bd-line">
+						<!--<td>{$val.settle_id}</td>-->
+						<td>{$val.realname}</td>
+						<td>{$val.settle_total}</td>
+						<td>{$val.settle_total-$val.settle_amount-$val.settle_discount}</td>
+						<td>{$val.settle_amount}</td>
+						<td>{$val.settle_discount}</td>
+						<td>{$val.order_count}</td>
+						<td>
+							<if condition="$val.settle_status eq 0">
+								待结算
+								<elseif condition="$val.settle_status eq 1"/>
+								<span style="color:green;">已结算</span>
+								<elseif condition="$val.settle_status eq 2"/>
+								<span style="color:red;">部分结算</span>
+							</if>
+						</td>
+						<td>{$val.settle_add_time|date="Y-m-d H:i:s",###}</td>
+						<td><if condition="$val.settle_time neq 0">{$val.settle_time|date="Y-m-d H:i:s",###}<else/>未结清</if></td>
+						<td class="nscs-table-handle">
+							<if condition="$val.settle_amount gt 0">
+							<span><a href="{:U('settlement/charge',array('settle_id'=>$val['settle_id']))}" class="btn-bluejeans"><i class="icon-money"></i><p>冲账</p></a></span>
+							<span><a onclick="charge(this)" data-url="{:U('settlement/discount',array('settle_id'=>$val['settle_id']))}" href="javascript:;" class="btn-bluejeans"><i class="icon-money"></i><p>货款折让</p></a></span>
+							</if>
+							<span><a href="{:U('settlement/pay_log',array('settle_id'=>$val['settle_id']))}" class="btn-bluejeans"><i class="icon-search"></i><p>流水记录</p></a></span>
+							<span><a href="{:U('settlement/order_lists',array('settle_id'=>$val['settle_id']))}" class="btn-bluejeans"><i class="icon-search"></i><p>关联订单</p></a></span>
+						</td>
+					</tr>
+				</volist>
+				</tbody>
+				</empty>
+				<tfoot>
+				<tr>
+					<td colspan="20">
+						{$page->show()}
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<include file="public/foot"/>
+<script>
+	function charge(obj) {
+		layer.open({
+			type: 2,
+			title: '折让货款',
+			shadeClose: true,
+			shade: 0.2,
+			skin: 'layui-layer-rim',
+			area: ['380px', '280px'],
+			content: [$(obj).attr('data-url'), 'no']
+		});
+	}
+</script>
+</body>
+</html>

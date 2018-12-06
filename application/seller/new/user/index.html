@@ -1,0 +1,114 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+	<include file="public/left"/>
+	<div id="layoutRight" class="ncsc-layout-right">
+		<div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>店铺<i class="icon-angle-right"></i>客户管理
+		</div>
+		<div class="main-content" id="mainContent">
+			<div class="tabmenu">
+				<ul class="tab pngFix">
+					<li class="active"><a href="{:U('User/index')}">客户列表</a></li>
+				</ul>
+			</div>
+			<div class="alert alert-block mt10">
+				<ul class="mt5">
+					<li>1、点击新增客户按钮可以添加客户</li>
+                    <li>2、客户基础信息添加后不能编辑，如需修改基础信息可让客户登录商城自行修改或联系平台修改.</li>
+				</ul>
+			</div>
+			<form action="" id="search-form2" method="post">
+				<table class="search-form">
+					<tr>
+						<td><a href="{:U('User/add')}" class="ncbtn ncbtn-mint" title="新增客户"><i class="icon-plus-sign"></i>新增客户</a></td>
+						<td class="w160"><input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入客户手机号或姓名" /></td>
+						<td class="tc w70"><label class="submit-border">
+							<input type="submit" class="submit" value="搜索"/>
+						</label></td>
+					</tr>
+				</table>
+			</form>
+			<table class="ncsc-default-table">
+				<thead>
+				<tr>
+					<th class="w40">客户ID</th>
+					<th class="w50">客户名称</th>
+					<th class="w50">联系人</th>
+					<th class="w50">手机号</th>
+					<th class="w50">是否开启账期</th>
+					<th class="w50">结算周期</th>
+					<th class="w50">余额</th>
+					<th class="w50">累计消费金额</th>
+					<th class="w50">操作</th>
+				</tr>
+				</thead>
+				<empty name="list">
+			  		<tbody>
+			  		<tr>
+			      		<td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+			    	</tr>
+			      </tbody>
+			  <else/> 
+				<tbody>
+				<php>
+					$is_contract = [0=>'否',1=>'<span style="color:red;">是</span>'];
+					$settle_cycle = [0=>'日结',1=>'周结',2=>'月结'];
+				</php>
+				<volist name="list" id="val">
+					<tr class="bd-line">
+						<td>{$val.user_id}</td>
+						<td>{$val.realname}</td>
+						<td>{$val.remark}</td>
+						<td>{$val.mobile}</td>
+						<td>{$is_contract[$val.is_contract]}</td>
+						<td><if condition="$val.is_contract eq 0">未开启账期<else/>{$settle_cycle[$val.settle_cycle]}</if></td>
+						<td>{$val.store_money}</td>
+						<td>{$val.total_consume}</td>
+						<td class="nscs-table-handle">
+							<span><a href="{:U('User/edit',array('re_id'=>$val['re_id']))}" class="btn-bluejeans"><i class="icon-edit"></i><p>编辑</p></a></span>
+							<span><a href="{:U('User/account_log',array('re_id'=>$val['re_id']))}" class="btn-bluejeans"><i class="icon-jpy"></i><p>资金</p></a></span>
+							<span><a href="{:U('User/address',array('user_id'=>$val['user_id']))}" class="btn-bluejeans"><i class="icon-search"></i><p>地址</p></a></span>
+						</td>
+					</tr>
+				</volist>
+				</tbody>
+				</empty>
+				<tfoot>
+				<tr>
+					<td colspan="20">
+						{$page->show()}
+					</td>
+				</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div>
+<include file="public/foot"/>
+<script>
+	function delfun(obj) {
+		layer.confirm('确认删除？', {
+					btn: ['确定', '取消'] //按钮
+				}, function () {
+					$.ajax({
+						type: 'post',
+						url: $(obj).attr('data-url'),
+						data: {id: $(obj).attr('data-id')},
+						dataType: 'json',
+						success: function (data) {
+							layer.closeAll();
+							if (data.status == 1) {
+								layer.msg(data.msg, {icon: 1});
+								$(obj).parent().parent().parent().remove();
+							} else {
+								layer.msg(data.msg, {icon: 2, time: 2000});
+							}
+						}
+					})
+				}, function (index) {
+					layer.close(index);
+				}
+		);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<include file="public/head"/>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    .settle {
+        display: none
+    }
+    #handleposition dt{width: 10% !important;}
+    #handleposition dd{width: 89% !important;}
+</style>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i
+                class="icon-angle-right"></i>进货入库
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('stock/index')}">入库单列表</a></li>
+                    <li class="active"><a>进货入库</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form id="handleposition" method="post" onsubmit="return false;">
+                    <dl>
+                        <dt><i class="required">*</i>供应商：</dt>
+                        <dd>
+                            <select name="suppliers_id">
+                                <foreach name="suppliers" item="val">
+                                    <option value="{$val.suppliers_id}">{$val.suppliers_name}</option>
+                                </foreach>
+                            </select>
+                            <span class="err" id="err_realname"></span>
+
+                            <p class="hint">请选择供应商</p>
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt>进货说明：</dt>
+                        <dd>
+                            <input class="w130 text" name="bill_remark" type="text"/>
+                            <span class="err" id="err_bill_remark"></span>
+
+                            <p class="hint">请输入进货说明</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>原始凭证：</dt>
+                        <dd>
+                            <div class="goods_xc" style="width:130px; text-align:center; margin: 5px; display:inline-block;">
+                                <input type="hidden" name="bill_img[]" value="" />
+                                <a href="javascript:void(0);" onClick="GetUploadify3(10,'','bill','upload_call_back');"><img src="/public/images/add-button.jpg" width="130" height="130" /></a>
+                                <br/>
+                                <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                            </div>
+                            <p class="hint">请上传原始凭证或入库实物照片</p>
+                            <div id="demo"></div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>添加商品：</dt>
+                        <dd>
+                            <button onclick="get_goods_lists()" class="layui-btn layui-btn-sm"><i
+                                    class="icon-plus-sign"></i> 添加商品
+                            </button>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>商品列表：</dt>
+                        <dd>
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col width="150">
+                                    <col>
+                                    <col width="80">
+                                    <col width="90">
+                                    <col width="130">
+                                    <col width="60">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>商品名称</th>
+                                    <th>规格</th>
+                                    <th>销售价</th>
+                                    <th>进货单价</th>
+                                    <th style="text-align: center">数量</th>
+                                    <th align="center">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <p style="text-align: right;font-size: 16px;">合计金额：<span id="total_money" style="color: red">0</span>元</p>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input id="submit" type="submit" class="submit" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $(document).on("click", '#submit', function (e) {
+                        $('#submit').attr('disabled', true);
+                        verifyForm();
+                    })
+                })
+                //图片上传回调方法
+                function upload_call_back(paths){
+                    var last_div = $(".goods_xc:last").prop("outerHTML");
+                    for (var i = 0; i < paths.length; i++) {
+                        $(".goods_xc:eq(0)").before(last_div);	// 插入一个 新图片
+                        $(".goods_xc:eq(0)").find('a:eq(0)').attr('href', paths[i]).attr('onclick', '').attr('target', "_blank");// 修改他的链接地址
+                        $(".goods_xc:eq(0)").find('img').attr('src', paths[i]);// 修改他的图片路径
+                        $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick', "del_img(this)").text('删除');
+                        $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+                    }
+                }
+                function del_img(obj){
+                    $(obj).parent().remove();
+                }
+                function get_goods_lists() {
+                    var url = "{:U('seller/goods/ajax_goods_lists')}";
+                    layer.open({
+                        type: 2,
+                        title: '选择商品',
+                        shadeClose: true,
+                        shade: 0.5,
+                        area: ['1000px', '600px'],
+                        content: url
+                    });
+                }
+                function del_goods(obj){
+                    calculate_money();
+                    $(obj).parent().parent().remove();
+                }
+                function call_back(data) {
+                    var table_str = '';
+                    $.each(data,function(idx,item){
+                        if(item.key_name == null){
+                            item.key_name = '';
+                        }
+                        table_str += '<tr>';
+                        table_str += '<td>'+item.goods_name+'</td>';
+                        table_str += '<td>'+item.key_name+'</td>';
+                        table_str += '<td>'+item.price+'</td>';
+                        table_str += '<td>' +
+                                '<input style="width: 50px" type="text" name="stock_price[]" onkeyup="this.value=this.value.replace(/[^\\d.]/g,\'\');calculate_money();" onpaste="this.value=this.value.replace(/[^\\d.]/g,\'\')">' +
+                                '<input value="'+item.goods_id+'" type="hidden" name="goods_id[]">' +
+                                '<input value="'+item.goods_name+'" type="hidden" name="goods_name[]">' +
+                                '<input value="'+item.key_name+'" type="hidden" name="spec_key_name[]">' +
+                                '</td>';
+                        table_str += '<td align="center" valign="middle" style="line-height: 30px;"><input style="width: 50px" type="text" name="stock_in_num[]" onkeyup="this.value=this.value.replace(/[^\\d.]/g,\'\');calculate_money();" onpaste="this.value=this.value.replace(/[^\\d.]/g,\'\')">' +
+                                item.goods_unit +
+                                '<input value="'+item.key+'" type="hidden" name="key[]"></td>';
+                        table_str += '<td align="center"><i class="icon-trash" onclick="del_goods(this)" style="cursor: pointer"></i></td>';
+                        table_str += '</tr>';
+                    });
+                    $('.layui-table tbody').append(table_str);
+                    layer.closeAll();
+                }
+                function calculate_money(){
+                    var i = 0;
+                    $("input[name='stock_price[]']").each(function(idx,item){
+                        if($(item).val() == ''){
+                            i++;
+                            $('#submit').attr('disabled', false);
+                            return false;
+                        }
+                    })
+                    $("input[name='stock_in_num[]']").each(function(idx,item){
+                        if($(item).val() == ''){
+                            i++;
+                            $('#submit').attr('disabled', false);
+                            return false;
+                        }
+                    })
+                    if(i > 0){
+                        return false;
+                    }
+                    var total_money = 0
+                    $('.layui-table tbody tr').each(function(idx,item){
+                        var stock_price = $(item).find("input[name='stock_price[]']").val();
+                        var stock_in_num = $(item).find("input[name='stock_in_num[]']").val();
+                        total_money += stock_price * stock_in_num;
+                    })
+                    $('#total_money').html(total_money);
+                }
+                function verifyForm() {
+                    var original_img = $("input[name='bill_img[]']").val();
+                    if (original_img == '' && {$store.is_voucher} == 1){
+                        $('#submit').attr('disabled', false);
+                        layer.msg('请上传凭证',{icon:2});
+                        return false;
+                    }
+                    var text = $('.layui-table tbody').text().trim();
+                    if(text == ''){
+                        layer.msg('请选择要入库的商品');
+                        $('#submit').attr('disabled', false);
+                        return false;
+                    }
+                    var i = 0;
+                    $("input[name='stock_price[]']").each(function(idx,item){
+                        if($(item).val() == ''){
+                            i++;
+                            $('#submit').attr('disabled', false);
+                            return false;
+                        }
+                    })
+                    $("input[name='stock_in_num[]']").each(function(idx,item){
+                        if($(item).val() == ''){
+                            i++;
+                            $('#submit').attr('disabled', false);
+                            return false;
+                        }
+                    })
+                    if(i > 0){
+                        layer.msg('请填写进货信息');
+                        return false;
+                    }
+                    $('span.err').hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "{:U('stock/add')}",
+                        data: $('#handleposition').serialize(),
+                        async: false,
+                        dataType: "json",
+                        error: function () {
+                            layer.alert("服务器繁忙, 请联系管理员!");
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.msg(data.msg, {icon: 1, time: 2000}, function () {
+                                    location.href = "{:U('Seller/stock/index')}";
+                                });
+                            } else {
+                                $('#submit').attr('disabled', false);
+                                console.log(data.result);
+                                $.each(data.result, function (index, item) {
+                                    //$('span.err').show();
+                                    $('#err_' + index).text(item).show();
+                                });
+                                layer.msg(data.msg, {icon: 2, time: 3000});
+                            }
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

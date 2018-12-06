@@ -1,0 +1,274 @@
+/*主体内容部分样式*/
+.twostatus-header a{
+    text-decoration: none;
+}
+.subaccount-header{
+    margin-bottom: 0;
+    height: 1.293333rem;
+}
+.money-content .show-board{
+    height: 4.253333rem;
+    background: -webkit-linear-gradient(bottom, #36BAAC, #3EE5AB); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom, #36BAAC, #3EE5AB); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom, #36BAAC, #3EE5AB); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom, #36BAAC, #3EE5AB); /* 标准的语法（必须放在最后） */
+}
+.money-content .show-board:before{
+    display: table;
+    content: "";
+}
+.money-content .show-board .balance-title{
+    min-height: 0.466667rem;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 0.466667rem;
+}
+.money-content .show-board .balance{
+    min-height: 1.32rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    margin: 0.266667rem 0 0.6rem 0;
+}
+.money-content .show-board .withdraw{
+    min-height: 0.493333rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.373333rem;
+}
+.money-content .show-board .withdraw .withdraw-btn{
+    display: inline-block;
+    background-color: #FD624F;
+    border-radius: 0.066667rem;
+    padding: 0.066667rem 0.266667rem;
+}
+
+/*选项切换处*/
+.money-content .func-switch{
+    height: 1.103333rem;
+    background-color: #fff;
+    font-size: 0; 
+    padding: 0.133333rem 0;
+    border-bottom: 1px solid #f4f4f4;
+    box-sizing: border-box;
+}
+.money-content .func-switch .common{
+    width: 49.5%;
+    min-height: 0.466667rem;
+    display: inline-block;
+    font-size: 14px;
+    color: #525252;
+    text-align: center;
+    padding: 0.133333rem 0;
+}
+.money-content .func-switch .common.active{
+    color: #00b050;
+}
+.money-content .func-switch .change-detail{
+    border-right: 0.026667rem solid #f4f4f4;
+}
+
+/*选项展示具体内容部分样式*/
+/*金额变动明细*/
+.money-content .big-container{
+    position: fixed;
+    top: 6.649999rem;
+    bottom: 0;
+    width: 100%;
+    overflow-y: scroll;
+    height: auto;
+    background-color: #f4f4f4;
+    z-index: -1;
+}
+.money-content .change-content{
+    background-color: #fff;
+}
+.money-content .change-content .item{
+    min-height: 0.973333rem;
+    border-bottom: 1px solid #f4f4f4;
+    padding: 0.266667rem 0.466667rem;
+    box-sizing: border-box;
+    font-size: 0;
+}
+.money-content .change-content .item .common{
+    display: inline-block;
+    width: 50%;
+    vertical-align: middle;
+}
+.money-content .change-content .item .behave-time .behave{
+    min-height: 0.533333rem;
+    font-size: 0.4rem;
+    font-weight: bold;
+}
+.money-content .change-content .item .behave-time .time{
+    min-height: 0.32rem;
+    font-size: 12px;
+    color: #888;
+    margin-top: 0.133333rem;
+}
+.money-content .change-content .item .behave-time .time span:first-child{
+    margin-right: 0.133333rem;
+}
+.money-content .change-content .item .sum{
+    min-height: 0.6rem;
+    font-size: 0.45rem;
+    font-weight: bold;
+    text-align: right;
+}
+.money-content .change-content .item .sum.active{
+    color: #00b050;
+}
+
+/*提现明细*/
+.money-content .withdraw-content{
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 0 0.466667rem;
+    margin-top: 0.2rem; 
+}
+.money-content .withdraw-content .money-sum{
+    min-height: 0.88rem;
+    font-size: 0;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #f4f4f4;
+}
+.money-content .withdraw-content .money-sum .common{
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+}
+.money-content .withdraw-content .money-sum .desc{
+    min-height: 0.493333rem;
+    font-size: 0.373333rem;
+    color: #888;
+}
+.money-content .withdraw-content .money-sum .number{
+    min-width: 0.88rem;
+    font-size: 0.666667rem;
+    color: #03bc01;
+    text-align: right;
+}
+.money-content .withdraw-content .detail-info{
+    padding: 0.666667rem 0;
+}
+.money-content .withdraw-content .detail-info .item{
+    min-height: 0.493333rem;
+    font-size: 0;
+}
+.money-content .withdraw-content .detail-info .item:not(:last-child){
+    margin-bottom: 0.266667rem;
+}
+.money-content .withdraw-content .detail-info .item .common{
+    display: inline-block;
+    min-height: 0.493333rem;
+    font-size: 0.373333rem;
+}
+.money-content .withdraw-content .detail-info .item .description{
+    width: 20%;
+    text-align-last: justify;
+    color: #C9C8C5;
+}
+.money-content .withdraw-content .detail-info .item .status{
+    width: 80%;
+    text-align: right;
+    color: #03bc01;
+}
+.money-content .withdraw-content .detail-info .item .status span:last-child{
+    margin-left: 0.2rem;
+}
+
+/*提现按钮点击后的弹出窗口*/
+.modalbox-money{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 999;
+	opacity: 0;
+	pointer-events: none;
+	transition: all .3s linear; 
+}
+.modalbox-money.active{
+	pointer-events: auto;
+	background: rgba(0, 0, 0, 0.5);
+	opacity: 1;
+}
+.modaldialog-money{
+	background-color: #fff;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	transition: transform .3s linear;
+	transform: translateY(100%);
+}
+.modaldialog-money.move{
+	transform: translateY(0%);
+}
+
+.modalbox-money .detail-operate{
+    padding: 0.266667rem 0.466667rem;
+}
+.modalbox-money .detail-operate .title{
+    font-size: 0.346667rem;
+    font-weight: 600; 
+    margin-bottom: 1rem;
+}
+.modalbox-money .detail-operate .pay-way{
+    margin-bottom: 0.533333rem;
+    font-size: 0;
+}
+.modalbox-money .detail-operate .pay-way .common{
+    display: inline-block;
+    width: 50%;
+    font-size: 0.346667rem;
+    text-align: center;
+}
+.modalbox-money .detail-operate .pay-way .common .commoncheck{
+    display: inline-block;
+    width: 0.373333rem;
+    height: 0.373333rem;
+}
+.modalbox-money .detail-operate .pay-way .common .commoncheck img{
+    width: 0.373333rem;
+    height: 0.373333rem;
+}
+.modalbox-money .detail-operate .pay-way .common .vertical{
+    vertical-align: middle;
+}
+input::-ms-input-placeholder{ color:#727272; }
+input::-webkit-input-placeholder{ color:#727272; }
+input::-moz-placeholder{ color:#727272; } 
+.modalbox-money .detail-operate .com-input{
+    margin-bottom: 0.533333rem;
+}
+.modalbox-money .detail-operate .com-input input{
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+    outline: 0;
+    border: 0;
+    background-color: #eee;
+    text-align: center;
+    padding: 0.266667rem 0;
+    border-radius: 0.933333rem;
+    font-size: 0.346667rem;
+}
+.modalbox-money .confirm-btn{
+    text-align: center;
+    font-size: 0.4rem;
+    padding: 0.266667rem 0;
+    background-color: #00B051;
+    color: #fff;
+    width: 100%;
+    border: 0;
+}
+.modalbox-money .close-modalbox{
+    position: absolute;
+    top: 0.266667rem;
+    right: 0.466667rem;
+    width: 0.386667rem;
+    height: 0.386667rem;
+}

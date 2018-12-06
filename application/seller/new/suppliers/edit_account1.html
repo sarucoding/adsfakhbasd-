@@ -1,0 +1,53 @@
+<link href="__PUBLIC__/js/layui/css/layui.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__PUBLIC__/static/js/jquery-1.9.1-min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+<form class="layui-form" id="theForm" action="" onsubmit="return false;">
+    <div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">金额</label>
+        <div class="layui-input-block" style="width: 200px;">
+            <input type="number" name="log_money" required  lay-verify="required" placeholder="请输入金额" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block" style="width: 200px;">
+            <input type="text" name="log_info" required  lay-verify="required" placeholder="请输入备注" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input type="hidden" name="suppliers_id" value="{$suppliers.suppliers_id}">
+            <button class="layui-btn" lay-submit lay-filter="sub_btn">确认提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    //Demo
+    layui.use(['form','layer'], function(){
+        var form = layui.form;
+        var layer = layui.layer;
+        //监听提交
+        form.on('submit(sub_btn)', function(data){
+            $.ajax({
+                type:'post',
+                url:"{:url('seller/suppliers/edit_account')}",
+                dataType:'json',
+                data:data.field,
+                success:function(res){
+                    if(res.status == 1){
+                        layer.msg('操作成功',{icon:1,time:2000},function(){
+                            parent.location.reload();
+                            parent.layer.closeAll();
+                        });
+                    }else {
+                        layer.alert(res.msg,{icon:2});
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+</script>

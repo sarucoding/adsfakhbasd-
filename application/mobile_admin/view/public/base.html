@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改订单信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="__MA_JS__/flexible.min.js"></script>
+    <link rel="stylesheet" href="__MA_CSS__/common.css">
+    <link rel="stylesheet" href="__MA_CSS__/mobile_admin.css">
+    {block name="heade"}{/block}
+</head>
+<body class="bg-deep-gray">
+{block name="main"}{/block}
+<div class="main-footer text-none">
+    <div class="com footer-home">
+        <a class="text-black" href="{:U('index')}">
+            <em class="home"></em>
+            <span class="text-xsmall">首页</span>
+        </a>
+    </div>
+    <div class="com footer-statistics">
+        <a class="text-black" href="{:U('store/charts')}">
+            <em class="statistics"></em>
+            <span class="text-xsmall">统计</span>
+        </a>
+    </div>
+    <div class="com footer-exit">
+        <a class="text-black" href="{:U('admin/logout')}">
+            <em class="exit"></em>
+            <span class="text-xsmall">退出</span>
+        </a>
+    </div>
+</div>
+{block name="js"}{/block}
+</body>
+</html>

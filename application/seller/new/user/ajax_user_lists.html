@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="__PUBLIC__/js/layui/css/layui.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery-1.9.1-min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/layui/layui.js"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body>
+
+<style>
+    .layui-form{margin-left: 10px;}
+</style>
+<div class="demoTable" style="margin: 10px 0 0 10px">
+    搜索客户：
+    <div class="layui-inline">
+        <input class="layui-input" name="realname" id="demoReload" placeholder="输入客户名称" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<table class="layui-table" lay-data="{width: 350, height:440, url:'/seller/user/ajax_user_lists/', page:true, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{field:'radio', width:60}"></th>
+        <th lay-data="{field:'realname', width:180}">客户名称</th>
+        <th lay-data="{field:'type'}">客户类型</th>
+    </tr>
+    </thead>
+</table>
+<div class="layui-btn-group demoTable" style="margin-left: 10px;">
+    <button class="layui-btn" id="confirm_btn" data-type="getCheckData">确认选择</button>
+</div>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var user_id = $("input[name='user_id']:checked").val();
+                if(user_id == undefined){
+                    layer.msg('请选择客户');
+                    return false;
+                }
+                var realname = $("input[name='user_id']:checked").parents('tr').find('.laytable-cell-1-realname').text();
+                var type = $("input[name='user_id']:checked").parents('tr').find('.laytable-cell-1-type').text();
+                var data = {user_id:user_id,realname:realname,type:type};
+                parent.select_user_call_back(data);
+            },
+            reload: function(){
+                var demoReload = $('#demoReload');
+
+                //执行重载
+                table.reload('idTest', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: {
+                        goods_name: demoReload.val()
+                    }
+                });
+            }
+        };
+        $('body').keypress(function(e){
+            var key=e.which;
+            if(key==13){
+                $('#confirm_btn').click();
+            }
+        })
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</body>
+</html>

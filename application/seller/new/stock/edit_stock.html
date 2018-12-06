@@ -1,0 +1,124 @@
+<include file="public/head"/>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i class="icon-angle-right"></i>库存调节
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('stock/goods_stock_lists')}">库存列表</a></li>
+                    <li class="active"><a>库存调节</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form id="handleposition" method="post" onsubmit="return false;">
+                    <dl class="luck">
+                        <dt>商品名称：</dt>
+                        <dd>
+                            {$goods.goods_name}
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt>商品规格：</dt>
+                        <dd>
+                            {$goods.key_name}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>库存批次：</dt>
+                        <dd>
+                            <select name="stock_id">
+                                <option value="">--请选择库存批次--</option>
+                                <foreach name="stock_list" item="val">
+                                    <option value="{$val.stock_id}">入库编号：{$val.bill_sn}，供应商：{$val.suppliers_name}</option>
+                                </foreach>
+                            </select>
+                            <p class="hint">请选择库存批次</p>
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt><i class="required">*</i>变更数量：</dt>
+                        <dd>
+                            <input class="w130 text" name="stock" type="number"/>{$goods.goods_unit}
+                            <span class="err" id="err_stock"></span>
+
+                            <p class="hint">请输入变更数量，该数必须大于0</p>
+                        </dd>
+                    </dl>
+                    <dl class="luck">
+                        <dt><i class="required">*</i>变更类型：</dt>
+                        <dd>
+                            <label><input name="change_type" type="radio" value="2"/>报损出库</label>&nbsp;&nbsp;&nbsp;
+                            <label><input name="change_type" type="radio" value="3"/>报溢入库</label>&nbsp;&nbsp;&nbsp;
+                            <label><input name="change_type" type="radio" value="5"/>退货出库</label>
+                            <span class="err" id="err_change_type"></span>
+
+                            <p class="hint">请选择变更类型</p>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input id="submit" type="submit" class="submit" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $(document).on("click", '#submit', function (e) {
+                        $('#submit').attr('disabled', true);
+                        verifyForm();
+                    })
+                })
+                function verifyForm() {
+                    var stock_id = $("select[name='stock_id']").val();
+                    if(stock_id == ''){
+                        layer.msg('请选择库存批次');
+                        $('#submit').attr('disabled', false);
+                        return false;
+                    }
+                    var stock = $("input[name='stock']").val();
+                    if(stock == '' || stock <= 0){
+                        layer.msg('请输入正确的库存变更数量');
+                        $('#submit').attr('disabled', false);
+                        return false;
+                    }
+                    var change_type = $("input[name='change_type']:checked").val();
+                    if(change_type == undefined){
+                        layer.msg('请选择变更类型');
+                        $('#submit').attr('disabled', false);
+                        return false;
+                    }
+                    $('span.err').hide();
+                    $.ajax({
+                        type: "POST",
+                        url: "{:U('stock/edit_stock')}",
+                        data: $('#handleposition').serialize(),
+                        async: false,
+                        dataType: "json",
+                        error: function () {
+                            layer.alert("服务器繁忙, 请联系管理员!");
+                        },
+                        success: function (data) {
+                            if (data.status == 1) {
+                                layer.msg(data.msg, {icon: 1, time: 2000}, function () {
+                                    location.href = "{:U('Seller/stock/goods_stock_lists')}";
+                                });
+                            } else {
+                                $('#submit').attr('disabled', false);
+                                console.log(data.result);
+                                $.each(data.result, function (index, item) {
+                                    $('#err_' + index).text(item).show();
+                                });
+                                layer.msg(data.msg, {icon: 2, time: 3000});
+                            }
+                        }
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

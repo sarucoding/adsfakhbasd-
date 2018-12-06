@@ -1,0 +1,77 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>仓库管理<i class="icon-angle-right"></i>库存列表
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="active"><a href="{:U('stock/goods_stock_lists')}">库存列表</a></li>
+                </ul>
+            </div>
+            <!--<div class="alert alert-block mt10">
+                <ul class="mt5">
+                    <li>1、点击新增入库单按钮可以添加入库单</li>
+                    <li>2、入库单基础信息添加后不能编辑，如需修改基础信息可让入库单登录商城自行修改或联系平台修改.</li>
+                </ul>
+            </div>-->
+            <form action="" id="search-form2" method="post">
+                <table class="search-form">
+                    <tr>
+                        <td></td>
+                        <td class="w160"><input type="text" class="text w150" name="keywords" value="{$keywords}" placeholder="输入商品名称" /></td>
+                        <td class="tc w70"><label class="submit-border">
+                            <input type="submit" class="submit" value="搜索"/>
+                        </label></td>
+                    </tr>
+                </table>
+            </form>
+            <table class="ncsc-default-table">
+                <style>
+                    .btn-bluejeans{padding:3px 3px !important;}
+                </style>
+                <thead>
+                <tr>
+                    <th class="w40">商品名称</th>
+                    <th class="w50">商品规格</th>
+                    <th class="w50">剩余库存</th>
+                    <th class="w50">操作</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.goods_name}</td>
+                            <td>{$val.key_name}</td>
+                            <td>{$val.stock}{$val.goods_unit}</td>
+                            <td class="nscs-table-handle">
+                                <span><a href="{:U('stock/in_stock_log',array('goods_id'=>$val['goods_id'],'key'=>$val['key']))}" class="btn-bluejeans"><i class="icon-list"></i><p>入库记录</p></a></span>
+                                <span><a href="{:U('stock/stock_log',array('goods_id'=>$val['goods_id'],'key'=>$val['key']))}" class="btn-bluejeans"><i class="icon-search"></i><p>库存日志</p></a></span>
+                                <span><a href="{:U('stock/edit_stock',array('goods_id'=>$val['goods_id'],'key'=>$val['key']))}" class="btn-bluejeans"><i class="icon-edit"></i><p>库存调整</p></a></span>
+                            </td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+</body>
+</html>

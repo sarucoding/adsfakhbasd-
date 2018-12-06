@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>地址管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/address.css"/>
+</head>
+<body>
+    <!--头部-->
+	<div class="twostatus-header manage-header">
+        <div class="container">
+            <a class="back" href="javascript:history.go(-1);">
+                <img src="__PUBLIC__/mobile/img/register/register1.png">
+            </a>
+            <span class="char">地址管理</span>
+        </div>
+    </div>
+
+    <!--地址详细内容-->
+    <div class="address-detail">
+        <div class="address-content">
+        <foreach name="address" item="vo">
+            <if !empty($going)><a href="{:U('cart/confirm_order',array('address_id'=>$vo['address_id']))}" ></if>
+            <div class="address-item">
+                <if $address_id == $vo['address_id'] >
+                <div class="set-default-tag">
+                    <img src="__PUBLIC__/mobile/img/cart/cart_03.png" alt="">
+                </div>
+                </if>
+                <div class="detail-info">
+                    <div class="name">{$vo['realname']}</div>
+                    <div class="info">
+                        <span>{$vo['consignee']}</span><span>{$vo['mobile']}</span>
+                        <if $vo['is_default']/>
+                        <span>默认</span>
+                        </if>
+                    </div>
+                    <div class="location clear-float">
+                        <span>{$vo['province']}<if $vo['city'] !=="市辖区"/>{$vo['city']}</if>{$vo['district']}{$vo['twon']} {$vo['address']}</span>
+                        <a href="{:U('user/add_address',array('address_id'=>$vo['address_id']))}"><img class="right-float" src="__PUBLIC__/mobile/img/address/edityaddress.png"></a>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <div class="set-default">设为默认</div>
+                    <div class="delete-current">删除</div>
+                    <input type="hidden" name="address_id" value="{$vo['address_id']}">
+                </div>
+            </div>
+            <if empty($going)></a></if>
+          </foreach>
+        </div>
+    </div>
+    <!--占位避免底部按钮遮挡内容-->
+    <div class="address-nothing"></div>
+    <!--底部新增收货地址-->
+    <div class="address-add">
+        <a href="{:U('user/add_address')}"><div class="add-btn">+新建收货地址</div></a>
+    </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(e){
+            document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+        }, false);
+    </script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/common.js"></script>
+    
+    <script type="text/javascript">
+        //左滑出现按钮
+        swipefunc(".address-detail .address-item", "address-item", 3.0);
+        //删除按钮事件
+        $(".address-detail .address-content").on("click", ".delete-current", function(){
+            var id = $(this).parent().find("[name=address_id]").val();
+            ajax_del(id);
+            $(this).parent().parent().remove();
+        });
+        //设置为默认地址
+        $(".address-detail .address-content").on("click", ".set-default", function(){
+            var id = $(this).parent().find("[name=address_id]").val();
+            ajax_default(id);
+            $(this).parent().parent().find(".info span:nth-child(3)").show()
+            .parent().parent().siblings().find(".info span:nth-child(3)").hide();
+        });
+        
+        $(function(){
+            //计算元素的高度并设置
+           $(".address-detail .address-item .buttons").each(function(index, eleDom){
+                var eleHeight = $(eleDom).outerHeight();
+                var fontSizeVal = parseFloat(document.getElementsByTagName("html")[0].style.fontSize);
+                var lineHeightVal = (eleHeight / fontSizeVal).toFixed(6);
+                $(eleDom).find(".set-default, .delete-current").css({lineHeight: lineHeightVal + "rem"});
+            }); 
+            //判断是否有打勾图标
+            $(".address-detail .address-item").each(function(index, domEle){
+                if($(domEle).find(".set-default-tag").length == 0){
+                    $(domEle).find(".detail-info").css({left: 0, width: "100%"});
+                }
+            });
+        })
+        
+        function ajax_default($id){
+            $.ajax({
+                type:"GET",
+                url:"/index.php?m=Mobile&c=User&a=ajax_default",
+                dataType:"JSON",
+                data:{"id":$id},
+                success: function(object){
+                    if(object.status == 1){
+                        location.reload();
+                    }
+                },
+                error:function(){
+
+                },
+            })
+        }
+
+        function ajax_del($id){
+            $.ajax({
+                type:"GET",
+                url:"/index.php?m=Mobile&c=User&a=ajax_del",
+                dataType:"JSON",
+                data:{"id":$id},
+                success: function(object){
+                    if(object.status == 1){
+                        location.reload();
+                    }
+                },
+                error:function(){
+
+                },
+            })
+        }
+
+
+
+    </script>
+</body>
+</html>

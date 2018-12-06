@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>账户详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/flexible_css.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/moneydetail.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/cji/mescroll.css">
+    <link rel="stylesheet" href="__PUBLIC__/cji/mescroll-option.css">
+</head>
+<body>
+    <!--头部-->
+	<div class="twostatus-header subaccount-header">
+        <div class="container">
+            <a class="back" href="{:U('user/index')}">
+                <img src="__PUBLIC__/mobile/img/register/register1.png">
+            </a>
+            <span class="char">账户详情</span>
+        </div>
+    </div>
+
+    <!--页面主体-->
+    <div class="money-content">
+        <div class="show-board">
+            <div class="balance-title">可用余额</div>
+            <div class="balance">{$stoer['store_money']}</div>
+            <div class="withdraw"><span class="withdraw-btn">提现</span></div>
+        </div>
+        <div class="func-switch">
+            <a href="{:U('user/account')}"><div data-select="statone" class="common change-detail active">金额变动明细</div></a>
+            <a href="{:U('user/detailed')}"><div data-select="stattwo" class="common withdraw-detail">提现明细</div></a>
+        </div>
+        <div id="mescroll" class="big-container">
+            <div id="statone"  class="change-content">
+                <ul class="content"  id="newsList">
+                </ul>
+            </div>
+        </div>    
+    <!--点击提现弹出对话框-->
+    <div class="modalbox-money">
+        <div class="modaldialog-money">
+            <form action="" method="" id="regFrom" enctype="application/x-www-form-urlencoded">
+                <div class="detail-operate">
+                    <div class="title">提现申请</div>
+                    <div class="pay-way">
+                        <div data-pay="alipay" class="common alipay-way">
+                            <input type="radio" value="Alipay" name="paytype" style="position:absolute;left:0;top:0;visibility:hidden;" checked>
+                            <div class="vertical commoncheck"><img src="__PUBLIC__/mobile/img/checkit.png"></div>
+                            <span class="vertical">支付宝</span>
+                        </div>
+                        <div data-pay="bank" class="common bank-way">
+                            <input type="radio" value="bank" name="paytype" style="position:absolute;left:20px;top:0;visibility:hidden;">
+                            <div class="vertical commoncheck"><img src="__PUBLIC__/mobile/img/nocheckit.png"></div>
+                            <span class="vertical">银行卡</span>
+                        </div>
+                    </div>
+                    <div class="com-input account-num">
+                        <input type="text" name="bank_card" value="" placeholder="请输入提现账号">
+                    </div>
+                    <div class="com-input account-name" style="display:none;">
+                        <input type="text" name="realname" value="" placeholder="请输入账户名">
+                    </div>
+                    <div class="com-input account-bank" style="display:none;">
+                        <input type="text" name="bank_name" value="" placeholder="请输入开户行">
+                    </div>
+                    <div class="com-input account-money">
+                        <input type="number" name="money" value="" placeholder="请输入提现金额">
+                    </div>
+                </div>
+                <input class="confirm-btn" type="button" onclick="checkSubmit()" name="" value="确定提现">
+                <img class="close-modalbox" src="__PUBLIC__/mobile/img/close-area.png">
+            </form>
+        </div>
+    </div>
+    <script src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+    <script src="__PUBLIC__/cji/mescroll.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(e){
+            document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+        }, false);
+        layui.use('layer',function(){
+        layer = layui.layer;
+        });
+        function checkSubmit(){
+            $.ajax({
+                type:'POST',
+                url:"/index.php?m=Mobile&c=User&a=withdrawals",
+                dataType:'JSON',
+                data:$('#regFrom').serialize(),
+                success:function(data){
+                    if(data.status == 1){
+                        layer.msg(data.msg);
+                        location.reload();
+
+                    }else {
+                        layer.msg(data.msg);
+                    }
+                    }
+            });
+            }
+
+
+    </script>
+    <script type="text/javascript">
+        //提现时相关输入框验证
+        $(function(){
+            //提现账号
+            $("[name=accountnum]").keyup(function(){
+                this.value = this.value.replace(/^[\u4e00-\u9fa5]$/, "");
+            });
+            //提现金额
+            $("[name=accountmoney]").keyup(function(){
+                this.value = this.value.replace(/^[a-z]$/, "");
+            });
+        });
+        
+        //2.支付方式选择
+        $(".modalbox-money .detail-operate .pay-way").on("click", ".common", function(){
+            //是否选择图片的切换
+            $(this).find(".commoncheck img").attr("src", "__PUBLIC__/mobile/img/checkit.png").parent().parent().find("input").prop("checked", true);
+            $(this).siblings().find(".commoncheck img").attr("src", "__PUBLIC__/mobile/img/nocheckit.png");
+            //选择支付宝
+            if($(this).attr("data-pay") === "alipay"){
+                $(".detail-operate").find(".account-name,.account-bank").hide();
+            }
+            else if($(this).attr("data-pay") === "bank"){
+                $(".detail-operate").find(".account-name,.account-bank").show();
+            }
+        });
+        //3.打开选择窗口
+        $(".money-content .withdraw-btn").click(function(){
+            $(".modaldialog-money").addClass("move");
+            $(".modalbox-money").addClass("active");
+        });
+        //1.2关闭选择窗口
+        $(".modalbox-money .close-modalbox").click(function(){
+            $(".modaldialog-money").removeClass("move");
+            setTimeout(function(){
+                $(".modalbox-money").removeClass("active");
+            }, 300);
+        });
+        //阻止事件冒泡(点击遮罩层也要关闭弹出窗口)
+        $(".modaldialog-money").click(function(e){e.stopPropagation();});
+        $(".modalbox-money").click(function(e){
+            $(".modaldialog-money").removeClass("move");
+            setTimeout(function(){
+                $(".modalbox-money").removeClass("active");
+            }, 300);
+        });
+    </script>
+        <script type="text/javascript">
+    $(function(){
+      //创建MeScroll对象
+      var mescroll = new MeScroll("mescroll", {
+        up: {
+          auto:false,//初始化完毕,是否自动触发上拉加载的回调
+          isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+          callback: getListData, //上拉加载的回调
+          empty: {
+            icon: "__PUBLIC__/cji/res/img/mescroll-empty.png", //图标,默认null
+            tip: "暂无相关数据~", //提示
+            // btntext: "去逛逛 >", //按钮,默认""
+            // btnClick: function(){
+            //   alert("点击了按钮,具体逻辑自行实现");
+            // } 
+          },
+          clearEmptyId: "newsList" //相当于同时设置了clearId和empty.warpId; 简化写法;默认null
+        }
+      });
+
+
+      /*上拉加载的回调 page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+      function getListData(page){
+          //联网加载数据
+          // console.log("page.num="+page.num);
+        getListDataFromNet(page.num, page.size, function(data){
+          //联网成功的回调,隐藏上拉加载的状态
+          mescroll.endSuccess(data.length);//传参:数据的总数; mescroll会自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+          //设置列表数据
+          setListData(data, true);
+        }, function(){
+          //联网失败的回调,隐藏上拉加载的状态
+          mescroll.endErr();
+        });
+      }
+      
+      /*设置列表数据*/
+    function setListData(data, isAppend) {
+        var html = '';
+        $.each(data,function(idx,item){
+                    html += `<li class="item">
+                        <div class="common behave-time"">
+                            <h2 class="behave">${item.log_info}</h2>
+                            <p class="time"><span>${item.log_add_time}</span></p>
+                        </div>
+                        <div class="common sum">${item.log_money}</div>
+                    </li>`;
+             
+            })
+        if (isAppend) {
+          $('#newsList').append(html);
+        } else{
+          $('#newsList').html(html);
+        }
+    } 
+      /*联网加载列表数据*/
+      var downIndex=0;
+      function getListDataFromNet(pageNum,pageSize,successCallback,errorCallback) {
+        $.ajax({
+            type:"GET",
+            url:"/index.php?m=Mobile&c=User&a=withhd_data",
+            dataType:"JSON",
+            data:{"limit":pageSize,"page":pageNum},
+            success: function(object){
+                // console.log(object);
+                successCallback(object);
+            }
+        })
+      }
+      
+      //禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
+      // document.ondragstart=function() {return false;}
+    });
+    </script>
+</body>
+</html>

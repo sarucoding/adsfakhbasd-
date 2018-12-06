@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>订单跟踪</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta charset="UTF-8">
+    <script src="__PUBLIC__/mobile/js/flexible.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/mobile/js/flexible_css.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/order.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/mobile/css/base.css">
+</head>
+<body>
+<!-- 头部、返回、标题 -->
+<div class="twostatus-header">
+    <div class="container">
+        <a class="back" href="javascript:history.go(-1);">
+            <img src="__PUBLIC__/mobile/img/register/register1.png">
+        </a>
+        <span class="char">订单跟踪</span>
+    </div>
+</div>
+<!-- 订单编号、状态、时间 -->
+<div class="order-follow-serial clear-float">
+    <div class="serial-avatar">
+        <img src="{$store_logo}">
+    </div>
+    <div>
+        <p style="margin: 0.25rem 0 0 0;">订单编号：<span>{$order.order_sn}</span></p>
+        <!--<p>预计送达：<span>8月5日 16:00前</span></p>-->
+        <p style="margin: 0.25rem 0 0 0;">订单状态：<span>{$order.order_status_detail}</span></p>
+    </div>
+</div>
+<!-- 订单物流 -->
+<div class="order-follow-cancel">
+    <!-- 签收 -->
+    <ul class="layui-timeline" style="display: block;">
+        <foreach name="lists" id="val" key="k">
+            <notempty name="val.action_note">
+                <li class="layui-timeline-item">
+                    <i class="layui-timeline-axis">
+                        <if condition="$k eq 0">
+                            <img src="__PUBLIC__/mobile/img/order/following.png">
+                        </if>
+                    </i>
+                    <div class="layui-timeline-content">
+                        <h2>{$val.action_note}</h2>
+                        <span>{$val.log_time|date="Y-m-d H:i:s",###}</span>
+                    </div>
+                </li>
+            </notempty>
+        </foreach>
+    </ul>
+</div>
+<script src="__PUBLIC__/mobile/js/jquery-1.11.3.js"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(e){
+        document.getElementsByTagName("html")[0].style.fontSize = window.innerWidth / 10 + "px";
+    }, false);
+</script>
+</body>
+</html>

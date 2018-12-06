@@ -1,0 +1,112 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i class="icon-angle-right"></i>冲账</div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('settlement/index')}">应收账单管理</a></li>
+                    <li class="active"><a>冲账</a></li>
+                </ul>
+            </div>
+            <div class="ncsc-form-default">
+                <form method="post" id="addEditBrandForm">
+                    <dl>
+                        <dt><i class="required">*</i>冲账金额：</dt>
+                        <dd>
+                            <input class="w130 text" type="number" value="{$info.sl_money}" name="sl_money" maxlength="30"/>
+                            <span id="err_sl_money" style="color:#F00; display:none;">冲账金额不能为空</span>
+                            <p class="hint">请填写冲账金额</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><i class="required">*</i>冲账说明：</dt>
+                        <dd>
+                            <input class="w130 text" type="text" value="{$info.sl_info}" name="sl_info"/>
+                            <p class="hint">冲账说明</p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>收款凭证：</dt>
+                        <dd>
+                            <div class="ncsc-goods-default-pic">
+                                <div class="goodspic-uplaod">
+                                    <div class="upload-thumb">
+                                        <img id="original_img2" src="{$info.sl_img|default='/public/images/default_goods_image_240.gif'}">
+                                    </div>
+                                    <input name="sl_img" id="original_img" value="{$info.sl_img}" type="hidden">
+                                    <p class="hint">上传收款凭证。</p>
+                                    <div class="handle">
+                                        <div class="ncsc-upload-btn">
+                                            <a onclick="GetUploadify3(1,'','bill','upload_call_back');">
+                                                <p><i class="icon-upload-alt"></i>图片上传</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="demo"></div>
+                        </dd>
+                    </dl>
+                    <div class="bottom"><label class="submit-border">
+                        <input type="hidden" name="settle_id" value="{$settle_id}">
+                        <input type="button" class="submit" onclick="submitForm()" value="提交"></label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script type="text/javascript">
+    var ajax_return_status =1;
+    function submitForm(){
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        var sl_money = $("input[name='sl_money']").val();
+        var sl_info = $("input[name='sl_info']").val();
+        var original_img = $("#original_img").val();
+        if (sl_money <= 0){
+            layer.msg('冲账金额必须大于0！！',{icon:2});
+            return false;
+        }
+        if (sl_info == ''){
+            layer.msg('冲账说明不能为空！！',{icon:2});
+            return false;
+        }
+        if (original_img == '' && {$store.is_voucher} == 1){
+            layer.msg('请上传收款凭证',{icon:2});
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type:'post',
+            url:"{:U('/seller/settlement/charge')}",
+            data:$('#addEditBrandForm').serialize(),
+            dataType:'json',
+            success:function (data) {
+                if (data.status == 1){
+                    layer.msg(data.msg,{icon:1},function () {
+                        window.location.href = "{:U('/seller/settlement/index')}";
+                    });
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                    ajax_return_status =1;
+                }
+            },
+            error:function(){
+                layer.msg('网络繁忙，请稍后再试！！',{icon:2});
+                ajax_return_status =1;
+            }
+        })
+    }
+    //图片上传回调方法
+    function upload_call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+        $("#original_img2").attr('src', fileurl_tmp);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>财务管理<i
+                class="icon-angle-right"></i>供应商货款管理
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="active"><a href="">供应商货款管理</a></li>
+                </ul>
+            </div>
+            <div class="alert alert-block mt10">
+                <ul>
+                    <li>进货入库会自动增加供应商货款，支付供应商货款后请点击“预付/支付货款”按钮进行记录，记录越准确，利润核算越准确。</li>
+                </ul>
+            </div>
+            <table class="search-form">
+                <form method="get" action="">
+                    <tr>
+                        <td style="text-align: left;color:red;">应付账款总金额：{$sum}元</td>
+                        <th class="w150">供货商名称</th>
+                        <td class="w160"><input type="text" class="text" name="suppliers_name" value="{$Request.param.suppliers_name}"/></td>
+                        <td class="w70 tc"><label class="submit-border"><input type="submit" class="submit" value="搜索"/></label>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w20">&nbsp;</th>
+                    <th class="tl">供货商</th>
+                    <th class="tl">联系人</th>
+                    <th class="tl">联系电话</th>
+                    <th class="tl">应付货款金额</th>
+                    <th class="tl">收款账号信息</th>
+                    <th class="w200">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <empty name="suppliers_list">
+                    <tr>
+                        <td colspan="20" class="norecord">
+                            <div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div>
+                        </td>
+                    </tr>
+                    <else/>
+                    <foreach name="suppliers_list" item="vo">
+                        <tr class="bd-line">
+                            <td></td>
+                            <td class="tl">{$vo.suppliers_name}</td>
+                            <td class="tl">{$vo.suppliers_contacts}</td>
+                            <td class="tl">{$vo.suppliers_phone}</td>
+                            <td class="tl">{$vo.suppliers_money}</td>
+                            <td class="tl">{$vo.suppliers_account}</td>
+                            <td class="nscs-table-handle">
+                                <span><a href="{:U('suppliers/edit_account',array('suppliers_id'=>$vo[suppliers_id]))}" class="btn-bluejeans"><i
+                                        class="icon-money"></i>
+                                    <p>预付/支付货款</p></a></span>
+                                <span><a href="{:U('account_log',array('suppliers_id'=>$vo.suppliers_id))}" class="btn-bluejeans"><i class="icon-search"></i>
+
+                                    <p>交易流水</p></a></span></td>
+                        </tr>
+                    </foreach>
+                </empty>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        <div class="pagination">{$page}</div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script type="text/javascript">
+    function editSuppliers(obj) {
+        layer.open({
+            type: 2,
+            title: '支付供应商货款',
+            shadeClose: true,
+            shade: 0.2,
+            skin: 'layui-layer-rim',
+            area: ['380px', '280px'],
+            content: [$(obj).attr('data-url'), 'no']
+        });
+    }
+</script>
+</body>
+</html>

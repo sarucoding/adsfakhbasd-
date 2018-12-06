@@ -1,0 +1,85 @@
+<include file="public/head"/>
+<div class="ncsc-layout wrapper">
+    <include file="public/left"/>
+    <div id="layoutRight" class="ncsc-layout-right">
+        <div class="ncsc-path"><i class="icon-desktop"></i>商家管理中心<i class="icon-angle-right"></i>员工管理<i class="icon-angle-right"></i>员工列表
+        </div>
+        <div class="main-content" id="mainContent">
+            <div class="tabmenu">
+                <ul class="tab pngFix">
+                    <li class="normal"><a href="{:U('Admin/index')}">员工列表</a></li>
+                    <li class="active"><a>积分明细</a></li>
+                </ul>
+            </div>
+            <!--<div class="alert alert-block mt10">
+                <ul class="mt5">
+                    <li>1、点击资金调节可变更客户余额。</li>
+                </ul>
+            </div>-->
+
+            <!--<form action="" id="search-form2" method="post">
+                <table class="search-form">
+                    <tr>
+                        <td><a onclick="edit_money()" class="ncbtn ncbtn-mint" title="资金调节"><i class="icon-plus-sign"></i>资金调节</a></td>
+                        <td class="w300">当前客户：<strong>{$user.realname}</strong>，当前余额：<strong>￥{$user.store_money}</strong></td>
+                        <td class="tc" style="width: 300px;"></td>
+                    </tr>
+                </table>
+            </form>-->
+            <table class="ncsc-default-table">
+                <thead>
+                <tr>
+                    <th class="w40">日志ID</th>
+                    <th class="w50">变动时间</th>
+                    <th class="w50">原因</th>
+                    <th class="w50">变动积分</th>
+                </tr>
+                </thead>
+                <empty name="list">
+                    <tbody>
+                    <tr>
+                        <td colspan="20" class="norecord"><div class="warning-option"><i class="icon-warning-sign"></i><span>暂无符合条件的数据记录</span></div></td>
+                    </tr>
+                    </tbody>
+                    <else/>
+                    <tbody>
+                    <volist name="list" id="val">
+                        <tr class="bd-line">
+                            <td>{$val.ac_id}</td>
+                            <td>{$val.ac_add_time|date="Y-m-d H:i:s",###}</td>
+                            <td>{$val.ac_info}</td>
+                            <td><if condition="$val.ac_score gt 0">+</if>{$val.ac_score}</td>
+                        </tr>
+                    </volist>
+                    </tbody>
+                </empty>
+                <tfoot>
+                <tr>
+                    <td colspan="20">
+                        {$page->show()}
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<include file="public/foot"/>
+<script>
+    //发送站内信
+    function edit_money()
+    {
+        var url = "{:U('seller/User/edit_account',array('re_id'=>$user['re_id']))}";
+        layer.open({
+            type: 2,
+            title: '资金调节',
+            shadeClose: true,
+            shade: 0.5,
+            area: ['380px', '280px'],
+            content: url
+        });
+
+    }
+</script>
+</body>
+</html>
